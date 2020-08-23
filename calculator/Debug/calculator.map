@@ -275,7 +275,7 @@ END GROUP
 .rela.plt
  *(.rela.plt)
 
-.text           0x00000000     0x1598
+.text           0x00000000     0x15a0
  *(.vectors)
  .vectors       0x00000000       0x54 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.3.300/gcc/dev/atmega32/avr5/crtatmega32.o
                 0x00000000                __vector_default
@@ -407,16 +407,16 @@ END GROUP
  .text.draw_calc
                 0x000008ea      0x3c4 main.o
                 0x000008ea                draw_calc
- .text.main     0x00000cae      0x8c8 main.o
+ .text.main     0x00000cae      0x8d0 main.o
                 0x00000cae                main
  .text.libgcc.mul
-                0x00001576       0x1e c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_umulhisi3.o)
-                0x00001576                __umulhisi3
-                0x00001594                . = ALIGN (0x2)
+                0x0000157e       0x1e c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_umulhisi3.o)
+                0x0000157e                __umulhisi3
+                0x0000159c                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x00001594        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
-                0x00001594                _exit
-                0x00001594                exit
+ .fini9         0x0000159c        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
+                0x0000159c                _exit
+                0x0000159c                exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -435,11 +435,11 @@ END GROUP
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x00001594        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
+ .fini0         0x0000159c        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
  *(.fini0)
-                0x00001598                _etext = .
+                0x000015a0                _etext = .
 
-.data           0x00800060      0x25c load address 0x00001598
+.data           0x00800060      0x25c load address 0x000015a0
                 0x00800060                PROVIDE (__data_start, .)
  *(.data)
  *(.data*)
@@ -462,8 +462,8 @@ END GROUP
                 0x008002bc                T_X
                 0x008002be                T_Y
                 0x008002c0                PROVIDE (__bss_end, .)
-                0x00001598                __data_load_start = LOADADDR (.data)
-                0x000017f4                __data_load_end = (__data_load_start + SIZEOF (.data))
+                0x000015a0                __data_load_start = LOADADDR (.data)
+                0x000017fc                __data_load_end = (__data_load_start + SIZEOF (.data))
 
 .noinit         0x008002c0        0x0
                 [!provide]                PROVIDE (__noinit_start, .)
@@ -557,11 +557,11 @@ END GROUP
  .debug_abbrev  0x000004a3       0xd7 calculatorFunc.o
  .debug_abbrev  0x0000057a      0x2b5 main.o
 
-.debug_line     0x00000000     0x10c5
+.debug_line     0x00000000     0x10d3
  *(.debug_line .debug_line.* .debug_line_end)
  .debug_line    0x00000000      0x115 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.3.300/gcc/dev/atmega32/avr5/crtatmega32.o
  .debug_line    0x00000115       0xa5 calculatorFunc.o
- .debug_line    0x000001ba      0xf0b main.o
+ .debug_line    0x000001ba      0xf19 main.o
 
 .debug_frame    0x00000000      0x3e0
  *(.debug_frame)

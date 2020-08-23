@@ -518,7 +518,7 @@ int main(void)
 			
 			
 			//HEX
-			if (T_X <= 60 && T_Y <= 20)
+			if (T_X <= 60 && T_X > 0 && T_Y <= 20 && T_Y > 0)
 			{
 				print_str(50, 50, 3, WHITE, BLACK, "X E H \0");
 				OCR1A = 1500;
@@ -526,7 +526,7 @@ int main(void)
 			}
 			
 			//DEC
-			if (T_X >= 60 && T_X < 120 && T_Y <= 20)
+			if (T_X >= 60 && T_X < 120 && T_Y <= 20 && T_Y > 0)
 			{
 				print_str(50, 50, 3, WHITE, BLACK, "C E D \0");
 				OCR1A = 1500;
@@ -534,7 +534,7 @@ int main(void)
 			}
 			
 			//OCT
-			if (T_X >= 120 && T_X < 180 && T_Y <= 20)
+			if (T_X >= 120 && T_X < 180 && T_Y <= 20 && T_Y > 0)
 			{
 				print_str(50, 50, 3, WHITE, BLACK, "T C O \0");
 				OCR1A = 1500;
@@ -542,7 +542,7 @@ int main(void)
 			}
 			
 			//BIN
-			if (T_X >= 180 && T_Y <= 20)
+			if (T_X >= 180 && T_X < 240 && T_Y <= 20 && T_Y > 0)
 			{
 				print_str(50, 50, 3, WHITE, BLACK, "N I B \0");
 				OCR1A = 1500;
@@ -678,7 +678,7 @@ int main(void)
 			}
 			
 			//A
-			if (T_X >= 200 && T_Y >= 276)
+			if (T_X >= 200 && T_X < 240 && T_Y >= 276 && T_Y < 320)
 			{
 				print_str(50, 50, 3, WHITE, BLACK, "A \0");
 				OCR1A = 1500;
@@ -686,7 +686,7 @@ int main(void)
 			}
 			
 			//B
-			if (T_X >= 160 && T_X < 200 && T_Y >= 276)
+			if (T_X >= 160 && T_X < 200 && T_Y >= 276 && T_Y < 320)
 			{
 				print_str(50, 50, 3, WHITE, BLACK, "B \0");
 				OCR1A = 1500;
@@ -694,7 +694,7 @@ int main(void)
 			}
 			
 			//C
-			if (T_X >= 120 && T_X < 160 && T_Y >= 276)
+			if (T_X >= 120 && T_X < 160 && T_Y >= 276 && T_Y < 320)
 			{
 				print_str(50, 50, 3, WHITE, BLACK, "C \0");
 				OCR1A = 1500;
@@ -702,7 +702,7 @@ int main(void)
 			}
 			
 			//D
-			if (T_X >= 80 && T_X < 120 && T_Y >= 276)
+			if (T_X >= 80 && T_X < 120 && T_Y >= 276 && T_Y < 320)
 			{
 				print_str(50, 50, 3, WHITE, BLACK, "D \0");
 				OCR1A = 1500;
@@ -710,7 +710,7 @@ int main(void)
 			}
 			
 			//E
-			if (T_X >= 40 && T_X < 80 && T_Y >= 276)
+			if (T_X >= 40 && T_X < 80 && T_Y >= 276 && T_Y < 320)
 			{
 				print_str(50, 50, 3, WHITE, BLACK, "E \0");
 				OCR1A = 1500;
@@ -718,7 +718,7 @@ int main(void)
 			}
 			
 			//F
-			if (T_X < 40 && T_Y >= 276)
+			if (T_X < 40 && T_Y >= 276 && T_Y < 320)
 			{
 				print_str(50, 50, 3, WHITE, BLACK, "F \0");
 				OCR1A = 1500;

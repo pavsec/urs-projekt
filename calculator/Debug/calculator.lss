@@ -3,31 +3,31 @@ calculator.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .text         00001598  00000000  00000000  00000094  2**1
+  0 .text         000015a0  00000000  00000000  00000094  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  1 .data         0000025c  00800060  00001598  0000162c  2**0
+  1 .data         0000025c  00800060  000015a0  00001634  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  2 .bss          00000004  008002bc  008002bc  00001888  2**0
+  2 .bss          00000004  008002bc  008002bc  00001890  2**0
                   ALLOC
-  3 .comment      00000030  00000000  00000000  00001888  2**0
+  3 .comment      00000030  00000000  00000000  00001890  2**0
                   CONTENTS, READONLY
-  4 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  000018b8  2**2
+  4 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  000018c0  2**2
                   CONTENTS, READONLY
-  5 .debug_aranges 00000110  00000000  00000000  000018f4  2**0
+  5 .debug_aranges 00000110  00000000  00000000  000018fc  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_info   0000327b  00000000  00000000  00001a04  2**0
+  6 .debug_info   0000327b  00000000  00000000  00001a0c  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 0000082f  00000000  00000000  00004c7f  2**0
+  7 .debug_abbrev 0000082f  00000000  00000000  00004c87  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   000010c5  00000000  00000000  000054ae  2**0
+  8 .debug_line   000010d3  00000000  00000000  000054b6  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  000003e0  00000000  00000000  00006574  2**2
+  9 .debug_frame  000003e0  00000000  00000000  0000658c  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    0000050e  00000000  00000000  00006954  2**0
+ 10 .debug_str    0000050e  00000000  00000000  0000696c  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    00001e5f  00000000  00000000  00006e62  2**0
+ 11 .debug_loc    00001e5f  00000000  00000000  00006e7a  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 000000f0  00000000  00000000  00008cc1  2**0
+ 12 .debug_ranges 000000f0  00000000  00000000  00008cd9  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -67,7 +67,7 @@ Disassembly of section .text:
       60:	12 e0       	ldi	r17, 0x02	; 2
       62:	a0 e6       	ldi	r26, 0x60	; 96
       64:	b0 e0       	ldi	r27, 0x00	; 0
-      66:	e8 e9       	ldi	r30, 0x98	; 152
+      66:	e0 ea       	ldi	r30, 0xA0	; 160
       68:	f5 e1       	ldi	r31, 0x15	; 21
       6a:	02 c0       	rjmp	.+4      	; 0x70 <__do_copy_data+0x10>
       6c:	05 90       	lpm	r0, Z+
@@ -90,7 +90,7 @@ Disassembly of section .text:
       82:	b2 07       	cpc	r27, r18
       84:	e1 f7       	brne	.-8      	; 0x7e <.do_clear_bss_loop>
       86:	0e 94 57 06 	call	0xcae	; 0xcae <main>
-      8a:	0c 94 ca 0a 	jmp	0x1594	; 0x1594 <_exit>
+      8a:	0c 94 ce 0a 	jmp	0x159c	; 0x159c <_exit>
 
 0000008e <__bad_interrupt>:
       8e:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
@@ -1781,15 +1781,15 @@ int main(void)
      cc8:	80 e0       	ldi	r24, 0x00	; 0
      cca:	0e 94 49 00 	call	0x92	; 0x92 <calculator>
 			
-			//HEX
-			if (T_X <= 60 && T_Y <= 20)
+			//DEC
+			if (T_X >= 60 && T_X < 120 && T_Y <= 20 && T_Y > 0)
 			{
-				print_str(50, 50, 3, WHITE, BLACK, "X E H \0");
+				print_str(50, 50, 3, WHITE, BLACK, "C E D \0");
 				OCR1A = 1500;
      cce:	cc ed       	ldi	r28, 0xDC	; 220
      cd0:	d5 e0       	ldi	r29, 0x05	; 5
 	
-	
+	int n = calculator(0, 0, 0, 0);
 	
     while (1) 
     {
@@ -1820,7 +1820,7 @@ int main(void)
      d04:	31 09       	sbc	r19, r1
      d06:	ab ea       	ldi	r26, 0xAB	; 171
      d08:	ba ea       	ldi	r27, 0xAA	; 170
-     d0a:	0e 94 bb 0a 	call	0x1576	; 0x1576 <__umulhisi3>
+     d0a:	0e 94 bf 0a 	call	0x157e	; 0x157e <__umulhisi3>
      d0e:	96 95       	lsr	r25
      d10:	87 95       	ror	r24
      d12:	96 95       	lsr	r25
@@ -1830,1217 +1830,1217 @@ int main(void)
 			
 			
 			//HEX
-			if (T_X <= 60 && T_Y <= 20)
-     d1e:	4d 33       	cpi	r20, 0x3D	; 61
-     d20:	51 05       	cpc	r21, r1
-     d22:	b8 f4       	brcc	.+46     	; 0xd52 <main+0xa4>
-     d24:	45 97       	sbiw	r24, 0x15	; 21
-     d26:	a8 f4       	brcc	.+42     	; 0xd52 <main+0xa4>
+			if (T_X <= 60 && T_X > 0 && T_Y <= 20 && T_Y > 0)
+     d1e:	41 50       	subi	r20, 0x01	; 1
+     d20:	51 09       	sbc	r21, r1
+     d22:	4c 33       	cpi	r20, 0x3C	; 60
+     d24:	51 05       	cpc	r21, r1
+     d26:	c0 f4       	brcc	.+48     	; 0xd58 <main+0xaa>
+     d28:	01 97       	sbiw	r24, 0x01	; 1
+     d2a:	44 97       	sbiw	r24, 0x14	; 20
+     d2c:	c0 f5       	brcc	.+112    	; 0xd9e <main+0xf0>
 			{
 				print_str(50, 50, 3, WHITE, BLACK, "X E H \0");
-     d28:	0f 2e       	mov	r0, r31
-     d2a:	f8 e7       	ldi	r31, 0x78	; 120
-     d2c:	ef 2e       	mov	r14, r31
-     d2e:	f0 e0       	ldi	r31, 0x00	; 0
-     d30:	ff 2e       	mov	r15, r31
-     d32:	f0 2d       	mov	r31, r0
-     d34:	00 e0       	ldi	r16, 0x00	; 0
-     d36:	10 e0       	ldi	r17, 0x00	; 0
-     d38:	2f ef       	ldi	r18, 0xFF	; 255
-     d3a:	3f ef       	ldi	r19, 0xFF	; 255
-     d3c:	43 e0       	ldi	r20, 0x03	; 3
-     d3e:	62 e3       	ldi	r22, 0x32	; 50
-     d40:	70 e0       	ldi	r23, 0x00	; 0
-     d42:	82 e3       	ldi	r24, 0x32	; 50
-     d44:	90 e0       	ldi	r25, 0x00	; 0
-     d46:	0e 94 40 04 	call	0x880	; 0x880 <print_str>
+     d2e:	0f 2e       	mov	r0, r31
+     d30:	f8 e7       	ldi	r31, 0x78	; 120
+     d32:	ef 2e       	mov	r14, r31
+     d34:	f0 e0       	ldi	r31, 0x00	; 0
+     d36:	ff 2e       	mov	r15, r31
+     d38:	f0 2d       	mov	r31, r0
+     d3a:	00 e0       	ldi	r16, 0x00	; 0
+     d3c:	10 e0       	ldi	r17, 0x00	; 0
+     d3e:	2f ef       	ldi	r18, 0xFF	; 255
+     d40:	3f ef       	ldi	r19, 0xFF	; 255
+     d42:	43 e0       	ldi	r20, 0x03	; 3
+     d44:	62 e3       	ldi	r22, 0x32	; 50
+     d46:	70 e0       	ldi	r23, 0x00	; 0
+     d48:	82 e3       	ldi	r24, 0x32	; 50
+     d4a:	90 e0       	ldi	r25, 0x00	; 0
+     d4c:	0e 94 40 04 	call	0x880	; 0x880 <print_str>
 				OCR1A = 1500;
-     d4a:	db bd       	out	0x2b, r29	; 43
-     d4c:	ca bd       	out	0x2a, r28	; 42
+     d50:	db bd       	out	0x2b, r29	; 43
+     d52:	ca bd       	out	0x2a, r28	; 42
 				OCR1B = 1500;
-     d4e:	d9 bd       	out	0x29, r29	; 41
-     d50:	c8 bd       	out	0x28, r28	; 40
+     d54:	d9 bd       	out	0x29, r29	; 41
+     d56:	c8 bd       	out	0x28, r28	; 40
 			}
 			
 			//DEC
-			if (T_X >= 60 && T_X < 120 && T_Y <= 20)
-     d52:	80 91 bc 02 	lds	r24, 0x02BC	; 0x8002bc <__data_end>
-     d56:	90 91 bd 02 	lds	r25, 0x02BD	; 0x8002bd <__data_end+0x1>
-     d5a:	cc 97       	sbiw	r24, 0x3c	; 60
-     d5c:	cc 97       	sbiw	r24, 0x3c	; 60
-     d5e:	d8 f4       	brcc	.+54     	; 0xd96 <main+0xe8>
-     d60:	80 91 be 02 	lds	r24, 0x02BE	; 0x8002be <T_Y>
-     d64:	90 91 bf 02 	lds	r25, 0x02BF	; 0x8002bf <T_Y+0x1>
-     d68:	45 97       	sbiw	r24, 0x15	; 21
-     d6a:	a8 f4       	brcc	.+42     	; 0xd96 <main+0xe8>
+			if (T_X >= 60 && T_X < 120 && T_Y <= 20 && T_Y > 0)
+     d58:	80 91 bc 02 	lds	r24, 0x02BC	; 0x8002bc <__data_end>
+     d5c:	90 91 bd 02 	lds	r25, 0x02BD	; 0x8002bd <__data_end+0x1>
+     d60:	cc 97       	sbiw	r24, 0x3c	; 60
+     d62:	cc 97       	sbiw	r24, 0x3c	; 60
+     d64:	e0 f4       	brcc	.+56     	; 0xd9e <main+0xf0>
+     d66:	80 91 be 02 	lds	r24, 0x02BE	; 0x8002be <T_Y>
+     d6a:	90 91 bf 02 	lds	r25, 0x02BF	; 0x8002bf <T_Y+0x1>
+     d6e:	01 97       	sbiw	r24, 0x01	; 1
+     d70:	44 97       	sbiw	r24, 0x14	; 20
+     d72:	a8 f4       	brcc	.+42     	; 0xd9e <main+0xf0>
 			{
 				print_str(50, 50, 3, WHITE, BLACK, "C E D \0");
-     d6c:	0f 2e       	mov	r0, r31
-     d6e:	f0 e7       	ldi	r31, 0x70	; 112
-     d70:	ef 2e       	mov	r14, r31
-     d72:	f0 e0       	ldi	r31, 0x00	; 0
-     d74:	ff 2e       	mov	r15, r31
-     d76:	f0 2d       	mov	r31, r0
-     d78:	00 e0       	ldi	r16, 0x00	; 0
-     d7a:	10 e0       	ldi	r17, 0x00	; 0
-     d7c:	2f ef       	ldi	r18, 0xFF	; 255
-     d7e:	3f ef       	ldi	r19, 0xFF	; 255
-     d80:	43 e0       	ldi	r20, 0x03	; 3
-     d82:	62 e3       	ldi	r22, 0x32	; 50
-     d84:	70 e0       	ldi	r23, 0x00	; 0
-     d86:	82 e3       	ldi	r24, 0x32	; 50
-     d88:	90 e0       	ldi	r25, 0x00	; 0
-     d8a:	0e 94 40 04 	call	0x880	; 0x880 <print_str>
+     d74:	0f 2e       	mov	r0, r31
+     d76:	f0 e7       	ldi	r31, 0x70	; 112
+     d78:	ef 2e       	mov	r14, r31
+     d7a:	f0 e0       	ldi	r31, 0x00	; 0
+     d7c:	ff 2e       	mov	r15, r31
+     d7e:	f0 2d       	mov	r31, r0
+     d80:	00 e0       	ldi	r16, 0x00	; 0
+     d82:	10 e0       	ldi	r17, 0x00	; 0
+     d84:	2f ef       	ldi	r18, 0xFF	; 255
+     d86:	3f ef       	ldi	r19, 0xFF	; 255
+     d88:	43 e0       	ldi	r20, 0x03	; 3
+     d8a:	62 e3       	ldi	r22, 0x32	; 50
+     d8c:	70 e0       	ldi	r23, 0x00	; 0
+     d8e:	82 e3       	ldi	r24, 0x32	; 50
+     d90:	90 e0       	ldi	r25, 0x00	; 0
+     d92:	0e 94 40 04 	call	0x880	; 0x880 <print_str>
 				OCR1A = 1500;
-     d8e:	db bd       	out	0x2b, r29	; 43
-     d90:	ca bd       	out	0x2a, r28	; 42
+     d96:	db bd       	out	0x2b, r29	; 43
+     d98:	ca bd       	out	0x2a, r28	; 42
 				OCR1B = 1500;
-     d92:	d9 bd       	out	0x29, r29	; 41
-     d94:	c8 bd       	out	0x28, r28	; 40
+     d9a:	d9 bd       	out	0x29, r29	; 41
+     d9c:	c8 bd       	out	0x28, r28	; 40
 			}
 			
 			//OCT
-			if (T_X >= 120 && T_X < 180 && T_Y <= 20)
-     d96:	80 91 bc 02 	lds	r24, 0x02BC	; 0x8002bc <__data_end>
-     d9a:	90 91 bd 02 	lds	r25, 0x02BD	; 0x8002bd <__data_end+0x1>
-     d9e:	88 57       	subi	r24, 0x78	; 120
-     da0:	91 09       	sbc	r25, r1
-     da2:	cc 97       	sbiw	r24, 0x3c	; 60
-     da4:	08 f0       	brcs	.+2      	; 0xda8 <main+0xfa>
-     da6:	92 c3       	rjmp	.+1828   	; 0x14cc <main+0x81e>
-     da8:	80 91 be 02 	lds	r24, 0x02BE	; 0x8002be <T_Y>
-     dac:	90 91 bf 02 	lds	r25, 0x02BF	; 0x8002bf <T_Y+0x1>
-     db0:	45 97       	sbiw	r24, 0x15	; 21
-     db2:	08 f0       	brcs	.+2      	; 0xdb6 <main+0x108>
-     db4:	94 c3       	rjmp	.+1832   	; 0x14de <main+0x830>
+			if (T_X >= 120 && T_X < 180 && T_Y <= 20 && T_Y > 0)
+     d9e:	80 91 bc 02 	lds	r24, 0x02BC	; 0x8002bc <__data_end>
+     da2:	90 91 bd 02 	lds	r25, 0x02BD	; 0x8002bd <__data_end+0x1>
+     da6:	88 57       	subi	r24, 0x78	; 120
+     da8:	91 09       	sbc	r25, r1
+     daa:	cc 97       	sbiw	r24, 0x3c	; 60
+     dac:	f8 f4       	brcc	.+62     	; 0xdec <main+0x13e>
+     dae:	80 91 be 02 	lds	r24, 0x02BE	; 0x8002be <T_Y>
+     db2:	90 91 bf 02 	lds	r25, 0x02BF	; 0x8002bf <T_Y+0x1>
+     db6:	85 31       	cpi	r24, 0x15	; 21
+     db8:	91 05       	cpc	r25, r1
+     dba:	08 f0       	brcs	.+2      	; 0xdbe <main+0x110>
+     dbc:	9a c3       	rjmp	.+1844   	; 0x14f2 <main+0x844>
+     dbe:	89 2b       	or	r24, r25
+     dc0:	c9 f1       	breq	.+114    	; 0xe34 <main+0x186>
 			{
 				print_str(50, 50, 3, WHITE, BLACK, "T C O \0");
-     db6:	0f 2e       	mov	r0, r31
-     db8:	f8 e6       	ldi	r31, 0x68	; 104
-     dba:	ef 2e       	mov	r14, r31
-     dbc:	f0 e0       	ldi	r31, 0x00	; 0
-     dbe:	ff 2e       	mov	r15, r31
-     dc0:	f0 2d       	mov	r31, r0
-     dc2:	00 e0       	ldi	r16, 0x00	; 0
-     dc4:	10 e0       	ldi	r17, 0x00	; 0
-     dc6:	2f ef       	ldi	r18, 0xFF	; 255
-     dc8:	3f ef       	ldi	r19, 0xFF	; 255
-     dca:	43 e0       	ldi	r20, 0x03	; 3
-     dcc:	62 e3       	ldi	r22, 0x32	; 50
-     dce:	70 e0       	ldi	r23, 0x00	; 0
-     dd0:	82 e3       	ldi	r24, 0x32	; 50
-     dd2:	90 e0       	ldi	r25, 0x00	; 0
-     dd4:	0e 94 40 04 	call	0x880	; 0x880 <print_str>
+     dc2:	0f 2e       	mov	r0, r31
+     dc4:	f8 e6       	ldi	r31, 0x68	; 104
+     dc6:	ef 2e       	mov	r14, r31
+     dc8:	f0 e0       	ldi	r31, 0x00	; 0
+     dca:	ff 2e       	mov	r15, r31
+     dcc:	f0 2d       	mov	r31, r0
+     dce:	00 e0       	ldi	r16, 0x00	; 0
+     dd0:	10 e0       	ldi	r17, 0x00	; 0
+     dd2:	2f ef       	ldi	r18, 0xFF	; 255
+     dd4:	3f ef       	ldi	r19, 0xFF	; 255
+     dd6:	43 e0       	ldi	r20, 0x03	; 3
+     dd8:	62 e3       	ldi	r22, 0x32	; 50
+     dda:	70 e0       	ldi	r23, 0x00	; 0
+     ddc:	82 e3       	ldi	r24, 0x32	; 50
+     dde:	90 e0       	ldi	r25, 0x00	; 0
+     de0:	0e 94 40 04 	call	0x880	; 0x880 <print_str>
 				OCR1A = 1500;
-     dd8:	db bd       	out	0x2b, r29	; 43
-     dda:	ca bd       	out	0x2a, r28	; 42
+     de4:	db bd       	out	0x2b, r29	; 43
+     de6:	ca bd       	out	0x2a, r28	; 42
 				OCR1B = 1500;
-     ddc:	d9 bd       	out	0x29, r29	; 41
-     dde:	c8 bd       	out	0x28, r28	; 40
+     de8:	d9 bd       	out	0x29, r29	; 41
+     dea:	c8 bd       	out	0x28, r28	; 40
 			}
 			
 			//BIN
-			if (T_X >= 180 && T_Y <= 20)
-     de0:	80 91 bc 02 	lds	r24, 0x02BC	; 0x8002bc <__data_end>
-     de4:	90 91 bd 02 	lds	r25, 0x02BD	; 0x8002bd <__data_end+0x1>
-     de8:	84 3b       	cpi	r24, 0xB4	; 180
-     dea:	91 05       	cpc	r25, r1
-     dec:	08 f4       	brcc	.+2      	; 0xdf0 <main+0x142>
-     dee:	3f c0       	rjmp	.+126    	; 0xe6e <main+0x1c0>
-     df0:	80 91 be 02 	lds	r24, 0x02BE	; 0x8002be <T_Y>
-     df4:	90 91 bf 02 	lds	r25, 0x02BF	; 0x8002bf <T_Y+0x1>
-     df8:	45 97       	sbiw	r24, 0x15	; 21
+			if (T_X >= 180 && T_X < 240 && T_Y <= 20 && T_Y > 0)
+     dec:	80 91 bc 02 	lds	r24, 0x02BC	; 0x8002bc <__data_end>
+     df0:	90 91 bd 02 	lds	r25, 0x02BD	; 0x8002bd <__data_end+0x1>
+     df4:	84 5b       	subi	r24, 0xB4	; 180
+     df6:	91 09       	sbc	r25, r1
+     df8:	cc 97       	sbiw	r24, 0x3c	; 60
      dfa:	e0 f4       	brcc	.+56     	; 0xe34 <main+0x186>
+     dfc:	80 91 be 02 	lds	r24, 0x02BE	; 0x8002be <T_Y>
+     e00:	90 91 bf 02 	lds	r25, 0x02BF	; 0x8002bf <T_Y+0x1>
+     e04:	01 97       	sbiw	r24, 0x01	; 1
+     e06:	44 97       	sbiw	r24, 0x14	; 20
+     e08:	a8 f4       	brcc	.+42     	; 0xe34 <main+0x186>
 			{
 				print_str(50, 50, 3, WHITE, BLACK, "N I B \0");
-     dfc:	0f 2e       	mov	r0, r31
-     dfe:	f0 e6       	ldi	r31, 0x60	; 96
-     e00:	ef 2e       	mov	r14, r31
-     e02:	f0 e0       	ldi	r31, 0x00	; 0
-     e04:	ff 2e       	mov	r15, r31
-     e06:	f0 2d       	mov	r31, r0
-     e08:	00 e0       	ldi	r16, 0x00	; 0
-     e0a:	10 e0       	ldi	r17, 0x00	; 0
-     e0c:	2f ef       	ldi	r18, 0xFF	; 255
-     e0e:	3f ef       	ldi	r19, 0xFF	; 255
-     e10:	43 e0       	ldi	r20, 0x03	; 3
-     e12:	62 e3       	ldi	r22, 0x32	; 50
-     e14:	70 e0       	ldi	r23, 0x00	; 0
-     e16:	82 e3       	ldi	r24, 0x32	; 50
-     e18:	90 e0       	ldi	r25, 0x00	; 0
-     e1a:	0e 94 40 04 	call	0x880	; 0x880 <print_str>
+     e0a:	0f 2e       	mov	r0, r31
+     e0c:	f0 e6       	ldi	r31, 0x60	; 96
+     e0e:	ef 2e       	mov	r14, r31
+     e10:	f0 e0       	ldi	r31, 0x00	; 0
+     e12:	ff 2e       	mov	r15, r31
+     e14:	f0 2d       	mov	r31, r0
+     e16:	00 e0       	ldi	r16, 0x00	; 0
+     e18:	10 e0       	ldi	r17, 0x00	; 0
+     e1a:	2f ef       	ldi	r18, 0xFF	; 255
+     e1c:	3f ef       	ldi	r19, 0xFF	; 255
+     e1e:	43 e0       	ldi	r20, 0x03	; 3
+     e20:	62 e3       	ldi	r22, 0x32	; 50
+     e22:	70 e0       	ldi	r23, 0x00	; 0
+     e24:	82 e3       	ldi	r24, 0x32	; 50
+     e26:	90 e0       	ldi	r25, 0x00	; 0
+     e28:	0e 94 40 04 	call	0x880	; 0x880 <print_str>
 				OCR1A = 1500;
-     e1e:	db bd       	out	0x2b, r29	; 43
-     e20:	ca bd       	out	0x2a, r28	; 42
+     e2c:	db bd       	out	0x2b, r29	; 43
+     e2e:	ca bd       	out	0x2a, r28	; 42
 				OCR1B = 1500;
-     e22:	d9 bd       	out	0x29, r29	; 41
-     e24:	c8 bd       	out	0x28, r28	; 40
+     e30:	d9 bd       	out	0x29, r29	; 41
+     e32:	c8 bd       	out	0x28, r28	; 40
 			}
 			
 			//7
 			if (T_X >= 180 && T_Y >= 100 && T_Y < 144)
-     e26:	80 91 bc 02 	lds	r24, 0x02BC	; 0x8002bc <__data_end>
-     e2a:	90 91 bd 02 	lds	r25, 0x02BD	; 0x8002bd <__data_end+0x1>
-     e2e:	84 3b       	cpi	r24, 0xB4	; 180
-     e30:	91 05       	cpc	r25, r1
-     e32:	e8 f0       	brcs	.+58     	; 0xe6e <main+0x1c0>
-     e34:	80 91 be 02 	lds	r24, 0x02BE	; 0x8002be <T_Y>
-     e38:	90 91 bf 02 	lds	r25, 0x02BF	; 0x8002bf <T_Y+0x1>
-     e3c:	84 56       	subi	r24, 0x64	; 100
-     e3e:	91 09       	sbc	r25, r1
-     e40:	8c 97       	sbiw	r24, 0x2c	; 44
-     e42:	d0 f5       	brcc	.+116    	; 0xeb8 <main+0x20a>
+     e34:	80 91 bc 02 	lds	r24, 0x02BC	; 0x8002bc <__data_end>
+     e38:	90 91 bd 02 	lds	r25, 0x02BD	; 0x8002bd <__data_end+0x1>
+     e3c:	84 3b       	cpi	r24, 0xB4	; 180
+     e3e:	91 05       	cpc	r25, r1
+     e40:	e8 f0       	brcs	.+58     	; 0xe7c <main+0x1ce>
+     e42:	80 91 be 02 	lds	r24, 0x02BE	; 0x8002be <T_Y>
+     e46:	90 91 bf 02 	lds	r25, 0x02BF	; 0x8002bf <T_Y+0x1>
+     e4a:	84 56       	subi	r24, 0x64	; 100
+     e4c:	91 09       	sbc	r25, r1
+     e4e:	8c 97       	sbiw	r24, 0x2c	; 44
+     e50:	d0 f5       	brcc	.+116    	; 0xec6 <main+0x218>
 			{
 				print_str(50, 50, 3, WHITE, BLACK, "7 \0");
-     e44:	0f 2e       	mov	r0, r31
-     e46:	f0 e8       	ldi	r31, 0x80	; 128
-     e48:	ef 2e       	mov	r14, r31
-     e4a:	f0 e0       	ldi	r31, 0x00	; 0
-     e4c:	ff 2e       	mov	r15, r31
-     e4e:	f0 2d       	mov	r31, r0
-     e50:	00 e0       	ldi	r16, 0x00	; 0
-     e52:	10 e0       	ldi	r17, 0x00	; 0
-     e54:	2f ef       	ldi	r18, 0xFF	; 255
-     e56:	3f ef       	ldi	r19, 0xFF	; 255
-     e58:	43 e0       	ldi	r20, 0x03	; 3
-     e5a:	62 e3       	ldi	r22, 0x32	; 50
-     e5c:	70 e0       	ldi	r23, 0x00	; 0
-     e5e:	82 e3       	ldi	r24, 0x32	; 50
-     e60:	90 e0       	ldi	r25, 0x00	; 0
-     e62:	0e 94 40 04 	call	0x880	; 0x880 <print_str>
+     e52:	0f 2e       	mov	r0, r31
+     e54:	f0 e8       	ldi	r31, 0x80	; 128
+     e56:	ef 2e       	mov	r14, r31
+     e58:	f0 e0       	ldi	r31, 0x00	; 0
+     e5a:	ff 2e       	mov	r15, r31
+     e5c:	f0 2d       	mov	r31, r0
+     e5e:	00 e0       	ldi	r16, 0x00	; 0
+     e60:	10 e0       	ldi	r17, 0x00	; 0
+     e62:	2f ef       	ldi	r18, 0xFF	; 255
+     e64:	3f ef       	ldi	r19, 0xFF	; 255
+     e66:	43 e0       	ldi	r20, 0x03	; 3
+     e68:	62 e3       	ldi	r22, 0x32	; 50
+     e6a:	70 e0       	ldi	r23, 0x00	; 0
+     e6c:	82 e3       	ldi	r24, 0x32	; 50
+     e6e:	90 e0       	ldi	r25, 0x00	; 0
+     e70:	0e 94 40 04 	call	0x880	; 0x880 <print_str>
 				OCR1A = 1500;
-     e66:	db bd       	out	0x2b, r29	; 43
-     e68:	ca bd       	out	0x2a, r28	; 42
+     e74:	db bd       	out	0x2b, r29	; 43
+     e76:	ca bd       	out	0x2a, r28	; 42
 				OCR1B = 1500;
-     e6a:	d9 bd       	out	0x29, r29	; 41
-     e6c:	c8 bd       	out	0x28, r28	; 40
+     e78:	d9 bd       	out	0x29, r29	; 41
+     e7a:	c8 bd       	out	0x28, r28	; 40
 			}
 			
 			//8
 			if (T_X >= 120 && T_X < 180 && T_Y >= 100 && T_Y < 144)
-     e6e:	80 91 bc 02 	lds	r24, 0x02BC	; 0x8002bc <__data_end>
-     e72:	90 91 bd 02 	lds	r25, 0x02BD	; 0x8002bd <__data_end+0x1>
-     e76:	88 57       	subi	r24, 0x78	; 120
-     e78:	91 09       	sbc	r25, r1
-     e7a:	cc 97       	sbiw	r24, 0x3c	; 60
-     e7c:	e8 f4       	brcc	.+58     	; 0xeb8 <main+0x20a>
-     e7e:	80 91 be 02 	lds	r24, 0x02BE	; 0x8002be <T_Y>
-     e82:	90 91 bf 02 	lds	r25, 0x02BF	; 0x8002bf <T_Y+0x1>
-     e86:	84 56       	subi	r24, 0x64	; 100
-     e88:	91 09       	sbc	r25, r1
-     e8a:	8c 97       	sbiw	r24, 0x2c	; 44
-     e8c:	a8 f4       	brcc	.+42     	; 0xeb8 <main+0x20a>
+     e7c:	80 91 bc 02 	lds	r24, 0x02BC	; 0x8002bc <__data_end>
+     e80:	90 91 bd 02 	lds	r25, 0x02BD	; 0x8002bd <__data_end+0x1>
+     e84:	88 57       	subi	r24, 0x78	; 120
+     e86:	91 09       	sbc	r25, r1
+     e88:	cc 97       	sbiw	r24, 0x3c	; 60
+     e8a:	e8 f4       	brcc	.+58     	; 0xec6 <main+0x218>
+     e8c:	80 91 be 02 	lds	r24, 0x02BE	; 0x8002be <T_Y>
+     e90:	90 91 bf 02 	lds	r25, 0x02BF	; 0x8002bf <T_Y+0x1>
+     e94:	84 56       	subi	r24, 0x64	; 100
+     e96:	91 09       	sbc	r25, r1
+     e98:	8c 97       	sbiw	r24, 0x2c	; 44
+     e9a:	a8 f4       	brcc	.+42     	; 0xec6 <main+0x218>
 			{
 				print_str(50, 50, 3, WHITE, BLACK, "8 \0");
-     e8e:	0f 2e       	mov	r0, r31
-     e90:	f4 e8       	ldi	r31, 0x84	; 132
-     e92:	ef 2e       	mov	r14, r31
-     e94:	f0 e0       	ldi	r31, 0x00	; 0
-     e96:	ff 2e       	mov	r15, r31
-     e98:	f0 2d       	mov	r31, r0
-     e9a:	00 e0       	ldi	r16, 0x00	; 0
-     e9c:	10 e0       	ldi	r17, 0x00	; 0
-     e9e:	2f ef       	ldi	r18, 0xFF	; 255
-     ea0:	3f ef       	ldi	r19, 0xFF	; 255
-     ea2:	43 e0       	ldi	r20, 0x03	; 3
-     ea4:	62 e3       	ldi	r22, 0x32	; 50
-     ea6:	70 e0       	ldi	r23, 0x00	; 0
-     ea8:	82 e3       	ldi	r24, 0x32	; 50
-     eaa:	90 e0       	ldi	r25, 0x00	; 0
-     eac:	0e 94 40 04 	call	0x880	; 0x880 <print_str>
+     e9c:	0f 2e       	mov	r0, r31
+     e9e:	f4 e8       	ldi	r31, 0x84	; 132
+     ea0:	ef 2e       	mov	r14, r31
+     ea2:	f0 e0       	ldi	r31, 0x00	; 0
+     ea4:	ff 2e       	mov	r15, r31
+     ea6:	f0 2d       	mov	r31, r0
+     ea8:	00 e0       	ldi	r16, 0x00	; 0
+     eaa:	10 e0       	ldi	r17, 0x00	; 0
+     eac:	2f ef       	ldi	r18, 0xFF	; 255
+     eae:	3f ef       	ldi	r19, 0xFF	; 255
+     eb0:	43 e0       	ldi	r20, 0x03	; 3
+     eb2:	62 e3       	ldi	r22, 0x32	; 50
+     eb4:	70 e0       	ldi	r23, 0x00	; 0
+     eb6:	82 e3       	ldi	r24, 0x32	; 50
+     eb8:	90 e0       	ldi	r25, 0x00	; 0
+     eba:	0e 94 40 04 	call	0x880	; 0x880 <print_str>
 				OCR1A = 1500;
-     eb0:	db bd       	out	0x2b, r29	; 43
-     eb2:	ca bd       	out	0x2a, r28	; 42
+     ebe:	db bd       	out	0x2b, r29	; 43
+     ec0:	ca bd       	out	0x2a, r28	; 42
 				OCR1B = 1500;
-     eb4:	d9 bd       	out	0x29, r29	; 41
-     eb6:	c8 bd       	out	0x28, r28	; 40
+     ec2:	d9 bd       	out	0x29, r29	; 41
+     ec4:	c8 bd       	out	0x28, r28	; 40
 			}
 			
 			//9
 			if (T_X >= 60 && T_X < 120 && T_Y >= 100 && T_Y < 144)
-     eb8:	80 91 bc 02 	lds	r24, 0x02BC	; 0x8002bc <__data_end>
-     ebc:	90 91 bd 02 	lds	r25, 0x02BD	; 0x8002bd <__data_end+0x1>
-     ec0:	cc 97       	sbiw	r24, 0x3c	; 60
-     ec2:	cc 97       	sbiw	r24, 0x3c	; 60
-     ec4:	08 f5       	brcc	.+66     	; 0xf08 <main+0x25a>
-     ec6:	80 91 be 02 	lds	r24, 0x02BE	; 0x8002be <T_Y>
-     eca:	90 91 bf 02 	lds	r25, 0x02BF	; 0x8002bf <T_Y+0x1>
-     ece:	84 36       	cpi	r24, 0x64	; 100
-     ed0:	91 05       	cpc	r25, r1
-     ed2:	08 f4       	brcc	.+2      	; 0xed6 <main+0x228>
-     ed4:	40 c0       	rjmp	.+128    	; 0xf56 <main+0x2a8>
-     ed6:	80 39       	cpi	r24, 0x90	; 144
-     ed8:	91 05       	cpc	r25, r1
-     eda:	08 f0       	brcs	.+2      	; 0xede <main+0x230>
-     edc:	0e c3       	rjmp	.+1564   	; 0x14fa <main+0x84c>
+     ec6:	80 91 bc 02 	lds	r24, 0x02BC	; 0x8002bc <__data_end>
+     eca:	90 91 bd 02 	lds	r25, 0x02BD	; 0x8002bd <__data_end+0x1>
+     ece:	cc 97       	sbiw	r24, 0x3c	; 60
+     ed0:	cc 97       	sbiw	r24, 0x3c	; 60
+     ed2:	08 f5       	brcc	.+66     	; 0xf16 <main+0x268>
+     ed4:	80 91 be 02 	lds	r24, 0x02BE	; 0x8002be <T_Y>
+     ed8:	90 91 bf 02 	lds	r25, 0x02BF	; 0x8002bf <T_Y+0x1>
+     edc:	84 36       	cpi	r24, 0x64	; 100
+     ede:	91 05       	cpc	r25, r1
+     ee0:	08 f4       	brcc	.+2      	; 0xee4 <main+0x236>
+     ee2:	40 c0       	rjmp	.+128    	; 0xf64 <main+0x2b6>
+     ee4:	80 39       	cpi	r24, 0x90	; 144
+     ee6:	91 05       	cpc	r25, r1
+     ee8:	08 f0       	brcs	.+2      	; 0xeec <main+0x23e>
+     eea:	11 c3       	rjmp	.+1570   	; 0x150e <main+0x860>
 			{
 				print_str(50, 50, 3, WHITE, BLACK, "9 \0");
-     ede:	0f 2e       	mov	r0, r31
-     ee0:	f8 e8       	ldi	r31, 0x88	; 136
-     ee2:	ef 2e       	mov	r14, r31
-     ee4:	f0 e0       	ldi	r31, 0x00	; 0
-     ee6:	ff 2e       	mov	r15, r31
-     ee8:	f0 2d       	mov	r31, r0
-     eea:	00 e0       	ldi	r16, 0x00	; 0
-     eec:	10 e0       	ldi	r17, 0x00	; 0
-     eee:	2f ef       	ldi	r18, 0xFF	; 255
-     ef0:	3f ef       	ldi	r19, 0xFF	; 255
-     ef2:	43 e0       	ldi	r20, 0x03	; 3
-     ef4:	62 e3       	ldi	r22, 0x32	; 50
-     ef6:	70 e0       	ldi	r23, 0x00	; 0
-     ef8:	82 e3       	ldi	r24, 0x32	; 50
-     efa:	90 e0       	ldi	r25, 0x00	; 0
-     efc:	0e 94 40 04 	call	0x880	; 0x880 <print_str>
+     eec:	0f 2e       	mov	r0, r31
+     eee:	f8 e8       	ldi	r31, 0x88	; 136
+     ef0:	ef 2e       	mov	r14, r31
+     ef2:	f0 e0       	ldi	r31, 0x00	; 0
+     ef4:	ff 2e       	mov	r15, r31
+     ef6:	f0 2d       	mov	r31, r0
+     ef8:	00 e0       	ldi	r16, 0x00	; 0
+     efa:	10 e0       	ldi	r17, 0x00	; 0
+     efc:	2f ef       	ldi	r18, 0xFF	; 255
+     efe:	3f ef       	ldi	r19, 0xFF	; 255
+     f00:	43 e0       	ldi	r20, 0x03	; 3
+     f02:	62 e3       	ldi	r22, 0x32	; 50
+     f04:	70 e0       	ldi	r23, 0x00	; 0
+     f06:	82 e3       	ldi	r24, 0x32	; 50
+     f08:	90 e0       	ldi	r25, 0x00	; 0
+     f0a:	0e 94 40 04 	call	0x880	; 0x880 <print_str>
 				OCR1A = 1500;
-     f00:	db bd       	out	0x2b, r29	; 43
-     f02:	ca bd       	out	0x2a, r28	; 42
+     f0e:	db bd       	out	0x2b, r29	; 43
+     f10:	ca bd       	out	0x2a, r28	; 42
 				OCR1B = 1500;
-     f04:	d9 bd       	out	0x29, r29	; 41
-     f06:	c8 bd       	out	0x28, r28	; 40
+     f12:	d9 bd       	out	0x29, r29	; 41
+     f14:	c8 bd       	out	0x28, r28	; 40
 			}
 			
 			// /
 			if (T_X < 60 && T_Y >= 100 && T_Y < 144)
-     f08:	20 91 bc 02 	lds	r18, 0x02BC	; 0x8002bc <__data_end>
-     f0c:	30 91 bd 02 	lds	r19, 0x02BD	; 0x8002bd <__data_end+0x1>
-     f10:	2c 33       	cpi	r18, 0x3C	; 60
-     f12:	31 05       	cpc	r19, r1
-     f14:	00 f5       	brcc	.+64     	; 0xf56 <main+0x2a8>
-     f16:	80 91 be 02 	lds	r24, 0x02BE	; 0x8002be <T_Y>
-     f1a:	90 91 bf 02 	lds	r25, 0x02BF	; 0x8002bf <T_Y+0x1>
-     f1e:	84 36       	cpi	r24, 0x64	; 100
-     f20:	91 05       	cpc	r25, r1
-     f22:	c8 f0       	brcs	.+50     	; 0xf56 <main+0x2a8>
-     f24:	80 39       	cpi	r24, 0x90	; 144
-     f26:	91 05       	cpc	r25, r1
-     f28:	08 f0       	brcs	.+2      	; 0xf2c <main+0x27e>
-     f2a:	bc c2       	rjmp	.+1400   	; 0x14a4 <main+0x7f6>
+     f16:	20 91 bc 02 	lds	r18, 0x02BC	; 0x8002bc <__data_end>
+     f1a:	30 91 bd 02 	lds	r19, 0x02BD	; 0x8002bd <__data_end+0x1>
+     f1e:	2c 33       	cpi	r18, 0x3C	; 60
+     f20:	31 05       	cpc	r19, r1
+     f22:	00 f5       	brcc	.+64     	; 0xf64 <main+0x2b6>
+     f24:	80 91 be 02 	lds	r24, 0x02BE	; 0x8002be <T_Y>
+     f28:	90 91 bf 02 	lds	r25, 0x02BF	; 0x8002bf <T_Y+0x1>
+     f2c:	84 36       	cpi	r24, 0x64	; 100
+     f2e:	91 05       	cpc	r25, r1
+     f30:	c8 f0       	brcs	.+50     	; 0xf64 <main+0x2b6>
+     f32:	80 39       	cpi	r24, 0x90	; 144
+     f34:	91 05       	cpc	r25, r1
+     f36:	08 f0       	brcs	.+2      	; 0xf3a <main+0x28c>
+     f38:	c7 c2       	rjmp	.+1422   	; 0x14c8 <main+0x81a>
 			{
 				print_str(50, 50, 3, WHITE, BLACK, "/ \0");
-     f2c:	0f 2e       	mov	r0, r31
-     f2e:	fc e8       	ldi	r31, 0x8C	; 140
-     f30:	ef 2e       	mov	r14, r31
-     f32:	f0 e0       	ldi	r31, 0x00	; 0
-     f34:	ff 2e       	mov	r15, r31
-     f36:	f0 2d       	mov	r31, r0
-     f38:	00 e0       	ldi	r16, 0x00	; 0
-     f3a:	10 e0       	ldi	r17, 0x00	; 0
-     f3c:	2f ef       	ldi	r18, 0xFF	; 255
-     f3e:	3f ef       	ldi	r19, 0xFF	; 255
-     f40:	43 e0       	ldi	r20, 0x03	; 3
-     f42:	62 e3       	ldi	r22, 0x32	; 50
-     f44:	70 e0       	ldi	r23, 0x00	; 0
-     f46:	82 e3       	ldi	r24, 0x32	; 50
-     f48:	90 e0       	ldi	r25, 0x00	; 0
-     f4a:	0e 94 40 04 	call	0x880	; 0x880 <print_str>
+     f3a:	0f 2e       	mov	r0, r31
+     f3c:	fc e8       	ldi	r31, 0x8C	; 140
+     f3e:	ef 2e       	mov	r14, r31
+     f40:	f0 e0       	ldi	r31, 0x00	; 0
+     f42:	ff 2e       	mov	r15, r31
+     f44:	f0 2d       	mov	r31, r0
+     f46:	00 e0       	ldi	r16, 0x00	; 0
+     f48:	10 e0       	ldi	r17, 0x00	; 0
+     f4a:	2f ef       	ldi	r18, 0xFF	; 255
+     f4c:	3f ef       	ldi	r19, 0xFF	; 255
+     f4e:	43 e0       	ldi	r20, 0x03	; 3
+     f50:	62 e3       	ldi	r22, 0x32	; 50
+     f52:	70 e0       	ldi	r23, 0x00	; 0
+     f54:	82 e3       	ldi	r24, 0x32	; 50
+     f56:	90 e0       	ldi	r25, 0x00	; 0
+     f58:	0e 94 40 04 	call	0x880	; 0x880 <print_str>
 				OCR1A = 1500;
-     f4e:	db bd       	out	0x2b, r29	; 43
-     f50:	ca bd       	out	0x2a, r28	; 42
+     f5c:	db bd       	out	0x2b, r29	; 43
+     f5e:	ca bd       	out	0x2a, r28	; 42
 				OCR1B = 1500;
-     f52:	d9 bd       	out	0x29, r29	; 41
-     f54:	c8 bd       	out	0x28, r28	; 40
+     f60:	d9 bd       	out	0x29, r29	; 41
+     f62:	c8 bd       	out	0x28, r28	; 40
 			}
 			
 			//4
 			if (T_X >= 180 && T_Y >= 144 && T_Y < 188)
-     f56:	80 91 bc 02 	lds	r24, 0x02BC	; 0x8002bc <__data_end>
-     f5a:	90 91 bd 02 	lds	r25, 0x02BD	; 0x8002bd <__data_end+0x1>
-     f5e:	84 3b       	cpi	r24, 0xB4	; 180
-     f60:	91 05       	cpc	r25, r1
-     f62:	f8 f0       	brcs	.+62     	; 0xfa2 <main+0x2f4>
-     f64:	80 91 be 02 	lds	r24, 0x02BE	; 0x8002be <T_Y>
-     f68:	90 91 bf 02 	lds	r25, 0x02BF	; 0x8002bf <T_Y+0x1>
-     f6c:	80 39       	cpi	r24, 0x90	; 144
+     f64:	80 91 bc 02 	lds	r24, 0x02BC	; 0x8002bc <__data_end>
+     f68:	90 91 bd 02 	lds	r25, 0x02BD	; 0x8002bd <__data_end+0x1>
+     f6c:	84 3b       	cpi	r24, 0xB4	; 180
      f6e:	91 05       	cpc	r25, r1
-     f70:	c0 f0       	brcs	.+48     	; 0xfa2 <main+0x2f4>
-     f72:	8c 3b       	cpi	r24, 0xBC	; 188
-     f74:	91 05       	cpc	r25, r1
-     f76:	a8 f4       	brcc	.+42     	; 0xfa2 <main+0x2f4>
+     f70:	f8 f0       	brcs	.+62     	; 0xfb0 <main+0x302>
+     f72:	80 91 be 02 	lds	r24, 0x02BE	; 0x8002be <T_Y>
+     f76:	90 91 bf 02 	lds	r25, 0x02BF	; 0x8002bf <T_Y+0x1>
+     f7a:	80 39       	cpi	r24, 0x90	; 144
+     f7c:	91 05       	cpc	r25, r1
+     f7e:	c0 f0       	brcs	.+48     	; 0xfb0 <main+0x302>
+     f80:	8c 3b       	cpi	r24, 0xBC	; 188
+     f82:	91 05       	cpc	r25, r1
+     f84:	a8 f4       	brcc	.+42     	; 0xfb0 <main+0x302>
 			{
 				print_str(50, 50, 3, WHITE, BLACK, "4 \0");
-     f78:	0f 2e       	mov	r0, r31
-     f7a:	f0 e9       	ldi	r31, 0x90	; 144
-     f7c:	ef 2e       	mov	r14, r31
-     f7e:	f0 e0       	ldi	r31, 0x00	; 0
-     f80:	ff 2e       	mov	r15, r31
-     f82:	f0 2d       	mov	r31, r0
-     f84:	00 e0       	ldi	r16, 0x00	; 0
-     f86:	10 e0       	ldi	r17, 0x00	; 0
-     f88:	2f ef       	ldi	r18, 0xFF	; 255
-     f8a:	3f ef       	ldi	r19, 0xFF	; 255
-     f8c:	43 e0       	ldi	r20, 0x03	; 3
-     f8e:	62 e3       	ldi	r22, 0x32	; 50
-     f90:	70 e0       	ldi	r23, 0x00	; 0
-     f92:	82 e3       	ldi	r24, 0x32	; 50
-     f94:	90 e0       	ldi	r25, 0x00	; 0
-     f96:	0e 94 40 04 	call	0x880	; 0x880 <print_str>
+     f86:	0f 2e       	mov	r0, r31
+     f88:	f0 e9       	ldi	r31, 0x90	; 144
+     f8a:	ef 2e       	mov	r14, r31
+     f8c:	f0 e0       	ldi	r31, 0x00	; 0
+     f8e:	ff 2e       	mov	r15, r31
+     f90:	f0 2d       	mov	r31, r0
+     f92:	00 e0       	ldi	r16, 0x00	; 0
+     f94:	10 e0       	ldi	r17, 0x00	; 0
+     f96:	2f ef       	ldi	r18, 0xFF	; 255
+     f98:	3f ef       	ldi	r19, 0xFF	; 255
+     f9a:	43 e0       	ldi	r20, 0x03	; 3
+     f9c:	62 e3       	ldi	r22, 0x32	; 50
+     f9e:	70 e0       	ldi	r23, 0x00	; 0
+     fa0:	82 e3       	ldi	r24, 0x32	; 50
+     fa2:	90 e0       	ldi	r25, 0x00	; 0
+     fa4:	0e 94 40 04 	call	0x880	; 0x880 <print_str>
 				OCR1A = 1500;
-     f9a:	db bd       	out	0x2b, r29	; 43
-     f9c:	ca bd       	out	0x2a, r28	; 42
+     fa8:	db bd       	out	0x2b, r29	; 43
+     faa:	ca bd       	out	0x2a, r28	; 42
 				OCR1B = 1500;
-     f9e:	d9 bd       	out	0x29, r29	; 41
-     fa0:	c8 bd       	out	0x28, r28	; 40
+     fac:	d9 bd       	out	0x29, r29	; 41
+     fae:	c8 bd       	out	0x28, r28	; 40
 			}
 			
 			//5
 			if (T_X >= 120 && T_X < 180 && T_Y >= 144 && T_Y < 188)
-     fa2:	80 91 bc 02 	lds	r24, 0x02BC	; 0x8002bc <__data_end>
-     fa6:	90 91 bd 02 	lds	r25, 0x02BD	; 0x8002bd <__data_end+0x1>
-     faa:	88 57       	subi	r24, 0x78	; 120
-     fac:	91 09       	sbc	r25, r1
-     fae:	cc 97       	sbiw	r24, 0x3c	; 60
-     fb0:	e8 f4       	brcc	.+58     	; 0xfec <main+0x33e>
-     fb2:	80 91 be 02 	lds	r24, 0x02BE	; 0x8002be <T_Y>
-     fb6:	90 91 bf 02 	lds	r25, 0x02BF	; 0x8002bf <T_Y+0x1>
-     fba:	80 59       	subi	r24, 0x90	; 144
-     fbc:	91 09       	sbc	r25, r1
-     fbe:	8c 97       	sbiw	r24, 0x2c	; 44
-     fc0:	a8 f4       	brcc	.+42     	; 0xfec <main+0x33e>
+     fb0:	80 91 bc 02 	lds	r24, 0x02BC	; 0x8002bc <__data_end>
+     fb4:	90 91 bd 02 	lds	r25, 0x02BD	; 0x8002bd <__data_end+0x1>
+     fb8:	88 57       	subi	r24, 0x78	; 120
+     fba:	91 09       	sbc	r25, r1
+     fbc:	cc 97       	sbiw	r24, 0x3c	; 60
+     fbe:	e8 f4       	brcc	.+58     	; 0xffa <main+0x34c>
+     fc0:	80 91 be 02 	lds	r24, 0x02BE	; 0x8002be <T_Y>
+     fc4:	90 91 bf 02 	lds	r25, 0x02BF	; 0x8002bf <T_Y+0x1>
+     fc8:	80 59       	subi	r24, 0x90	; 144
+     fca:	91 09       	sbc	r25, r1
+     fcc:	8c 97       	sbiw	r24, 0x2c	; 44
+     fce:	a8 f4       	brcc	.+42     	; 0xffa <main+0x34c>
 			{
 				print_str(50, 50, 3, WHITE, BLACK, "5 \0");
-     fc2:	0f 2e       	mov	r0, r31
-     fc4:	f4 e9       	ldi	r31, 0x94	; 148
-     fc6:	ef 2e       	mov	r14, r31
-     fc8:	f0 e0       	ldi	r31, 0x00	; 0
-     fca:	ff 2e       	mov	r15, r31
-     fcc:	f0 2d       	mov	r31, r0
-     fce:	00 e0       	ldi	r16, 0x00	; 0
-     fd0:	10 e0       	ldi	r17, 0x00	; 0
-     fd2:	2f ef       	ldi	r18, 0xFF	; 255
-     fd4:	3f ef       	ldi	r19, 0xFF	; 255
-     fd6:	43 e0       	ldi	r20, 0x03	; 3
-     fd8:	62 e3       	ldi	r22, 0x32	; 50
-     fda:	70 e0       	ldi	r23, 0x00	; 0
-     fdc:	82 e3       	ldi	r24, 0x32	; 50
-     fde:	90 e0       	ldi	r25, 0x00	; 0
-     fe0:	0e 94 40 04 	call	0x880	; 0x880 <print_str>
+     fd0:	0f 2e       	mov	r0, r31
+     fd2:	f4 e9       	ldi	r31, 0x94	; 148
+     fd4:	ef 2e       	mov	r14, r31
+     fd6:	f0 e0       	ldi	r31, 0x00	; 0
+     fd8:	ff 2e       	mov	r15, r31
+     fda:	f0 2d       	mov	r31, r0
+     fdc:	00 e0       	ldi	r16, 0x00	; 0
+     fde:	10 e0       	ldi	r17, 0x00	; 0
+     fe0:	2f ef       	ldi	r18, 0xFF	; 255
+     fe2:	3f ef       	ldi	r19, 0xFF	; 255
+     fe4:	43 e0       	ldi	r20, 0x03	; 3
+     fe6:	62 e3       	ldi	r22, 0x32	; 50
+     fe8:	70 e0       	ldi	r23, 0x00	; 0
+     fea:	82 e3       	ldi	r24, 0x32	; 50
+     fec:	90 e0       	ldi	r25, 0x00	; 0
+     fee:	0e 94 40 04 	call	0x880	; 0x880 <print_str>
 				OCR1A = 1500;
-     fe4:	db bd       	out	0x2b, r29	; 43
-     fe6:	ca bd       	out	0x2a, r28	; 42
+     ff2:	db bd       	out	0x2b, r29	; 43
+     ff4:	ca bd       	out	0x2a, r28	; 42
 				OCR1B = 1500;
-     fe8:	d9 bd       	out	0x29, r29	; 41
-     fea:	c8 bd       	out	0x28, r28	; 40
+     ff6:	d9 bd       	out	0x29, r29	; 41
+     ff8:	c8 bd       	out	0x28, r28	; 40
 			}
 			
 			//6
 			if (T_X >= 60 && T_X < 120 && T_Y >= 144 && T_Y < 188)
-     fec:	80 91 bc 02 	lds	r24, 0x02BC	; 0x8002bc <__data_end>
-     ff0:	90 91 bd 02 	lds	r25, 0x02BD	; 0x8002bd <__data_end+0x1>
-     ff4:	cc 97       	sbiw	r24, 0x3c	; 60
-     ff6:	cc 97       	sbiw	r24, 0x3c	; 60
-     ff8:	08 f5       	brcc	.+66     	; 0x103c <main+0x38e>
-     ffa:	80 91 be 02 	lds	r24, 0x02BE	; 0x8002be <T_Y>
-     ffe:	90 91 bf 02 	lds	r25, 0x02BF	; 0x8002bf <T_Y+0x1>
-    1002:	80 39       	cpi	r24, 0x90	; 144
-    1004:	91 05       	cpc	r25, r1
-    1006:	08 f4       	brcc	.+2      	; 0x100a <main+0x35c>
-    1008:	40 c0       	rjmp	.+128    	; 0x108a <main+0x3dc>
-    100a:	8c 3b       	cpi	r24, 0xBC	; 188
-    100c:	91 05       	cpc	r25, r1
-    100e:	08 f0       	brcs	.+2      	; 0x1012 <main+0x364>
-    1010:	81 c2       	rjmp	.+1282   	; 0x1514 <main+0x866>
+     ffa:	80 91 bc 02 	lds	r24, 0x02BC	; 0x8002bc <__data_end>
+     ffe:	90 91 bd 02 	lds	r25, 0x02BD	; 0x8002bd <__data_end+0x1>
+    1002:	cc 97       	sbiw	r24, 0x3c	; 60
+    1004:	cc 97       	sbiw	r24, 0x3c	; 60
+    1006:	08 f5       	brcc	.+66     	; 0x104a <main+0x39c>
+    1008:	80 91 be 02 	lds	r24, 0x02BE	; 0x8002be <T_Y>
+    100c:	90 91 bf 02 	lds	r25, 0x02BF	; 0x8002bf <T_Y+0x1>
+    1010:	80 39       	cpi	r24, 0x90	; 144
+    1012:	91 05       	cpc	r25, r1
+    1014:	08 f4       	brcc	.+2      	; 0x1018 <main+0x36a>
+    1016:	40 c0       	rjmp	.+128    	; 0x1098 <main+0x3ea>
+    1018:	8c 3b       	cpi	r24, 0xBC	; 188
+    101a:	91 05       	cpc	r25, r1
+    101c:	08 f0       	brcs	.+2      	; 0x1020 <main+0x372>
+    101e:	84 c2       	rjmp	.+1288   	; 0x1528 <main+0x87a>
 			{
 				print_str(50, 50, 3, WHITE, BLACK, "6 \0");
-    1012:	0f 2e       	mov	r0, r31
-    1014:	f8 e9       	ldi	r31, 0x98	; 152
-    1016:	ef 2e       	mov	r14, r31
-    1018:	f0 e0       	ldi	r31, 0x00	; 0
-    101a:	ff 2e       	mov	r15, r31
-    101c:	f0 2d       	mov	r31, r0
-    101e:	00 e0       	ldi	r16, 0x00	; 0
-    1020:	10 e0       	ldi	r17, 0x00	; 0
-    1022:	2f ef       	ldi	r18, 0xFF	; 255
-    1024:	3f ef       	ldi	r19, 0xFF	; 255
-    1026:	43 e0       	ldi	r20, 0x03	; 3
-    1028:	62 e3       	ldi	r22, 0x32	; 50
-    102a:	70 e0       	ldi	r23, 0x00	; 0
-    102c:	82 e3       	ldi	r24, 0x32	; 50
-    102e:	90 e0       	ldi	r25, 0x00	; 0
-    1030:	0e 94 40 04 	call	0x880	; 0x880 <print_str>
+    1020:	0f 2e       	mov	r0, r31
+    1022:	f8 e9       	ldi	r31, 0x98	; 152
+    1024:	ef 2e       	mov	r14, r31
+    1026:	f0 e0       	ldi	r31, 0x00	; 0
+    1028:	ff 2e       	mov	r15, r31
+    102a:	f0 2d       	mov	r31, r0
+    102c:	00 e0       	ldi	r16, 0x00	; 0
+    102e:	10 e0       	ldi	r17, 0x00	; 0
+    1030:	2f ef       	ldi	r18, 0xFF	; 255
+    1032:	3f ef       	ldi	r19, 0xFF	; 255
+    1034:	43 e0       	ldi	r20, 0x03	; 3
+    1036:	62 e3       	ldi	r22, 0x32	; 50
+    1038:	70 e0       	ldi	r23, 0x00	; 0
+    103a:	82 e3       	ldi	r24, 0x32	; 50
+    103c:	90 e0       	ldi	r25, 0x00	; 0
+    103e:	0e 94 40 04 	call	0x880	; 0x880 <print_str>
 				OCR1A = 1500;
-    1034:	db bd       	out	0x2b, r29	; 43
-    1036:	ca bd       	out	0x2a, r28	; 42
+    1042:	db bd       	out	0x2b, r29	; 43
+    1044:	ca bd       	out	0x2a, r28	; 42
 				OCR1B = 1500;
-    1038:	d9 bd       	out	0x29, r29	; 41
-    103a:	c8 bd       	out	0x28, r28	; 40
+    1046:	d9 bd       	out	0x29, r29	; 41
+    1048:	c8 bd       	out	0x28, r28	; 40
 			}
 			
 			//x
 			if (T_X < 60 && T_Y >= 144 && T_Y < 188)
-    103c:	20 91 bc 02 	lds	r18, 0x02BC	; 0x8002bc <__data_end>
-    1040:	30 91 bd 02 	lds	r19, 0x02BD	; 0x8002bd <__data_end+0x1>
-    1044:	2c 33       	cpi	r18, 0x3C	; 60
-    1046:	31 05       	cpc	r19, r1
-    1048:	00 f5       	brcc	.+64     	; 0x108a <main+0x3dc>
-    104a:	80 91 be 02 	lds	r24, 0x02BE	; 0x8002be <T_Y>
-    104e:	90 91 bf 02 	lds	r25, 0x02BF	; 0x8002bf <T_Y+0x1>
-    1052:	80 39       	cpi	r24, 0x90	; 144
-    1054:	91 05       	cpc	r25, r1
-    1056:	c8 f0       	brcs	.+50     	; 0x108a <main+0x3dc>
-    1058:	8c 3b       	cpi	r24, 0xBC	; 188
-    105a:	91 05       	cpc	r25, r1
-    105c:	08 f0       	brcs	.+2      	; 0x1060 <main+0x3b2>
-    105e:	27 c2       	rjmp	.+1102   	; 0x14ae <main+0x800>
+    104a:	20 91 bc 02 	lds	r18, 0x02BC	; 0x8002bc <__data_end>
+    104e:	30 91 bd 02 	lds	r19, 0x02BD	; 0x8002bd <__data_end+0x1>
+    1052:	2c 33       	cpi	r18, 0x3C	; 60
+    1054:	31 05       	cpc	r19, r1
+    1056:	00 f5       	brcc	.+64     	; 0x1098 <main+0x3ea>
+    1058:	80 91 be 02 	lds	r24, 0x02BE	; 0x8002be <T_Y>
+    105c:	90 91 bf 02 	lds	r25, 0x02BF	; 0x8002bf <T_Y+0x1>
+    1060:	80 39       	cpi	r24, 0x90	; 144
+    1062:	91 05       	cpc	r25, r1
+    1064:	c8 f0       	brcs	.+50     	; 0x1098 <main+0x3ea>
+    1066:	8c 3b       	cpi	r24, 0xBC	; 188
+    1068:	91 05       	cpc	r25, r1
+    106a:	08 f0       	brcs	.+2      	; 0x106e <main+0x3c0>
+    106c:	32 c2       	rjmp	.+1124   	; 0x14d2 <main+0x824>
 			{
 				print_str(50, 50, 3, WHITE, BLACK, "x \0");
-    1060:	0f 2e       	mov	r0, r31
-    1062:	fc e9       	ldi	r31, 0x9C	; 156
-    1064:	ef 2e       	mov	r14, r31
-    1066:	f0 e0       	ldi	r31, 0x00	; 0
-    1068:	ff 2e       	mov	r15, r31
-    106a:	f0 2d       	mov	r31, r0
-    106c:	00 e0       	ldi	r16, 0x00	; 0
-    106e:	10 e0       	ldi	r17, 0x00	; 0
-    1070:	2f ef       	ldi	r18, 0xFF	; 255
-    1072:	3f ef       	ldi	r19, 0xFF	; 255
-    1074:	43 e0       	ldi	r20, 0x03	; 3
-    1076:	62 e3       	ldi	r22, 0x32	; 50
-    1078:	70 e0       	ldi	r23, 0x00	; 0
-    107a:	82 e3       	ldi	r24, 0x32	; 50
-    107c:	90 e0       	ldi	r25, 0x00	; 0
-    107e:	0e 94 40 04 	call	0x880	; 0x880 <print_str>
+    106e:	0f 2e       	mov	r0, r31
+    1070:	fc e9       	ldi	r31, 0x9C	; 156
+    1072:	ef 2e       	mov	r14, r31
+    1074:	f0 e0       	ldi	r31, 0x00	; 0
+    1076:	ff 2e       	mov	r15, r31
+    1078:	f0 2d       	mov	r31, r0
+    107a:	00 e0       	ldi	r16, 0x00	; 0
+    107c:	10 e0       	ldi	r17, 0x00	; 0
+    107e:	2f ef       	ldi	r18, 0xFF	; 255
+    1080:	3f ef       	ldi	r19, 0xFF	; 255
+    1082:	43 e0       	ldi	r20, 0x03	; 3
+    1084:	62 e3       	ldi	r22, 0x32	; 50
+    1086:	70 e0       	ldi	r23, 0x00	; 0
+    1088:	82 e3       	ldi	r24, 0x32	; 50
+    108a:	90 e0       	ldi	r25, 0x00	; 0
+    108c:	0e 94 40 04 	call	0x880	; 0x880 <print_str>
 				OCR1A = 1500;
-    1082:	db bd       	out	0x2b, r29	; 43
-    1084:	ca bd       	out	0x2a, r28	; 42
+    1090:	db bd       	out	0x2b, r29	; 43
+    1092:	ca bd       	out	0x2a, r28	; 42
 				OCR1B = 1500;
-    1086:	d9 bd       	out	0x29, r29	; 41
-    1088:	c8 bd       	out	0x28, r28	; 40
+    1094:	d9 bd       	out	0x29, r29	; 41
+    1096:	c8 bd       	out	0x28, r28	; 40
 			}
 			
 			//1
 			if (T_X >= 180 && T_Y >= 188 && T_Y < 232)
-    108a:	80 91 bc 02 	lds	r24, 0x02BC	; 0x8002bc <__data_end>
-    108e:	90 91 bd 02 	lds	r25, 0x02BD	; 0x8002bd <__data_end+0x1>
-    1092:	84 3b       	cpi	r24, 0xB4	; 180
-    1094:	91 05       	cpc	r25, r1
-    1096:	f8 f0       	brcs	.+62     	; 0x10d6 <main+0x428>
-    1098:	80 91 be 02 	lds	r24, 0x02BE	; 0x8002be <T_Y>
-    109c:	90 91 bf 02 	lds	r25, 0x02BF	; 0x8002bf <T_Y+0x1>
-    10a0:	8c 3b       	cpi	r24, 0xBC	; 188
+    1098:	80 91 bc 02 	lds	r24, 0x02BC	; 0x8002bc <__data_end>
+    109c:	90 91 bd 02 	lds	r25, 0x02BD	; 0x8002bd <__data_end+0x1>
+    10a0:	84 3b       	cpi	r24, 0xB4	; 180
     10a2:	91 05       	cpc	r25, r1
-    10a4:	c0 f0       	brcs	.+48     	; 0x10d6 <main+0x428>
-    10a6:	88 3e       	cpi	r24, 0xE8	; 232
-    10a8:	91 05       	cpc	r25, r1
-    10aa:	a8 f4       	brcc	.+42     	; 0x10d6 <main+0x428>
+    10a4:	f8 f0       	brcs	.+62     	; 0x10e4 <main+0x436>
+    10a6:	80 91 be 02 	lds	r24, 0x02BE	; 0x8002be <T_Y>
+    10aa:	90 91 bf 02 	lds	r25, 0x02BF	; 0x8002bf <T_Y+0x1>
+    10ae:	8c 3b       	cpi	r24, 0xBC	; 188
+    10b0:	91 05       	cpc	r25, r1
+    10b2:	c0 f0       	brcs	.+48     	; 0x10e4 <main+0x436>
+    10b4:	88 3e       	cpi	r24, 0xE8	; 232
+    10b6:	91 05       	cpc	r25, r1
+    10b8:	a8 f4       	brcc	.+42     	; 0x10e4 <main+0x436>
 			{
 				print_str(50, 50, 3, WHITE, BLACK, "1 \0");
-    10ac:	0f 2e       	mov	r0, r31
-    10ae:	f0 ea       	ldi	r31, 0xA0	; 160
-    10b0:	ef 2e       	mov	r14, r31
-    10b2:	f0 e0       	ldi	r31, 0x00	; 0
-    10b4:	ff 2e       	mov	r15, r31
-    10b6:	f0 2d       	mov	r31, r0
-    10b8:	00 e0       	ldi	r16, 0x00	; 0
-    10ba:	10 e0       	ldi	r17, 0x00	; 0
-    10bc:	2f ef       	ldi	r18, 0xFF	; 255
-    10be:	3f ef       	ldi	r19, 0xFF	; 255
-    10c0:	43 e0       	ldi	r20, 0x03	; 3
-    10c2:	62 e3       	ldi	r22, 0x32	; 50
-    10c4:	70 e0       	ldi	r23, 0x00	; 0
-    10c6:	82 e3       	ldi	r24, 0x32	; 50
-    10c8:	90 e0       	ldi	r25, 0x00	; 0
-    10ca:	0e 94 40 04 	call	0x880	; 0x880 <print_str>
+    10ba:	0f 2e       	mov	r0, r31
+    10bc:	f0 ea       	ldi	r31, 0xA0	; 160
+    10be:	ef 2e       	mov	r14, r31
+    10c0:	f0 e0       	ldi	r31, 0x00	; 0
+    10c2:	ff 2e       	mov	r15, r31
+    10c4:	f0 2d       	mov	r31, r0
+    10c6:	00 e0       	ldi	r16, 0x00	; 0
+    10c8:	10 e0       	ldi	r17, 0x00	; 0
+    10ca:	2f ef       	ldi	r18, 0xFF	; 255
+    10cc:	3f ef       	ldi	r19, 0xFF	; 255
+    10ce:	43 e0       	ldi	r20, 0x03	; 3
+    10d0:	62 e3       	ldi	r22, 0x32	; 50
+    10d2:	70 e0       	ldi	r23, 0x00	; 0
+    10d4:	82 e3       	ldi	r24, 0x32	; 50
+    10d6:	90 e0       	ldi	r25, 0x00	; 0
+    10d8:	0e 94 40 04 	call	0x880	; 0x880 <print_str>
 				OCR1A = 1500;
-    10ce:	db bd       	out	0x2b, r29	; 43
-    10d0:	ca bd       	out	0x2a, r28	; 42
+    10dc:	db bd       	out	0x2b, r29	; 43
+    10de:	ca bd       	out	0x2a, r28	; 42
 				OCR1B = 1500;
-    10d2:	d9 bd       	out	0x29, r29	; 41
-    10d4:	c8 bd       	out	0x28, r28	; 40
+    10e0:	d9 bd       	out	0x29, r29	; 41
+    10e2:	c8 bd       	out	0x28, r28	; 40
 			}
 			
 			//2
 			if (T_X >= 120 && T_X < 180 && T_Y >= 188 && T_Y < 232)
-    10d6:	80 91 bc 02 	lds	r24, 0x02BC	; 0x8002bc <__data_end>
-    10da:	90 91 bd 02 	lds	r25, 0x02BD	; 0x8002bd <__data_end+0x1>
-    10de:	88 57       	subi	r24, 0x78	; 120
-    10e0:	91 09       	sbc	r25, r1
-    10e2:	cc 97       	sbiw	r24, 0x3c	; 60
-    10e4:	e8 f4       	brcc	.+58     	; 0x1120 <main+0x472>
-    10e6:	80 91 be 02 	lds	r24, 0x02BE	; 0x8002be <T_Y>
-    10ea:	90 91 bf 02 	lds	r25, 0x02BF	; 0x8002bf <T_Y+0x1>
-    10ee:	8c 5b       	subi	r24, 0xBC	; 188
-    10f0:	91 09       	sbc	r25, r1
-    10f2:	8c 97       	sbiw	r24, 0x2c	; 44
-    10f4:	a8 f4       	brcc	.+42     	; 0x1120 <main+0x472>
+    10e4:	80 91 bc 02 	lds	r24, 0x02BC	; 0x8002bc <__data_end>
+    10e8:	90 91 bd 02 	lds	r25, 0x02BD	; 0x8002bd <__data_end+0x1>
+    10ec:	88 57       	subi	r24, 0x78	; 120
+    10ee:	91 09       	sbc	r25, r1
+    10f0:	cc 97       	sbiw	r24, 0x3c	; 60
+    10f2:	e8 f4       	brcc	.+58     	; 0x112e <main+0x480>
+    10f4:	80 91 be 02 	lds	r24, 0x02BE	; 0x8002be <T_Y>
+    10f8:	90 91 bf 02 	lds	r25, 0x02BF	; 0x8002bf <T_Y+0x1>
+    10fc:	8c 5b       	subi	r24, 0xBC	; 188
+    10fe:	91 09       	sbc	r25, r1
+    1100:	8c 97       	sbiw	r24, 0x2c	; 44
+    1102:	a8 f4       	brcc	.+42     	; 0x112e <main+0x480>
 			{
 				print_str(50, 50, 3, WHITE, BLACK, "2 \0");
-    10f6:	0f 2e       	mov	r0, r31
-    10f8:	f4 ea       	ldi	r31, 0xA4	; 164
-    10fa:	ef 2e       	mov	r14, r31
-    10fc:	f0 e0       	ldi	r31, 0x00	; 0
-    10fe:	ff 2e       	mov	r15, r31
-    1100:	f0 2d       	mov	r31, r0
-    1102:	00 e0       	ldi	r16, 0x00	; 0
-    1104:	10 e0       	ldi	r17, 0x00	; 0
-    1106:	2f ef       	ldi	r18, 0xFF	; 255
-    1108:	3f ef       	ldi	r19, 0xFF	; 255
-    110a:	43 e0       	ldi	r20, 0x03	; 3
-    110c:	62 e3       	ldi	r22, 0x32	; 50
-    110e:	70 e0       	ldi	r23, 0x00	; 0
-    1110:	82 e3       	ldi	r24, 0x32	; 50
-    1112:	90 e0       	ldi	r25, 0x00	; 0
-    1114:	0e 94 40 04 	call	0x880	; 0x880 <print_str>
+    1104:	0f 2e       	mov	r0, r31
+    1106:	f4 ea       	ldi	r31, 0xA4	; 164
+    1108:	ef 2e       	mov	r14, r31
+    110a:	f0 e0       	ldi	r31, 0x00	; 0
+    110c:	ff 2e       	mov	r15, r31
+    110e:	f0 2d       	mov	r31, r0
+    1110:	00 e0       	ldi	r16, 0x00	; 0
+    1112:	10 e0       	ldi	r17, 0x00	; 0
+    1114:	2f ef       	ldi	r18, 0xFF	; 255
+    1116:	3f ef       	ldi	r19, 0xFF	; 255
+    1118:	43 e0       	ldi	r20, 0x03	; 3
+    111a:	62 e3       	ldi	r22, 0x32	; 50
+    111c:	70 e0       	ldi	r23, 0x00	; 0
+    111e:	82 e3       	ldi	r24, 0x32	; 50
+    1120:	90 e0       	ldi	r25, 0x00	; 0
+    1122:	0e 94 40 04 	call	0x880	; 0x880 <print_str>
 				OCR1A = 1500;
-    1118:	db bd       	out	0x2b, r29	; 43
-    111a:	ca bd       	out	0x2a, r28	; 42
+    1126:	db bd       	out	0x2b, r29	; 43
+    1128:	ca bd       	out	0x2a, r28	; 42
 				OCR1B = 1500;
-    111c:	d9 bd       	out	0x29, r29	; 41
-    111e:	c8 bd       	out	0x28, r28	; 40
+    112a:	d9 bd       	out	0x29, r29	; 41
+    112c:	c8 bd       	out	0x28, r28	; 40
 			}
 			
 			//3
 			if (T_X >= 60 && T_X < 120 && T_Y >= 188 && T_Y < 232)
-    1120:	80 91 bc 02 	lds	r24, 0x02BC	; 0x8002bc <__data_end>
-    1124:	90 91 bd 02 	lds	r25, 0x02BD	; 0x8002bd <__data_end+0x1>
-    1128:	cc 97       	sbiw	r24, 0x3c	; 60
-    112a:	cc 97       	sbiw	r24, 0x3c	; 60
-    112c:	08 f5       	brcc	.+66     	; 0x1170 <main+0x4c2>
-    112e:	80 91 be 02 	lds	r24, 0x02BE	; 0x8002be <T_Y>
-    1132:	90 91 bf 02 	lds	r25, 0x02BF	; 0x8002bf <T_Y+0x1>
-    1136:	8c 3b       	cpi	r24, 0xBC	; 188
-    1138:	91 05       	cpc	r25, r1
-    113a:	08 f4       	brcc	.+2      	; 0x113e <main+0x490>
-    113c:	40 c0       	rjmp	.+128    	; 0x11be <main+0x510>
-    113e:	88 3e       	cpi	r24, 0xE8	; 232
-    1140:	91 05       	cpc	r25, r1
-    1142:	08 f0       	brcs	.+2      	; 0x1146 <main+0x498>
-    1144:	f4 c1       	rjmp	.+1000   	; 0x152e <main+0x880>
+    112e:	80 91 bc 02 	lds	r24, 0x02BC	; 0x8002bc <__data_end>
+    1132:	90 91 bd 02 	lds	r25, 0x02BD	; 0x8002bd <__data_end+0x1>
+    1136:	cc 97       	sbiw	r24, 0x3c	; 60
+    1138:	cc 97       	sbiw	r24, 0x3c	; 60
+    113a:	08 f5       	brcc	.+66     	; 0x117e <main+0x4d0>
+    113c:	80 91 be 02 	lds	r24, 0x02BE	; 0x8002be <T_Y>
+    1140:	90 91 bf 02 	lds	r25, 0x02BF	; 0x8002bf <T_Y+0x1>
+    1144:	8c 3b       	cpi	r24, 0xBC	; 188
+    1146:	91 05       	cpc	r25, r1
+    1148:	08 f4       	brcc	.+2      	; 0x114c <main+0x49e>
+    114a:	40 c0       	rjmp	.+128    	; 0x11cc <main+0x51e>
+    114c:	88 3e       	cpi	r24, 0xE8	; 232
+    114e:	91 05       	cpc	r25, r1
+    1150:	08 f0       	brcs	.+2      	; 0x1154 <main+0x4a6>
+    1152:	f7 c1       	rjmp	.+1006   	; 0x1542 <main+0x894>
 			{
 				print_str(50, 50, 3, WHITE, BLACK, "3 \0");
-    1146:	0f 2e       	mov	r0, r31
-    1148:	f8 ea       	ldi	r31, 0xA8	; 168
-    114a:	ef 2e       	mov	r14, r31
-    114c:	f0 e0       	ldi	r31, 0x00	; 0
-    114e:	ff 2e       	mov	r15, r31
-    1150:	f0 2d       	mov	r31, r0
-    1152:	00 e0       	ldi	r16, 0x00	; 0
-    1154:	10 e0       	ldi	r17, 0x00	; 0
-    1156:	2f ef       	ldi	r18, 0xFF	; 255
-    1158:	3f ef       	ldi	r19, 0xFF	; 255
-    115a:	43 e0       	ldi	r20, 0x03	; 3
-    115c:	62 e3       	ldi	r22, 0x32	; 50
-    115e:	70 e0       	ldi	r23, 0x00	; 0
-    1160:	82 e3       	ldi	r24, 0x32	; 50
-    1162:	90 e0       	ldi	r25, 0x00	; 0
-    1164:	0e 94 40 04 	call	0x880	; 0x880 <print_str>
+    1154:	0f 2e       	mov	r0, r31
+    1156:	f8 ea       	ldi	r31, 0xA8	; 168
+    1158:	ef 2e       	mov	r14, r31
+    115a:	f0 e0       	ldi	r31, 0x00	; 0
+    115c:	ff 2e       	mov	r15, r31
+    115e:	f0 2d       	mov	r31, r0
+    1160:	00 e0       	ldi	r16, 0x00	; 0
+    1162:	10 e0       	ldi	r17, 0x00	; 0
+    1164:	2f ef       	ldi	r18, 0xFF	; 255
+    1166:	3f ef       	ldi	r19, 0xFF	; 255
+    1168:	43 e0       	ldi	r20, 0x03	; 3
+    116a:	62 e3       	ldi	r22, 0x32	; 50
+    116c:	70 e0       	ldi	r23, 0x00	; 0
+    116e:	82 e3       	ldi	r24, 0x32	; 50
+    1170:	90 e0       	ldi	r25, 0x00	; 0
+    1172:	0e 94 40 04 	call	0x880	; 0x880 <print_str>
 				OCR1A = 1500;
-    1168:	db bd       	out	0x2b, r29	; 43
-    116a:	ca bd       	out	0x2a, r28	; 42
+    1176:	db bd       	out	0x2b, r29	; 43
+    1178:	ca bd       	out	0x2a, r28	; 42
 				OCR1B = 1500;
-    116c:	d9 bd       	out	0x29, r29	; 41
-    116e:	c8 bd       	out	0x28, r28	; 40
+    117a:	d9 bd       	out	0x29, r29	; 41
+    117c:	c8 bd       	out	0x28, r28	; 40
 			}
 			
 			//x
 			if (T_X < 60 && T_Y >= 188 && T_Y < 232)
-    1170:	20 91 bc 02 	lds	r18, 0x02BC	; 0x8002bc <__data_end>
-    1174:	30 91 bd 02 	lds	r19, 0x02BD	; 0x8002bd <__data_end+0x1>
-    1178:	2c 33       	cpi	r18, 0x3C	; 60
-    117a:	31 05       	cpc	r19, r1
-    117c:	00 f5       	brcc	.+64     	; 0x11be <main+0x510>
-    117e:	80 91 be 02 	lds	r24, 0x02BE	; 0x8002be <T_Y>
-    1182:	90 91 bf 02 	lds	r25, 0x02BF	; 0x8002bf <T_Y+0x1>
-    1186:	8c 3b       	cpi	r24, 0xBC	; 188
-    1188:	91 05       	cpc	r25, r1
-    118a:	c8 f0       	brcs	.+50     	; 0x11be <main+0x510>
-    118c:	88 3e       	cpi	r24, 0xE8	; 232
-    118e:	91 05       	cpc	r25, r1
-    1190:	08 f0       	brcs	.+2      	; 0x1194 <main+0x4e6>
-    1192:	92 c1       	rjmp	.+804    	; 0x14b8 <main+0x80a>
+    117e:	20 91 bc 02 	lds	r18, 0x02BC	; 0x8002bc <__data_end>
+    1182:	30 91 bd 02 	lds	r19, 0x02BD	; 0x8002bd <__data_end+0x1>
+    1186:	2c 33       	cpi	r18, 0x3C	; 60
+    1188:	31 05       	cpc	r19, r1
+    118a:	00 f5       	brcc	.+64     	; 0x11cc <main+0x51e>
+    118c:	80 91 be 02 	lds	r24, 0x02BE	; 0x8002be <T_Y>
+    1190:	90 91 bf 02 	lds	r25, 0x02BF	; 0x8002bf <T_Y+0x1>
+    1194:	8c 3b       	cpi	r24, 0xBC	; 188
+    1196:	91 05       	cpc	r25, r1
+    1198:	c8 f0       	brcs	.+50     	; 0x11cc <main+0x51e>
+    119a:	88 3e       	cpi	r24, 0xE8	; 232
+    119c:	91 05       	cpc	r25, r1
+    119e:	08 f0       	brcs	.+2      	; 0x11a2 <main+0x4f4>
+    11a0:	9d c1       	rjmp	.+826    	; 0x14dc <main+0x82e>
 			{
 				print_str(50, 50, 3, WHITE, BLACK, "+ \0");
-    1194:	0f 2e       	mov	r0, r31
-    1196:	fc ea       	ldi	r31, 0xAC	; 172
-    1198:	ef 2e       	mov	r14, r31
-    119a:	f0 e0       	ldi	r31, 0x00	; 0
-    119c:	ff 2e       	mov	r15, r31
-    119e:	f0 2d       	mov	r31, r0
-    11a0:	00 e0       	ldi	r16, 0x00	; 0
-    11a2:	10 e0       	ldi	r17, 0x00	; 0
-    11a4:	2f ef       	ldi	r18, 0xFF	; 255
-    11a6:	3f ef       	ldi	r19, 0xFF	; 255
-    11a8:	43 e0       	ldi	r20, 0x03	; 3
-    11aa:	62 e3       	ldi	r22, 0x32	; 50
-    11ac:	70 e0       	ldi	r23, 0x00	; 0
-    11ae:	82 e3       	ldi	r24, 0x32	; 50
-    11b0:	90 e0       	ldi	r25, 0x00	; 0
-    11b2:	0e 94 40 04 	call	0x880	; 0x880 <print_str>
+    11a2:	0f 2e       	mov	r0, r31
+    11a4:	fc ea       	ldi	r31, 0xAC	; 172
+    11a6:	ef 2e       	mov	r14, r31
+    11a8:	f0 e0       	ldi	r31, 0x00	; 0
+    11aa:	ff 2e       	mov	r15, r31
+    11ac:	f0 2d       	mov	r31, r0
+    11ae:	00 e0       	ldi	r16, 0x00	; 0
+    11b0:	10 e0       	ldi	r17, 0x00	; 0
+    11b2:	2f ef       	ldi	r18, 0xFF	; 255
+    11b4:	3f ef       	ldi	r19, 0xFF	; 255
+    11b6:	43 e0       	ldi	r20, 0x03	; 3
+    11b8:	62 e3       	ldi	r22, 0x32	; 50
+    11ba:	70 e0       	ldi	r23, 0x00	; 0
+    11bc:	82 e3       	ldi	r24, 0x32	; 50
+    11be:	90 e0       	ldi	r25, 0x00	; 0
+    11c0:	0e 94 40 04 	call	0x880	; 0x880 <print_str>
 				OCR1A = 1500;
-    11b6:	db bd       	out	0x2b, r29	; 43
-    11b8:	ca bd       	out	0x2a, r28	; 42
+    11c4:	db bd       	out	0x2b, r29	; 43
+    11c6:	ca bd       	out	0x2a, r28	; 42
 				OCR1B = 1500;
-    11ba:	d9 bd       	out	0x29, r29	; 41
-    11bc:	c8 bd       	out	0x28, r28	; 40
+    11c8:	d9 bd       	out	0x29, r29	; 41
+    11ca:	c8 bd       	out	0x28, r28	; 40
 			}
 			
 			//0
 			if (T_X >= 180 && T_Y >= 232 && T_Y < 276)
-    11be:	80 91 bc 02 	lds	r24, 0x02BC	; 0x8002bc <__data_end>
-    11c2:	90 91 bd 02 	lds	r25, 0x02BD	; 0x8002bd <__data_end+0x1>
-    11c6:	84 3b       	cpi	r24, 0xB4	; 180
-    11c8:	91 05       	cpc	r25, r1
-    11ca:	f8 f0       	brcs	.+62     	; 0x120a <main+0x55c>
-    11cc:	80 91 be 02 	lds	r24, 0x02BE	; 0x8002be <T_Y>
-    11d0:	90 91 bf 02 	lds	r25, 0x02BF	; 0x8002bf <T_Y+0x1>
-    11d4:	88 3e       	cpi	r24, 0xE8	; 232
+    11cc:	80 91 bc 02 	lds	r24, 0x02BC	; 0x8002bc <__data_end>
+    11d0:	90 91 bd 02 	lds	r25, 0x02BD	; 0x8002bd <__data_end+0x1>
+    11d4:	84 3b       	cpi	r24, 0xB4	; 180
     11d6:	91 05       	cpc	r25, r1
-    11d8:	c0 f0       	brcs	.+48     	; 0x120a <main+0x55c>
-    11da:	84 31       	cpi	r24, 0x14	; 20
-    11dc:	91 40       	sbci	r25, 0x01	; 1
-    11de:	a8 f4       	brcc	.+42     	; 0x120a <main+0x55c>
+    11d8:	f8 f0       	brcs	.+62     	; 0x1218 <main+0x56a>
+    11da:	80 91 be 02 	lds	r24, 0x02BE	; 0x8002be <T_Y>
+    11de:	90 91 bf 02 	lds	r25, 0x02BF	; 0x8002bf <T_Y+0x1>
+    11e2:	88 3e       	cpi	r24, 0xE8	; 232
+    11e4:	91 05       	cpc	r25, r1
+    11e6:	c0 f0       	brcs	.+48     	; 0x1218 <main+0x56a>
+    11e8:	84 31       	cpi	r24, 0x14	; 20
+    11ea:	91 40       	sbci	r25, 0x01	; 1
+    11ec:	a8 f4       	brcc	.+42     	; 0x1218 <main+0x56a>
 			{
 				print_str(50, 50, 3, WHITE, BLACK, "0 \0");
-    11e0:	0f 2e       	mov	r0, r31
-    11e2:	f0 eb       	ldi	r31, 0xB0	; 176
-    11e4:	ef 2e       	mov	r14, r31
-    11e6:	f0 e0       	ldi	r31, 0x00	; 0
-    11e8:	ff 2e       	mov	r15, r31
-    11ea:	f0 2d       	mov	r31, r0
-    11ec:	00 e0       	ldi	r16, 0x00	; 0
-    11ee:	10 e0       	ldi	r17, 0x00	; 0
-    11f0:	2f ef       	ldi	r18, 0xFF	; 255
-    11f2:	3f ef       	ldi	r19, 0xFF	; 255
-    11f4:	43 e0       	ldi	r20, 0x03	; 3
-    11f6:	62 e3       	ldi	r22, 0x32	; 50
-    11f8:	70 e0       	ldi	r23, 0x00	; 0
-    11fa:	82 e3       	ldi	r24, 0x32	; 50
-    11fc:	90 e0       	ldi	r25, 0x00	; 0
-    11fe:	0e 94 40 04 	call	0x880	; 0x880 <print_str>
+    11ee:	0f 2e       	mov	r0, r31
+    11f0:	f0 eb       	ldi	r31, 0xB0	; 176
+    11f2:	ef 2e       	mov	r14, r31
+    11f4:	f0 e0       	ldi	r31, 0x00	; 0
+    11f6:	ff 2e       	mov	r15, r31
+    11f8:	f0 2d       	mov	r31, r0
+    11fa:	00 e0       	ldi	r16, 0x00	; 0
+    11fc:	10 e0       	ldi	r17, 0x00	; 0
+    11fe:	2f ef       	ldi	r18, 0xFF	; 255
+    1200:	3f ef       	ldi	r19, 0xFF	; 255
+    1202:	43 e0       	ldi	r20, 0x03	; 3
+    1204:	62 e3       	ldi	r22, 0x32	; 50
+    1206:	70 e0       	ldi	r23, 0x00	; 0
+    1208:	82 e3       	ldi	r24, 0x32	; 50
+    120a:	90 e0       	ldi	r25, 0x00	; 0
+    120c:	0e 94 40 04 	call	0x880	; 0x880 <print_str>
 				OCR1A = 1500;
-    1202:	db bd       	out	0x2b, r29	; 43
-    1204:	ca bd       	out	0x2a, r28	; 42
+    1210:	db bd       	out	0x2b, r29	; 43
+    1212:	ca bd       	out	0x2a, r28	; 42
 				OCR1B = 1500;
-    1206:	d9 bd       	out	0x29, r29	; 41
-    1208:	c8 bd       	out	0x28, r28	; 40
+    1214:	d9 bd       	out	0x29, r29	; 41
+    1216:	c8 bd       	out	0x28, r28	; 40
 			}
 			
 			//CLR
 			if (T_X >= 120 && T_X < 180 && T_Y >= 232 && T_Y < 276)
-    120a:	80 91 bc 02 	lds	r24, 0x02BC	; 0x8002bc <__data_end>
-    120e:	90 91 bd 02 	lds	r25, 0x02BD	; 0x8002bd <__data_end+0x1>
-    1212:	88 57       	subi	r24, 0x78	; 120
-    1214:	91 09       	sbc	r25, r1
-    1216:	cc 97       	sbiw	r24, 0x3c	; 60
-    1218:	e8 f4       	brcc	.+58     	; 0x1254 <main+0x5a6>
-    121a:	80 91 be 02 	lds	r24, 0x02BE	; 0x8002be <T_Y>
-    121e:	90 91 bf 02 	lds	r25, 0x02BF	; 0x8002bf <T_Y+0x1>
-    1222:	88 5e       	subi	r24, 0xE8	; 232
-    1224:	91 09       	sbc	r25, r1
-    1226:	8c 97       	sbiw	r24, 0x2c	; 44
-    1228:	a8 f4       	brcc	.+42     	; 0x1254 <main+0x5a6>
+    1218:	80 91 bc 02 	lds	r24, 0x02BC	; 0x8002bc <__data_end>
+    121c:	90 91 bd 02 	lds	r25, 0x02BD	; 0x8002bd <__data_end+0x1>
+    1220:	88 57       	subi	r24, 0x78	; 120
+    1222:	91 09       	sbc	r25, r1
+    1224:	cc 97       	sbiw	r24, 0x3c	; 60
+    1226:	e8 f4       	brcc	.+58     	; 0x1262 <main+0x5b4>
+    1228:	80 91 be 02 	lds	r24, 0x02BE	; 0x8002be <T_Y>
+    122c:	90 91 bf 02 	lds	r25, 0x02BF	; 0x8002bf <T_Y+0x1>
+    1230:	88 5e       	subi	r24, 0xE8	; 232
+    1232:	91 09       	sbc	r25, r1
+    1234:	8c 97       	sbiw	r24, 0x2c	; 44
+    1236:	a8 f4       	brcc	.+42     	; 0x1262 <main+0x5b4>
 			{
 				print_str(50, 50, 3, WHITE, BLACK, "R L C \0");
-    122a:	0f 2e       	mov	r0, r31
-    122c:	f4 eb       	ldi	r31, 0xB4	; 180
-    122e:	ef 2e       	mov	r14, r31
-    1230:	f0 e0       	ldi	r31, 0x00	; 0
-    1232:	ff 2e       	mov	r15, r31
-    1234:	f0 2d       	mov	r31, r0
-    1236:	00 e0       	ldi	r16, 0x00	; 0
-    1238:	10 e0       	ldi	r17, 0x00	; 0
-    123a:	2f ef       	ldi	r18, 0xFF	; 255
-    123c:	3f ef       	ldi	r19, 0xFF	; 255
-    123e:	43 e0       	ldi	r20, 0x03	; 3
-    1240:	62 e3       	ldi	r22, 0x32	; 50
-    1242:	70 e0       	ldi	r23, 0x00	; 0
-    1244:	82 e3       	ldi	r24, 0x32	; 50
-    1246:	90 e0       	ldi	r25, 0x00	; 0
-    1248:	0e 94 40 04 	call	0x880	; 0x880 <print_str>
+    1238:	0f 2e       	mov	r0, r31
+    123a:	f4 eb       	ldi	r31, 0xB4	; 180
+    123c:	ef 2e       	mov	r14, r31
+    123e:	f0 e0       	ldi	r31, 0x00	; 0
+    1240:	ff 2e       	mov	r15, r31
+    1242:	f0 2d       	mov	r31, r0
+    1244:	00 e0       	ldi	r16, 0x00	; 0
+    1246:	10 e0       	ldi	r17, 0x00	; 0
+    1248:	2f ef       	ldi	r18, 0xFF	; 255
+    124a:	3f ef       	ldi	r19, 0xFF	; 255
+    124c:	43 e0       	ldi	r20, 0x03	; 3
+    124e:	62 e3       	ldi	r22, 0x32	; 50
+    1250:	70 e0       	ldi	r23, 0x00	; 0
+    1252:	82 e3       	ldi	r24, 0x32	; 50
+    1254:	90 e0       	ldi	r25, 0x00	; 0
+    1256:	0e 94 40 04 	call	0x880	; 0x880 <print_str>
 				OCR1A = 1500;
-    124c:	db bd       	out	0x2b, r29	; 43
-    124e:	ca bd       	out	0x2a, r28	; 42
+    125a:	db bd       	out	0x2b, r29	; 43
+    125c:	ca bd       	out	0x2a, r28	; 42
 				OCR1B = 1500;
-    1250:	d9 bd       	out	0x29, r29	; 41
-    1252:	c8 bd       	out	0x28, r28	; 40
+    125e:	d9 bd       	out	0x29, r29	; 41
+    1260:	c8 bd       	out	0x28, r28	; 40
 			}
 			
 			//=
 			if (T_X >= 60 && T_X < 120 && T_Y >= 232 && T_Y < 276)
-    1254:	80 91 bc 02 	lds	r24, 0x02BC	; 0x8002bc <__data_end>
-    1258:	90 91 bd 02 	lds	r25, 0x02BD	; 0x8002bd <__data_end+0x1>
-    125c:	cc 97       	sbiw	r24, 0x3c	; 60
-    125e:	cc 97       	sbiw	r24, 0x3c	; 60
-    1260:	08 f5       	brcc	.+66     	; 0x12a4 <main+0x5f6>
-    1262:	80 91 be 02 	lds	r24, 0x02BE	; 0x8002be <T_Y>
-    1266:	90 91 bf 02 	lds	r25, 0x02BF	; 0x8002bf <T_Y+0x1>
-    126a:	88 3e       	cpi	r24, 0xE8	; 232
-    126c:	91 05       	cpc	r25, r1
-    126e:	08 f4       	brcc	.+2      	; 0x1272 <main+0x5c4>
-    1270:	40 c0       	rjmp	.+128    	; 0x12f2 <main+0x644>
-    1272:	84 31       	cpi	r24, 0x14	; 20
-    1274:	91 40       	sbci	r25, 0x01	; 1
-    1276:	08 f0       	brcs	.+2      	; 0x127a <main+0x5cc>
-    1278:	62 c1       	rjmp	.+708    	; 0x153e <main+0x890>
+    1262:	80 91 bc 02 	lds	r24, 0x02BC	; 0x8002bc <__data_end>
+    1266:	90 91 bd 02 	lds	r25, 0x02BD	; 0x8002bd <__data_end+0x1>
+    126a:	cc 97       	sbiw	r24, 0x3c	; 60
+    126c:	cc 97       	sbiw	r24, 0x3c	; 60
+    126e:	08 f5       	brcc	.+66     	; 0x12b2 <main+0x604>
+    1270:	80 91 be 02 	lds	r24, 0x02BE	; 0x8002be <T_Y>
+    1274:	90 91 bf 02 	lds	r25, 0x02BF	; 0x8002bf <T_Y+0x1>
+    1278:	88 3e       	cpi	r24, 0xE8	; 232
+    127a:	91 05       	cpc	r25, r1
+    127c:	08 f4       	brcc	.+2      	; 0x1280 <main+0x5d2>
+    127e:	41 c0       	rjmp	.+130    	; 0x1302 <main+0x654>
+    1280:	84 31       	cpi	r24, 0x14	; 20
+    1282:	91 40       	sbci	r25, 0x01	; 1
+    1284:	08 f0       	brcs	.+2      	; 0x1288 <main+0x5da>
+    1286:	6a c1       	rjmp	.+724    	; 0x155c <main+0x8ae>
 			{
 				print_str(50, 50, 3, WHITE, BLACK, "= \0");
-    127a:	0f 2e       	mov	r0, r31
-    127c:	fc eb       	ldi	r31, 0xBC	; 188
-    127e:	ef 2e       	mov	r14, r31
-    1280:	f0 e0       	ldi	r31, 0x00	; 0
-    1282:	ff 2e       	mov	r15, r31
-    1284:	f0 2d       	mov	r31, r0
-    1286:	00 e0       	ldi	r16, 0x00	; 0
-    1288:	10 e0       	ldi	r17, 0x00	; 0
-    128a:	2f ef       	ldi	r18, 0xFF	; 255
-    128c:	3f ef       	ldi	r19, 0xFF	; 255
-    128e:	43 e0       	ldi	r20, 0x03	; 3
-    1290:	62 e3       	ldi	r22, 0x32	; 50
-    1292:	70 e0       	ldi	r23, 0x00	; 0
-    1294:	82 e3       	ldi	r24, 0x32	; 50
-    1296:	90 e0       	ldi	r25, 0x00	; 0
-    1298:	0e 94 40 04 	call	0x880	; 0x880 <print_str>
+    1288:	0f 2e       	mov	r0, r31
+    128a:	fc eb       	ldi	r31, 0xBC	; 188
+    128c:	ef 2e       	mov	r14, r31
+    128e:	f0 e0       	ldi	r31, 0x00	; 0
+    1290:	ff 2e       	mov	r15, r31
+    1292:	f0 2d       	mov	r31, r0
+    1294:	00 e0       	ldi	r16, 0x00	; 0
+    1296:	10 e0       	ldi	r17, 0x00	; 0
+    1298:	2f ef       	ldi	r18, 0xFF	; 255
+    129a:	3f ef       	ldi	r19, 0xFF	; 255
+    129c:	43 e0       	ldi	r20, 0x03	; 3
+    129e:	62 e3       	ldi	r22, 0x32	; 50
+    12a0:	70 e0       	ldi	r23, 0x00	; 0
+    12a2:	82 e3       	ldi	r24, 0x32	; 50
+    12a4:	90 e0       	ldi	r25, 0x00	; 0
+    12a6:	0e 94 40 04 	call	0x880	; 0x880 <print_str>
 				OCR1A = 1500;
-    129c:	db bd       	out	0x2b, r29	; 43
-    129e:	ca bd       	out	0x2a, r28	; 42
+    12aa:	db bd       	out	0x2b, r29	; 43
+    12ac:	ca bd       	out	0x2a, r28	; 42
 				OCR1B = 1500;
-    12a0:	d9 bd       	out	0x29, r29	; 41
-    12a2:	c8 bd       	out	0x28, r28	; 40
+    12ae:	d9 bd       	out	0x29, r29	; 41
+    12b0:	c8 bd       	out	0x28, r28	; 40
 			}
 			
 			//-
 			if (T_X < 60 && T_Y >= 232 && T_Y < 276)
-    12a4:	80 91 bc 02 	lds	r24, 0x02BC	; 0x8002bc <__data_end>
-    12a8:	90 91 bd 02 	lds	r25, 0x02BD	; 0x8002bd <__data_end+0x1>
-    12ac:	8c 33       	cpi	r24, 0x3C	; 60
-    12ae:	91 05       	cpc	r25, r1
-    12b0:	00 f5       	brcc	.+64     	; 0x12f2 <main+0x644>
-    12b2:	20 91 be 02 	lds	r18, 0x02BE	; 0x8002be <T_Y>
-    12b6:	30 91 bf 02 	lds	r19, 0x02BF	; 0x8002bf <T_Y+0x1>
-    12ba:	28 3e       	cpi	r18, 0xE8	; 232
-    12bc:	31 05       	cpc	r19, r1
-    12be:	c8 f0       	brcs	.+50     	; 0x12f2 <main+0x644>
-    12c0:	24 31       	cpi	r18, 0x14	; 20
-    12c2:	31 40       	sbci	r19, 0x01	; 1
-    12c4:	08 f0       	brcs	.+2      	; 0x12c8 <main+0x61a>
-    12c6:	fd c0       	rjmp	.+506    	; 0x14c2 <main+0x814>
+    12b2:	80 91 bc 02 	lds	r24, 0x02BC	; 0x8002bc <__data_end>
+    12b6:	90 91 bd 02 	lds	r25, 0x02BD	; 0x8002bd <__data_end+0x1>
+    12ba:	8c 33       	cpi	r24, 0x3C	; 60
+    12bc:	91 05       	cpc	r25, r1
+    12be:	08 f5       	brcc	.+66     	; 0x1302 <main+0x654>
+    12c0:	20 91 be 02 	lds	r18, 0x02BE	; 0x8002be <T_Y>
+    12c4:	30 91 bf 02 	lds	r19, 0x02BF	; 0x8002bf <T_Y+0x1>
+    12c8:	28 3e       	cpi	r18, 0xE8	; 232
+    12ca:	31 05       	cpc	r19, r1
+    12cc:	d0 f0       	brcs	.+52     	; 0x1302 <main+0x654>
+    12ce:	24 31       	cpi	r18, 0x14	; 20
+    12d0:	41 e0       	ldi	r20, 0x01	; 1
+    12d2:	34 07       	cpc	r19, r20
+    12d4:	08 f0       	brcs	.+2      	; 0x12d8 <main+0x62a>
+    12d6:	07 c1       	rjmp	.+526    	; 0x14e6 <main+0x838>
 			{
 				print_str(50, 50, 3, WHITE, BLACK, "- \0");
-    12c8:	0f 2e       	mov	r0, r31
-    12ca:	f0 ec       	ldi	r31, 0xC0	; 192
-    12cc:	ef 2e       	mov	r14, r31
-    12ce:	f0 e0       	ldi	r31, 0x00	; 0
-    12d0:	ff 2e       	mov	r15, r31
-    12d2:	f0 2d       	mov	r31, r0
-    12d4:	00 e0       	ldi	r16, 0x00	; 0
-    12d6:	10 e0       	ldi	r17, 0x00	; 0
-    12d8:	2f ef       	ldi	r18, 0xFF	; 255
-    12da:	3f ef       	ldi	r19, 0xFF	; 255
-    12dc:	43 e0       	ldi	r20, 0x03	; 3
-    12de:	62 e3       	ldi	r22, 0x32	; 50
-    12e0:	70 e0       	ldi	r23, 0x00	; 0
-    12e2:	82 e3       	ldi	r24, 0x32	; 50
-    12e4:	90 e0       	ldi	r25, 0x00	; 0
-    12e6:	0e 94 40 04 	call	0x880	; 0x880 <print_str>
+    12d8:	0f 2e       	mov	r0, r31
+    12da:	f0 ec       	ldi	r31, 0xC0	; 192
+    12dc:	ef 2e       	mov	r14, r31
+    12de:	f0 e0       	ldi	r31, 0x00	; 0
+    12e0:	ff 2e       	mov	r15, r31
+    12e2:	f0 2d       	mov	r31, r0
+    12e4:	00 e0       	ldi	r16, 0x00	; 0
+    12e6:	10 e0       	ldi	r17, 0x00	; 0
+    12e8:	2f ef       	ldi	r18, 0xFF	; 255
+    12ea:	3f ef       	ldi	r19, 0xFF	; 255
+    12ec:	43 e0       	ldi	r20, 0x03	; 3
+    12ee:	62 e3       	ldi	r22, 0x32	; 50
+    12f0:	70 e0       	ldi	r23, 0x00	; 0
+    12f2:	82 e3       	ldi	r24, 0x32	; 50
+    12f4:	90 e0       	ldi	r25, 0x00	; 0
+    12f6:	0e 94 40 04 	call	0x880	; 0x880 <print_str>
 				OCR1A = 1500;
-    12ea:	db bd       	out	0x2b, r29	; 43
-    12ec:	ca bd       	out	0x2a, r28	; 42
+    12fa:	db bd       	out	0x2b, r29	; 43
+    12fc:	ca bd       	out	0x2a, r28	; 42
 				OCR1B = 1500;
-    12ee:	d9 bd       	out	0x29, r29	; 41
-    12f0:	c8 bd       	out	0x28, r28	; 40
+    12fe:	d9 bd       	out	0x29, r29	; 41
+    1300:	c8 bd       	out	0x28, r28	; 40
 			}
 			
 			//A
-			if (T_X >= 200 && T_Y >= 276)
-    12f2:	80 91 bc 02 	lds	r24, 0x02BC	; 0x8002bc <__data_end>
-    12f6:	90 91 bd 02 	lds	r25, 0x02BD	; 0x8002bd <__data_end+0x1>
-    12fa:	88 3c       	cpi	r24, 0xC8	; 200
-    12fc:	91 05       	cpc	r25, r1
-    12fe:	e0 f0       	brcs	.+56     	; 0x1338 <main+0x68a>
-    1300:	80 91 be 02 	lds	r24, 0x02BE	; 0x8002be <T_Y>
-    1304:	90 91 bf 02 	lds	r25, 0x02BF	; 0x8002bf <T_Y+0x1>
-    1308:	84 31       	cpi	r24, 0x14	; 20
-    130a:	91 40       	sbci	r25, 0x01	; 1
-    130c:	a8 f0       	brcs	.+42     	; 0x1338 <main+0x68a>
+			if (T_X >= 200 && T_X < 240 && T_Y >= 276 && T_Y < 320)
+    1302:	80 91 bc 02 	lds	r24, 0x02BC	; 0x8002bc <__data_end>
+    1306:	90 91 bd 02 	lds	r25, 0x02BD	; 0x8002bd <__data_end+0x1>
+    130a:	88 5c       	subi	r24, 0xC8	; 200
+    130c:	91 09       	sbc	r25, r1
+    130e:	88 97       	sbiw	r24, 0x28	; 40
+    1310:	00 f5       	brcc	.+64     	; 0x1352 <main+0x6a4>
+    1312:	20 91 be 02 	lds	r18, 0x02BE	; 0x8002be <T_Y>
+    1316:	30 91 bf 02 	lds	r19, 0x02BF	; 0x8002bf <T_Y+0x1>
+    131a:	24 31       	cpi	r18, 0x14	; 20
+    131c:	81 e0       	ldi	r24, 0x01	; 1
+    131e:	38 07       	cpc	r19, r24
+    1320:	c0 f0       	brcs	.+48     	; 0x1352 <main+0x6a4>
+    1322:	20 34       	cpi	r18, 0x40	; 64
+    1324:	31 40       	sbci	r19, 0x01	; 1
+    1326:	a8 f4       	brcc	.+42     	; 0x1352 <main+0x6a4>
 			{
 				print_str(50, 50, 3, WHITE, BLACK, "A \0");
-    130e:	0f 2e       	mov	r0, r31
-    1310:	f4 ec       	ldi	r31, 0xC4	; 196
-    1312:	ef 2e       	mov	r14, r31
-    1314:	f0 e0       	ldi	r31, 0x00	; 0
-    1316:	ff 2e       	mov	r15, r31
-    1318:	f0 2d       	mov	r31, r0
-    131a:	00 e0       	ldi	r16, 0x00	; 0
-    131c:	10 e0       	ldi	r17, 0x00	; 0
-    131e:	2f ef       	ldi	r18, 0xFF	; 255
-    1320:	3f ef       	ldi	r19, 0xFF	; 255
-    1322:	43 e0       	ldi	r20, 0x03	; 3
-    1324:	62 e3       	ldi	r22, 0x32	; 50
-    1326:	70 e0       	ldi	r23, 0x00	; 0
-    1328:	82 e3       	ldi	r24, 0x32	; 50
-    132a:	90 e0       	ldi	r25, 0x00	; 0
-    132c:	0e 94 40 04 	call	0x880	; 0x880 <print_str>
+    1328:	0f 2e       	mov	r0, r31
+    132a:	f4 ec       	ldi	r31, 0xC4	; 196
+    132c:	ef 2e       	mov	r14, r31
+    132e:	f0 e0       	ldi	r31, 0x00	; 0
+    1330:	ff 2e       	mov	r15, r31
+    1332:	f0 2d       	mov	r31, r0
+    1334:	00 e0       	ldi	r16, 0x00	; 0
+    1336:	10 e0       	ldi	r17, 0x00	; 0
+    1338:	2f ef       	ldi	r18, 0xFF	; 255
+    133a:	3f ef       	ldi	r19, 0xFF	; 255
+    133c:	43 e0       	ldi	r20, 0x03	; 3
+    133e:	62 e3       	ldi	r22, 0x32	; 50
+    1340:	70 e0       	ldi	r23, 0x00	; 0
+    1342:	82 e3       	ldi	r24, 0x32	; 50
+    1344:	90 e0       	ldi	r25, 0x00	; 0
+    1346:	0e 94 40 04 	call	0x880	; 0x880 <print_str>
 				OCR1A = 1500;
-    1330:	db bd       	out	0x2b, r29	; 43
-    1332:	ca bd       	out	0x2a, r28	; 42
+    134a:	db bd       	out	0x2b, r29	; 43
+    134c:	ca bd       	out	0x2a, r28	; 42
 				OCR1B = 1500;
-    1334:	d9 bd       	out	0x29, r29	; 41
-    1336:	c8 bd       	out	0x28, r28	; 40
+    134e:	d9 bd       	out	0x29, r29	; 41
+    1350:	c8 bd       	out	0x28, r28	; 40
 			}
 			
 			//B
-			if (T_X >= 160 && T_X < 200 && T_Y >= 276)
-    1338:	80 91 bc 02 	lds	r24, 0x02BC	; 0x8002bc <__data_end>
-    133c:	90 91 bd 02 	lds	r25, 0x02BD	; 0x8002bd <__data_end+0x1>
-    1340:	80 5a       	subi	r24, 0xA0	; 160
-    1342:	91 09       	sbc	r25, r1
-    1344:	88 97       	sbiw	r24, 0x28	; 40
-    1346:	e0 f4       	brcc	.+56     	; 0x1380 <main+0x6d2>
-    1348:	80 91 be 02 	lds	r24, 0x02BE	; 0x8002be <T_Y>
-    134c:	90 91 bf 02 	lds	r25, 0x02BF	; 0x8002bf <T_Y+0x1>
-    1350:	84 31       	cpi	r24, 0x14	; 20
-    1352:	91 40       	sbci	r25, 0x01	; 1
-    1354:	a8 f0       	brcs	.+42     	; 0x1380 <main+0x6d2>
+			if (T_X >= 160 && T_X < 200 && T_Y >= 276 && T_Y < 320)
+    1352:	80 91 bc 02 	lds	r24, 0x02BC	; 0x8002bc <__data_end>
+    1356:	90 91 bd 02 	lds	r25, 0x02BD	; 0x8002bd <__data_end+0x1>
+    135a:	80 5a       	subi	r24, 0xA0	; 160
+    135c:	91 09       	sbc	r25, r1
+    135e:	88 97       	sbiw	r24, 0x28	; 40
+    1360:	e8 f4       	brcc	.+58     	; 0x139c <main+0x6ee>
+    1362:	80 91 be 02 	lds	r24, 0x02BE	; 0x8002be <T_Y>
+    1366:	90 91 bf 02 	lds	r25, 0x02BF	; 0x8002bf <T_Y+0x1>
+    136a:	84 51       	subi	r24, 0x14	; 20
+    136c:	91 40       	sbci	r25, 0x01	; 1
+    136e:	8c 97       	sbiw	r24, 0x2c	; 44
+    1370:	a8 f4       	brcc	.+42     	; 0x139c <main+0x6ee>
 			{
 				print_str(50, 50, 3, WHITE, BLACK, "B \0");
-    1356:	0f 2e       	mov	r0, r31
-    1358:	f8 ec       	ldi	r31, 0xC8	; 200
-    135a:	ef 2e       	mov	r14, r31
-    135c:	f0 e0       	ldi	r31, 0x00	; 0
-    135e:	ff 2e       	mov	r15, r31
-    1360:	f0 2d       	mov	r31, r0
-    1362:	00 e0       	ldi	r16, 0x00	; 0
-    1364:	10 e0       	ldi	r17, 0x00	; 0
-    1366:	2f ef       	ldi	r18, 0xFF	; 255
-    1368:	3f ef       	ldi	r19, 0xFF	; 255
-    136a:	43 e0       	ldi	r20, 0x03	; 3
-    136c:	62 e3       	ldi	r22, 0x32	; 50
-    136e:	70 e0       	ldi	r23, 0x00	; 0
-    1370:	82 e3       	ldi	r24, 0x32	; 50
-    1372:	90 e0       	ldi	r25, 0x00	; 0
-    1374:	0e 94 40 04 	call	0x880	; 0x880 <print_str>
+    1372:	0f 2e       	mov	r0, r31
+    1374:	f8 ec       	ldi	r31, 0xC8	; 200
+    1376:	ef 2e       	mov	r14, r31
+    1378:	f0 e0       	ldi	r31, 0x00	; 0
+    137a:	ff 2e       	mov	r15, r31
+    137c:	f0 2d       	mov	r31, r0
+    137e:	00 e0       	ldi	r16, 0x00	; 0
+    1380:	10 e0       	ldi	r17, 0x00	; 0
+    1382:	2f ef       	ldi	r18, 0xFF	; 255
+    1384:	3f ef       	ldi	r19, 0xFF	; 255
+    1386:	43 e0       	ldi	r20, 0x03	; 3
+    1388:	62 e3       	ldi	r22, 0x32	; 50
+    138a:	70 e0       	ldi	r23, 0x00	; 0
+    138c:	82 e3       	ldi	r24, 0x32	; 50
+    138e:	90 e0       	ldi	r25, 0x00	; 0
+    1390:	0e 94 40 04 	call	0x880	; 0x880 <print_str>
 				OCR1A = 1500;
-    1378:	db bd       	out	0x2b, r29	; 43
-    137a:	ca bd       	out	0x2a, r28	; 42
+    1394:	db bd       	out	0x2b, r29	; 43
+    1396:	ca bd       	out	0x2a, r28	; 42
 				OCR1B = 1500;
-    137c:	d9 bd       	out	0x29, r29	; 41
-    137e:	c8 bd       	out	0x28, r28	; 40
+    1398:	d9 bd       	out	0x29, r29	; 41
+    139a:	c8 bd       	out	0x28, r28	; 40
 			}
 			
 			//C
-			if (T_X >= 120 && T_X < 160 && T_Y >= 276)
-    1380:	80 91 bc 02 	lds	r24, 0x02BC	; 0x8002bc <__data_end>
-    1384:	90 91 bd 02 	lds	r25, 0x02BD	; 0x8002bd <__data_end+0x1>
-    1388:	88 57       	subi	r24, 0x78	; 120
-    138a:	91 09       	sbc	r25, r1
-    138c:	88 97       	sbiw	r24, 0x28	; 40
-    138e:	e0 f4       	brcc	.+56     	; 0x13c8 <main+0x71a>
-    1390:	80 91 be 02 	lds	r24, 0x02BE	; 0x8002be <T_Y>
-    1394:	90 91 bf 02 	lds	r25, 0x02BF	; 0x8002bf <T_Y+0x1>
-    1398:	84 31       	cpi	r24, 0x14	; 20
-    139a:	91 40       	sbci	r25, 0x01	; 1
-    139c:	a8 f0       	brcs	.+42     	; 0x13c8 <main+0x71a>
+			if (T_X >= 120 && T_X < 160 && T_Y >= 276 && T_Y < 320)
+    139c:	80 91 bc 02 	lds	r24, 0x02BC	; 0x8002bc <__data_end>
+    13a0:	90 91 bd 02 	lds	r25, 0x02BD	; 0x8002bd <__data_end+0x1>
+    13a4:	88 57       	subi	r24, 0x78	; 120
+    13a6:	91 09       	sbc	r25, r1
+    13a8:	88 97       	sbiw	r24, 0x28	; 40
+    13aa:	e8 f4       	brcc	.+58     	; 0x13e6 <main+0x738>
+    13ac:	80 91 be 02 	lds	r24, 0x02BE	; 0x8002be <T_Y>
+    13b0:	90 91 bf 02 	lds	r25, 0x02BF	; 0x8002bf <T_Y+0x1>
+    13b4:	84 51       	subi	r24, 0x14	; 20
+    13b6:	91 40       	sbci	r25, 0x01	; 1
+    13b8:	8c 97       	sbiw	r24, 0x2c	; 44
+    13ba:	a8 f4       	brcc	.+42     	; 0x13e6 <main+0x738>
 			{
 				print_str(50, 50, 3, WHITE, BLACK, "C \0");
-    139e:	0f 2e       	mov	r0, r31
-    13a0:	fc ec       	ldi	r31, 0xCC	; 204
-    13a2:	ef 2e       	mov	r14, r31
-    13a4:	f0 e0       	ldi	r31, 0x00	; 0
-    13a6:	ff 2e       	mov	r15, r31
-    13a8:	f0 2d       	mov	r31, r0
-    13aa:	00 e0       	ldi	r16, 0x00	; 0
-    13ac:	10 e0       	ldi	r17, 0x00	; 0
-    13ae:	2f ef       	ldi	r18, 0xFF	; 255
-    13b0:	3f ef       	ldi	r19, 0xFF	; 255
-    13b2:	43 e0       	ldi	r20, 0x03	; 3
-    13b4:	62 e3       	ldi	r22, 0x32	; 50
-    13b6:	70 e0       	ldi	r23, 0x00	; 0
-    13b8:	82 e3       	ldi	r24, 0x32	; 50
-    13ba:	90 e0       	ldi	r25, 0x00	; 0
-    13bc:	0e 94 40 04 	call	0x880	; 0x880 <print_str>
+    13bc:	0f 2e       	mov	r0, r31
+    13be:	fc ec       	ldi	r31, 0xCC	; 204
+    13c0:	ef 2e       	mov	r14, r31
+    13c2:	f0 e0       	ldi	r31, 0x00	; 0
+    13c4:	ff 2e       	mov	r15, r31
+    13c6:	f0 2d       	mov	r31, r0
+    13c8:	00 e0       	ldi	r16, 0x00	; 0
+    13ca:	10 e0       	ldi	r17, 0x00	; 0
+    13cc:	2f ef       	ldi	r18, 0xFF	; 255
+    13ce:	3f ef       	ldi	r19, 0xFF	; 255
+    13d0:	43 e0       	ldi	r20, 0x03	; 3
+    13d2:	62 e3       	ldi	r22, 0x32	; 50
+    13d4:	70 e0       	ldi	r23, 0x00	; 0
+    13d6:	82 e3       	ldi	r24, 0x32	; 50
+    13d8:	90 e0       	ldi	r25, 0x00	; 0
+    13da:	0e 94 40 04 	call	0x880	; 0x880 <print_str>
 				OCR1A = 1500;
-    13c0:	db bd       	out	0x2b, r29	; 43
-    13c2:	ca bd       	out	0x2a, r28	; 42
+    13de:	db bd       	out	0x2b, r29	; 43
+    13e0:	ca bd       	out	0x2a, r28	; 42
 				OCR1B = 1500;
-    13c4:	d9 bd       	out	0x29, r29	; 41
-    13c6:	c8 bd       	out	0x28, r28	; 40
+    13e2:	d9 bd       	out	0x29, r29	; 41
+    13e4:	c8 bd       	out	0x28, r28	; 40
 			}
 			
 			//D
-			if (T_X >= 80 && T_X < 120 && T_Y >= 276)
-    13c8:	80 91 bc 02 	lds	r24, 0x02BC	; 0x8002bc <__data_end>
-    13cc:	90 91 bd 02 	lds	r25, 0x02BD	; 0x8002bd <__data_end+0x1>
-    13d0:	80 55       	subi	r24, 0x50	; 80
-    13d2:	91 09       	sbc	r25, r1
-    13d4:	88 97       	sbiw	r24, 0x28	; 40
-    13d6:	e8 f4       	brcc	.+58     	; 0x1412 <main+0x764>
-    13d8:	80 91 be 02 	lds	r24, 0x02BE	; 0x8002be <T_Y>
-    13dc:	90 91 bf 02 	lds	r25, 0x02BF	; 0x8002bf <T_Y+0x1>
-    13e0:	84 31       	cpi	r24, 0x14	; 20
-    13e2:	91 40       	sbci	r25, 0x01	; 1
-    13e4:	08 f4       	brcc	.+2      	; 0x13e8 <main+0x73a>
-    13e6:	be c0       	rjmp	.+380    	; 0x1564 <main+0x8b6>
+			if (T_X >= 80 && T_X < 120 && T_Y >= 276 && T_Y < 320)
+    13e6:	80 91 bc 02 	lds	r24, 0x02BC	; 0x8002bc <__data_end>
+    13ea:	90 91 bd 02 	lds	r25, 0x02BD	; 0x8002bd <__data_end+0x1>
+    13ee:	80 55       	subi	r24, 0x50	; 80
+    13f0:	91 09       	sbc	r25, r1
+    13f2:	88 97       	sbiw	r24, 0x28	; 40
+    13f4:	f0 f4       	brcc	.+60     	; 0x1432 <main+0x784>
+    13f6:	80 91 be 02 	lds	r24, 0x02BE	; 0x8002be <T_Y>
+    13fa:	90 91 bf 02 	lds	r25, 0x02BF	; 0x8002bf <T_Y+0x1>
+    13fe:	84 51       	subi	r24, 0x14	; 20
+    1400:	91 40       	sbci	r25, 0x01	; 1
+    1402:	8c 97       	sbiw	r24, 0x2c	; 44
+    1404:	08 f0       	brcs	.+2      	; 0x1408 <main+0x75a>
+    1406:	b2 c0       	rjmp	.+356    	; 0x156c <main+0x8be>
 			{
 				print_str(50, 50, 3, WHITE, BLACK, "D \0");
-    13e8:	0f 2e       	mov	r0, r31
-    13ea:	f0 ed       	ldi	r31, 0xD0	; 208
-    13ec:	ef 2e       	mov	r14, r31
-    13ee:	f0 e0       	ldi	r31, 0x00	; 0
-    13f0:	ff 2e       	mov	r15, r31
-    13f2:	f0 2d       	mov	r31, r0
-    13f4:	00 e0       	ldi	r16, 0x00	; 0
-    13f6:	10 e0       	ldi	r17, 0x00	; 0
-    13f8:	2f ef       	ldi	r18, 0xFF	; 255
-    13fa:	3f ef       	ldi	r19, 0xFF	; 255
-    13fc:	43 e0       	ldi	r20, 0x03	; 3
-    13fe:	62 e3       	ldi	r22, 0x32	; 50
-    1400:	70 e0       	ldi	r23, 0x00	; 0
-    1402:	82 e3       	ldi	r24, 0x32	; 50
-    1404:	90 e0       	ldi	r25, 0x00	; 0
-    1406:	0e 94 40 04 	call	0x880	; 0x880 <print_str>
+    1408:	0f 2e       	mov	r0, r31
+    140a:	f0 ed       	ldi	r31, 0xD0	; 208
+    140c:	ef 2e       	mov	r14, r31
+    140e:	f0 e0       	ldi	r31, 0x00	; 0
+    1410:	ff 2e       	mov	r15, r31
+    1412:	f0 2d       	mov	r31, r0
+    1414:	00 e0       	ldi	r16, 0x00	; 0
+    1416:	10 e0       	ldi	r17, 0x00	; 0
+    1418:	2f ef       	ldi	r18, 0xFF	; 255
+    141a:	3f ef       	ldi	r19, 0xFF	; 255
+    141c:	43 e0       	ldi	r20, 0x03	; 3
+    141e:	62 e3       	ldi	r22, 0x32	; 50
+    1420:	70 e0       	ldi	r23, 0x00	; 0
+    1422:	82 e3       	ldi	r24, 0x32	; 50
+    1424:	90 e0       	ldi	r25, 0x00	; 0
+    1426:	0e 94 40 04 	call	0x880	; 0x880 <print_str>
 				OCR1A = 1500;
-    140a:	db bd       	out	0x2b, r29	; 43
-    140c:	ca bd       	out	0x2a, r28	; 42
+    142a:	db bd       	out	0x2b, r29	; 43
+    142c:	ca bd       	out	0x2a, r28	; 42
 				OCR1B = 1500;
-    140e:	d9 bd       	out	0x29, r29	; 41
-    1410:	c8 bd       	out	0x28, r28	; 40
+    142e:	d9 bd       	out	0x29, r29	; 41
+    1430:	c8 bd       	out	0x28, r28	; 40
 			}
 			
 			//E
-			if (T_X >= 40 && T_X < 80 && T_Y >= 276)
-    1412:	80 91 bc 02 	lds	r24, 0x02BC	; 0x8002bc <__data_end>
-    1416:	90 91 bd 02 	lds	r25, 0x02BD	; 0x8002bd <__data_end+0x1>
-    141a:	88 97       	sbiw	r24, 0x28	; 40
-    141c:	88 97       	sbiw	r24, 0x28	; 40
-    141e:	e8 f4       	brcc	.+58     	; 0x145a <main+0x7ac>
-    1420:	80 91 be 02 	lds	r24, 0x02BE	; 0x8002be <T_Y>
-    1424:	90 91 bf 02 	lds	r25, 0x02BF	; 0x8002bf <T_Y+0x1>
-    1428:	84 31       	cpi	r24, 0x14	; 20
-    142a:	91 40       	sbci	r25, 0x01	; 1
-    142c:	08 f4       	brcc	.+2      	; 0x1430 <main+0x782>
-    142e:	51 cc       	rjmp	.-1886   	; 0xcd2 <main+0x24>
+			if (T_X >= 40 && T_X < 80 && T_Y >= 276 && T_Y < 320)
+    1432:	80 91 bc 02 	lds	r24, 0x02BC	; 0x8002bc <__data_end>
+    1436:	90 91 bd 02 	lds	r25, 0x02BD	; 0x8002bd <__data_end+0x1>
+    143a:	88 97       	sbiw	r24, 0x28	; 40
+    143c:	88 97       	sbiw	r24, 0x28	; 40
+    143e:	f0 f4       	brcc	.+60     	; 0x147c <main+0x7ce>
+    1440:	80 91 be 02 	lds	r24, 0x02BE	; 0x8002be <T_Y>
+    1444:	90 91 bf 02 	lds	r25, 0x02BF	; 0x8002bf <T_Y+0x1>
+    1448:	84 51       	subi	r24, 0x14	; 20
+    144a:	91 40       	sbci	r25, 0x01	; 1
+    144c:	8c 97       	sbiw	r24, 0x2c	; 44
+    144e:	08 f0       	brcs	.+2      	; 0x1452 <main+0x7a4>
+    1450:	40 cc       	rjmp	.-1920   	; 0xcd2 <main+0x24>
 			{
 				print_str(50, 50, 3, WHITE, BLACK, "E \0");
-    1430:	0f 2e       	mov	r0, r31
-    1432:	f4 ed       	ldi	r31, 0xD4	; 212
-    1434:	ef 2e       	mov	r14, r31
-    1436:	f0 e0       	ldi	r31, 0x00	; 0
-    1438:	ff 2e       	mov	r15, r31
-    143a:	f0 2d       	mov	r31, r0
-    143c:	00 e0       	ldi	r16, 0x00	; 0
-    143e:	10 e0       	ldi	r17, 0x00	; 0
-    1440:	2f ef       	ldi	r18, 0xFF	; 255
-    1442:	3f ef       	ldi	r19, 0xFF	; 255
-    1444:	43 e0       	ldi	r20, 0x03	; 3
-    1446:	62 e3       	ldi	r22, 0x32	; 50
-    1448:	70 e0       	ldi	r23, 0x00	; 0
-    144a:	82 e3       	ldi	r24, 0x32	; 50
-    144c:	90 e0       	ldi	r25, 0x00	; 0
-    144e:	0e 94 40 04 	call	0x880	; 0x880 <print_str>
+    1452:	0f 2e       	mov	r0, r31
+    1454:	f4 ed       	ldi	r31, 0xD4	; 212
+    1456:	ef 2e       	mov	r14, r31
+    1458:	f0 e0       	ldi	r31, 0x00	; 0
+    145a:	ff 2e       	mov	r15, r31
+    145c:	f0 2d       	mov	r31, r0
+    145e:	00 e0       	ldi	r16, 0x00	; 0
+    1460:	10 e0       	ldi	r17, 0x00	; 0
+    1462:	2f ef       	ldi	r18, 0xFF	; 255
+    1464:	3f ef       	ldi	r19, 0xFF	; 255
+    1466:	43 e0       	ldi	r20, 0x03	; 3
+    1468:	62 e3       	ldi	r22, 0x32	; 50
+    146a:	70 e0       	ldi	r23, 0x00	; 0
+    146c:	82 e3       	ldi	r24, 0x32	; 50
+    146e:	90 e0       	ldi	r25, 0x00	; 0
+    1470:	0e 94 40 04 	call	0x880	; 0x880 <print_str>
 				OCR1A = 1500;
-    1452:	db bd       	out	0x2b, r29	; 43
-    1454:	ca bd       	out	0x2a, r28	; 42
+    1474:	db bd       	out	0x2b, r29	; 43
+    1476:	ca bd       	out	0x2a, r28	; 42
 				OCR1B = 1500;
-    1456:	d9 bd       	out	0x29, r29	; 41
-    1458:	c8 bd       	out	0x28, r28	; 40
+    1478:	d9 bd       	out	0x29, r29	; 41
+    147a:	c8 bd       	out	0x28, r28	; 40
 			}
 			
 			//F
-			if (T_X < 40 && T_Y >= 276)
-    145a:	80 91 bc 02 	lds	r24, 0x02BC	; 0x8002bc <__data_end>
-    145e:	90 91 bd 02 	lds	r25, 0x02BD	; 0x8002bd <__data_end+0x1>
-    1462:	88 97       	sbiw	r24, 0x28	; 40
-    1464:	08 f0       	brcs	.+2      	; 0x1468 <main+0x7ba>
-    1466:	35 cc       	rjmp	.-1942   	; 0xcd2 <main+0x24>
-    1468:	80 91 be 02 	lds	r24, 0x02BE	; 0x8002be <T_Y>
-    146c:	90 91 bf 02 	lds	r25, 0x02BF	; 0x8002bf <T_Y+0x1>
-    1470:	84 31       	cpi	r24, 0x14	; 20
-    1472:	91 40       	sbci	r25, 0x01	; 1
-    1474:	08 f4       	brcc	.+2      	; 0x1478 <main+0x7ca>
-    1476:	2d cc       	rjmp	.-1958   	; 0xcd2 <main+0x24>
+			if (T_X < 40 && T_Y >= 276 && T_Y < 320)
+    147c:	80 91 bc 02 	lds	r24, 0x02BC	; 0x8002bc <__data_end>
+    1480:	90 91 bd 02 	lds	r25, 0x02BD	; 0x8002bd <__data_end+0x1>
+    1484:	88 97       	sbiw	r24, 0x28	; 40
+    1486:	08 f0       	brcs	.+2      	; 0x148a <main+0x7dc>
+    1488:	24 cc       	rjmp	.-1976   	; 0xcd2 <main+0x24>
+    148a:	80 91 be 02 	lds	r24, 0x02BE	; 0x8002be <T_Y>
+    148e:	90 91 bf 02 	lds	r25, 0x02BF	; 0x8002bf <T_Y+0x1>
+    1492:	84 51       	subi	r24, 0x14	; 20
+    1494:	91 40       	sbci	r25, 0x01	; 1
+    1496:	8c 97       	sbiw	r24, 0x2c	; 44
+    1498:	08 f0       	brcs	.+2      	; 0x149c <main+0x7ee>
+    149a:	1b cc       	rjmp	.-1994   	; 0xcd2 <main+0x24>
 			{
 				print_str(50, 50, 3, WHITE, BLACK, "F \0");
-    1478:	0f 2e       	mov	r0, r31
-    147a:	f8 ed       	ldi	r31, 0xD8	; 216
-    147c:	ef 2e       	mov	r14, r31
-    147e:	f0 e0       	ldi	r31, 0x00	; 0
-    1480:	ff 2e       	mov	r15, r31
-    1482:	f0 2d       	mov	r31, r0
-    1484:	00 e0       	ldi	r16, 0x00	; 0
-    1486:	10 e0       	ldi	r17, 0x00	; 0
-    1488:	2f ef       	ldi	r18, 0xFF	; 255
-    148a:	3f ef       	ldi	r19, 0xFF	; 255
-    148c:	43 e0       	ldi	r20, 0x03	; 3
-    148e:	62 e3       	ldi	r22, 0x32	; 50
-    1490:	70 e0       	ldi	r23, 0x00	; 0
-    1492:	82 e3       	ldi	r24, 0x32	; 50
-    1494:	90 e0       	ldi	r25, 0x00	; 0
-    1496:	0e 94 40 04 	call	0x880	; 0x880 <print_str>
+    149c:	0f 2e       	mov	r0, r31
+    149e:	f8 ed       	ldi	r31, 0xD8	; 216
+    14a0:	ef 2e       	mov	r14, r31
+    14a2:	f0 e0       	ldi	r31, 0x00	; 0
+    14a4:	ff 2e       	mov	r15, r31
+    14a6:	f0 2d       	mov	r31, r0
+    14a8:	00 e0       	ldi	r16, 0x00	; 0
+    14aa:	10 e0       	ldi	r17, 0x00	; 0
+    14ac:	2f ef       	ldi	r18, 0xFF	; 255
+    14ae:	3f ef       	ldi	r19, 0xFF	; 255
+    14b0:	43 e0       	ldi	r20, 0x03	; 3
+    14b2:	62 e3       	ldi	r22, 0x32	; 50
+    14b4:	70 e0       	ldi	r23, 0x00	; 0
+    14b6:	82 e3       	ldi	r24, 0x32	; 50
+    14b8:	90 e0       	ldi	r25, 0x00	; 0
+    14ba:	0e 94 40 04 	call	0x880	; 0x880 <print_str>
 				OCR1A = 1500;
-    149a:	db bd       	out	0x2b, r29	; 43
-    149c:	ca bd       	out	0x2a, r28	; 42
+    14be:	db bd       	out	0x2b, r29	; 43
+    14c0:	ca bd       	out	0x2a, r28	; 42
 				OCR1B = 1500;
-    149e:	d9 bd       	out	0x29, r29	; 41
-    14a0:	c8 bd       	out	0x28, r28	; 40
-    14a2:	17 cc       	rjmp	.-2002   	; 0xcd2 <main+0x24>
+    14c2:	d9 bd       	out	0x29, r29	; 41
+    14c4:	c8 bd       	out	0x28, r28	; 40
+    14c6:	05 cc       	rjmp	.-2038   	; 0xcd2 <main+0x24>
 				OCR1A = 1500;
 				OCR1B = 1500;
 			}
 			
 			//4
 			if (T_X >= 180 && T_Y >= 144 && T_Y < 188)
-    14a4:	24 3b       	cpi	r18, 0xB4	; 180
-    14a6:	31 05       	cpc	r19, r1
-    14a8:	08 f0       	brcs	.+2      	; 0x14ac <main+0x7fe>
-    14aa:	63 cd       	rjmp	.-1338   	; 0xf72 <main+0x2c4>
-    14ac:	7a cd       	rjmp	.-1292   	; 0xfa2 <main+0x2f4>
+    14c8:	24 3b       	cpi	r18, 0xB4	; 180
+    14ca:	31 05       	cpc	r19, r1
+    14cc:	08 f0       	brcs	.+2      	; 0x14d0 <main+0x822>
+    14ce:	58 cd       	rjmp	.-1360   	; 0xf80 <main+0x2d2>
+    14d0:	6f cd       	rjmp	.-1314   	; 0xfb0 <main+0x302>
 				OCR1A = 1500;
 				OCR1B = 1500;
 			}
 			
 			//1
 			if (T_X >= 180 && T_Y >= 188 && T_Y < 232)
-    14ae:	24 3b       	cpi	r18, 0xB4	; 180
-    14b0:	31 05       	cpc	r19, r1
-    14b2:	08 f0       	brcs	.+2      	; 0x14b6 <main+0x808>
-    14b4:	f8 cd       	rjmp	.-1040   	; 0x10a6 <main+0x3f8>
-    14b6:	0f ce       	rjmp	.-994    	; 0x10d6 <main+0x428>
+    14d2:	24 3b       	cpi	r18, 0xB4	; 180
+    14d4:	31 05       	cpc	r19, r1
+    14d6:	08 f0       	brcs	.+2      	; 0x14da <main+0x82c>
+    14d8:	ed cd       	rjmp	.-1062   	; 0x10b4 <main+0x406>
+    14da:	04 ce       	rjmp	.-1016   	; 0x10e4 <main+0x436>
 				OCR1A = 1500;
 				OCR1B = 1500;
 			}
 			
 			//0
 			if (T_X >= 180 && T_Y >= 232 && T_Y < 276)
-    14b8:	24 3b       	cpi	r18, 0xB4	; 180
-    14ba:	31 05       	cpc	r19, r1
-    14bc:	08 f0       	brcs	.+2      	; 0x14c0 <main+0x812>
-    14be:	8d ce       	rjmp	.-742    	; 0x11da <main+0x52c>
-    14c0:	a4 ce       	rjmp	.-696    	; 0x120a <main+0x55c>
+    14dc:	24 3b       	cpi	r18, 0xB4	; 180
+    14de:	31 05       	cpc	r19, r1
+    14e0:	08 f0       	brcs	.+2      	; 0x14e4 <main+0x836>
+    14e2:	82 ce       	rjmp	.-764    	; 0x11e8 <main+0x53a>
+    14e4:	99 ce       	rjmp	.-718    	; 0x1218 <main+0x56a>
 				OCR1A = 1500;
 				OCR1B = 1500;
 			}
 			
 			//A
-			if (T_X >= 200 && T_Y >= 276)
-    14c2:	88 3c       	cpi	r24, 0xC8	; 200
-    14c4:	91 05       	cpc	r25, r1
-    14c6:	08 f0       	brcs	.+2      	; 0x14ca <main+0x81c>
-    14c8:	22 cf       	rjmp	.-444    	; 0x130e <main+0x660>
-    14ca:	42 c0       	rjmp	.+132    	; 0x1550 <main+0x8a2>
+			if (T_X >= 200 && T_X < 240 && T_Y >= 276 && T_Y < 320)
+    14e6:	88 5c       	subi	r24, 0xC8	; 200
+    14e8:	91 09       	sbc	r25, r1
+    14ea:	88 97       	sbiw	r24, 0x28	; 40
+    14ec:	08 f4       	brcc	.+2      	; 0x14f0 <main+0x842>
+    14ee:	19 cf       	rjmp	.-462    	; 0x1322 <main+0x674>
+    14f0:	30 cf       	rjmp	.-416    	; 0x1352 <main+0x6a4>
 				OCR1A = 1500;
 				OCR1B = 1500;
 			}
 			
-			//BIN
-			if (T_X >= 180 && T_Y <= 20)
-    14cc:	80 91 bc 02 	lds	r24, 0x02BC	; 0x8002bc <__data_end>
-    14d0:	90 91 bd 02 	lds	r25, 0x02BD	; 0x8002bd <__data_end+0x1>
-    14d4:	84 3b       	cpi	r24, 0xB4	; 180
-    14d6:	91 05       	cpc	r25, r1
-    14d8:	08 f4       	brcc	.+2      	; 0x14dc <main+0x82e>
-    14da:	ee cc       	rjmp	.-1572   	; 0xeb8 <main+0x20a>
-    14dc:	89 cc       	rjmp	.-1774   	; 0xdf0 <main+0x142>
-    14de:	80 91 bc 02 	lds	r24, 0x02BC	; 0x8002bc <__data_end>
-    14e2:	90 91 bd 02 	lds	r25, 0x02BD	; 0x8002bd <__data_end+0x1>
-    14e6:	84 3b       	cpi	r24, 0xB4	; 180
-    14e8:	91 05       	cpc	r25, r1
-    14ea:	08 f0       	brcs	.+2      	; 0x14ee <main+0x840>
-    14ec:	a3 cc       	rjmp	.-1722   	; 0xe34 <main+0x186>
-    14ee:	bf cc       	rjmp	.-1666   	; 0xe6e <main+0x1c0>
+			//7
+			if (T_X >= 180 && T_Y >= 100 && T_Y < 144)
+    14f2:	80 91 bc 02 	lds	r24, 0x02BC	; 0x8002bc <__data_end>
+    14f6:	90 91 bd 02 	lds	r25, 0x02BD	; 0x8002bd <__data_end+0x1>
+    14fa:	84 3b       	cpi	r24, 0xB4	; 180
+    14fc:	91 05       	cpc	r25, r1
+    14fe:	08 f0       	brcs	.+2      	; 0x1502 <main+0x854>
+    1500:	a0 cc       	rjmp	.-1728   	; 0xe42 <main+0x194>
+    1502:	c4 cc       	rjmp	.-1656   	; 0xe8c <main+0x1de>
 				OCR1A = 1500;
 				OCR1B = 1500;
 			}
 			
 			// /
 			if (T_X < 60 && T_Y >= 100 && T_Y < 144)
-    14f0:	80 91 be 02 	lds	r24, 0x02BE	; 0x8002be <T_Y>
-    14f4:	90 91 bf 02 	lds	r25, 0x02BF	; 0x8002bf <T_Y+0x1>
-    14f8:	d5 cf       	rjmp	.-86     	; 0x14a4 <main+0x7f6>
-    14fa:	20 91 bc 02 	lds	r18, 0x02BC	; 0x8002bc <__data_end>
-    14fe:	30 91 bd 02 	lds	r19, 0x02BD	; 0x8002bd <__data_end+0x1>
-    1502:	2c 33       	cpi	r18, 0x3C	; 60
-    1504:	31 05       	cpc	r19, r1
-    1506:	a0 f3       	brcs	.-24     	; 0x14f0 <main+0x842>
-    1508:	26 cd       	rjmp	.-1460   	; 0xf56 <main+0x2a8>
+    1504:	80 91 be 02 	lds	r24, 0x02BE	; 0x8002be <T_Y>
+    1508:	90 91 bf 02 	lds	r25, 0x02BF	; 0x8002bf <T_Y+0x1>
+    150c:	dd cf       	rjmp	.-70     	; 0x14c8 <main+0x81a>
+    150e:	20 91 bc 02 	lds	r18, 0x02BC	; 0x8002bc <__data_end>
+    1512:	30 91 bd 02 	lds	r19, 0x02BD	; 0x8002bd <__data_end+0x1>
+    1516:	2c 33       	cpi	r18, 0x3C	; 60
+    1518:	31 05       	cpc	r19, r1
+    151a:	a0 f3       	brcs	.-24     	; 0x1504 <main+0x856>
+    151c:	23 cd       	rjmp	.-1466   	; 0xf64 <main+0x2b6>
 				OCR1A = 1500;
 				OCR1B = 1500;
 			}
 			
 			//x
 			if (T_X < 60 && T_Y >= 144 && T_Y < 188)
-    150a:	80 91 be 02 	lds	r24, 0x02BE	; 0x8002be <T_Y>
-    150e:	90 91 bf 02 	lds	r25, 0x02BF	; 0x8002bf <T_Y+0x1>
-    1512:	cd cf       	rjmp	.-102    	; 0x14ae <main+0x800>
-    1514:	20 91 bc 02 	lds	r18, 0x02BC	; 0x8002bc <__data_end>
-    1518:	30 91 bd 02 	lds	r19, 0x02BD	; 0x8002bd <__data_end+0x1>
-    151c:	2c 33       	cpi	r18, 0x3C	; 60
-    151e:	31 05       	cpc	r19, r1
-    1520:	a0 f3       	brcs	.-24     	; 0x150a <main+0x85c>
-    1522:	b3 cd       	rjmp	.-1178   	; 0x108a <main+0x3dc>
+    151e:	80 91 be 02 	lds	r24, 0x02BE	; 0x8002be <T_Y>
+    1522:	90 91 bf 02 	lds	r25, 0x02BF	; 0x8002bf <T_Y+0x1>
+    1526:	d5 cf       	rjmp	.-86     	; 0x14d2 <main+0x824>
+    1528:	20 91 bc 02 	lds	r18, 0x02BC	; 0x8002bc <__data_end>
+    152c:	30 91 bd 02 	lds	r19, 0x02BD	; 0x8002bd <__data_end+0x1>
+    1530:	2c 33       	cpi	r18, 0x3C	; 60
+    1532:	31 05       	cpc	r19, r1
+    1534:	a0 f3       	brcs	.-24     	; 0x151e <main+0x870>
+    1536:	b0 cd       	rjmp	.-1184   	; 0x1098 <main+0x3ea>
 				OCR1A = 1500;
 				OCR1B = 1500;
 			}
 			
 			//x
 			if (T_X < 60 && T_Y >= 188 && T_Y < 232)
-    1524:	80 91 be 02 	lds	r24, 0x02BE	; 0x8002be <T_Y>
-    1528:	90 91 bf 02 	lds	r25, 0x02BF	; 0x8002bf <T_Y+0x1>
-    152c:	c5 cf       	rjmp	.-118    	; 0x14b8 <main+0x80a>
-    152e:	20 91 bc 02 	lds	r18, 0x02BC	; 0x8002bc <__data_end>
-    1532:	30 91 bd 02 	lds	r19, 0x02BD	; 0x8002bd <__data_end+0x1>
-    1536:	2c 33       	cpi	r18, 0x3C	; 60
-    1538:	31 05       	cpc	r19, r1
-    153a:	a0 f3       	brcs	.-24     	; 0x1524 <main+0x876>
-    153c:	40 ce       	rjmp	.-896    	; 0x11be <main+0x510>
+    1538:	80 91 be 02 	lds	r24, 0x02BE	; 0x8002be <T_Y>
+    153c:	90 91 bf 02 	lds	r25, 0x02BF	; 0x8002bf <T_Y+0x1>
+    1540:	cd cf       	rjmp	.-102    	; 0x14dc <main+0x82e>
+    1542:	20 91 bc 02 	lds	r18, 0x02BC	; 0x8002bc <__data_end>
+    1546:	30 91 bd 02 	lds	r19, 0x02BD	; 0x8002bd <__data_end+0x1>
+    154a:	2c 33       	cpi	r18, 0x3C	; 60
+    154c:	31 05       	cpc	r19, r1
+    154e:	a0 f3       	brcs	.-24     	; 0x1538 <main+0x88a>
+    1550:	3d ce       	rjmp	.-902    	; 0x11cc <main+0x51e>
 				OCR1A = 1500;
 				OCR1B = 1500;
 			}
 			
 			//-
 			if (T_X < 60 && T_Y >= 232 && T_Y < 276)
-    153e:	80 91 bc 02 	lds	r24, 0x02BC	; 0x8002bc <__data_end>
-    1542:	90 91 bd 02 	lds	r25, 0x02BD	; 0x8002bd <__data_end+0x1>
-    1546:	8c 33       	cpi	r24, 0x3C	; 60
-    1548:	91 05       	cpc	r25, r1
-    154a:	08 f4       	brcc	.+2      	; 0x154e <main+0x8a0>
-    154c:	ba cf       	rjmp	.-140    	; 0x14c2 <main+0x814>
-    154e:	d1 ce       	rjmp	.-606    	; 0x12f2 <main+0x644>
-				OCR1A = 1500;
-				OCR1B = 1500;
-			}
-			
-			//B
-			if (T_X >= 160 && T_X < 200 && T_Y >= 276)
-    1550:	80 91 bc 02 	lds	r24, 0x02BC	; 0x8002bc <__data_end>
-    1554:	90 91 bd 02 	lds	r25, 0x02BD	; 0x8002bd <__data_end+0x1>
-    1558:	80 5a       	subi	r24, 0xA0	; 160
-    155a:	91 09       	sbc	r25, r1
-    155c:	88 97       	sbiw	r24, 0x28	; 40
-    155e:	08 f4       	brcc	.+2      	; 0x1562 <main+0x8b4>
-    1560:	fa ce       	rjmp	.-524    	; 0x1356 <main+0x6a8>
-    1562:	0e cf       	rjmp	.-484    	; 0x1380 <main+0x6d2>
+    1552:	20 91 be 02 	lds	r18, 0x02BE	; 0x8002be <T_Y>
+    1556:	30 91 bf 02 	lds	r19, 0x02BF	; 0x8002bf <T_Y+0x1>
+    155a:	c5 cf       	rjmp	.-118    	; 0x14e6 <main+0x838>
+    155c:	80 91 bc 02 	lds	r24, 0x02BC	; 0x8002bc <__data_end>
+    1560:	90 91 bd 02 	lds	r25, 0x02BD	; 0x8002bd <__data_end+0x1>
+    1564:	8c 33       	cpi	r24, 0x3C	; 60
+    1566:	91 05       	cpc	r25, r1
+    1568:	a0 f3       	brcs	.-24     	; 0x1552 <main+0x8a4>
+    156a:	cb ce       	rjmp	.-618    	; 0x1302 <main+0x654>
 				OCR1A = 1500;
 				OCR1B = 1500;
 			}
 			
 			//E
-			if (T_X >= 40 && T_X < 80 && T_Y >= 276)
-    1564:	80 91 bc 02 	lds	r24, 0x02BC	; 0x8002bc <__data_end>
-    1568:	90 91 bd 02 	lds	r25, 0x02BD	; 0x8002bd <__data_end+0x1>
-    156c:	88 97       	sbiw	r24, 0x28	; 40
-    156e:	88 97       	sbiw	r24, 0x28	; 40
-    1570:	08 f4       	brcc	.+2      	; 0x1574 <main+0x8c6>
-    1572:	af cb       	rjmp	.-2210   	; 0xcd2 <main+0x24>
-    1574:	72 cf       	rjmp	.-284    	; 0x145a <main+0x7ac>
+			if (T_X >= 40 && T_X < 80 && T_Y >= 276 && T_Y < 320)
+    156c:	80 91 bc 02 	lds	r24, 0x02BC	; 0x8002bc <__data_end>
+    1570:	90 91 bd 02 	lds	r25, 0x02BD	; 0x8002bd <__data_end+0x1>
+    1574:	88 97       	sbiw	r24, 0x28	; 40
+    1576:	88 97       	sbiw	r24, 0x28	; 40
+    1578:	08 f4       	brcc	.+2      	; 0x157c <main+0x8ce>
+    157a:	ab cb       	rjmp	.-2218   	; 0xcd2 <main+0x24>
+    157c:	7f cf       	rjmp	.-258    	; 0x147c <main+0x7ce>
 
-00001576 <__umulhisi3>:
-    1576:	a2 9f       	mul	r26, r18
-    1578:	b0 01       	movw	r22, r0
-    157a:	b3 9f       	mul	r27, r19
-    157c:	c0 01       	movw	r24, r0
-    157e:	a3 9f       	mul	r26, r19
-    1580:	70 0d       	add	r23, r0
-    1582:	81 1d       	adc	r24, r1
-    1584:	11 24       	eor	r1, r1
-    1586:	91 1d       	adc	r25, r1
-    1588:	b2 9f       	mul	r27, r18
-    158a:	70 0d       	add	r23, r0
-    158c:	81 1d       	adc	r24, r1
-    158e:	11 24       	eor	r1, r1
-    1590:	91 1d       	adc	r25, r1
-    1592:	08 95       	ret
+0000157e <__umulhisi3>:
+    157e:	a2 9f       	mul	r26, r18
+    1580:	b0 01       	movw	r22, r0
+    1582:	b3 9f       	mul	r27, r19
+    1584:	c0 01       	movw	r24, r0
+    1586:	a3 9f       	mul	r26, r19
+    1588:	70 0d       	add	r23, r0
+    158a:	81 1d       	adc	r24, r1
+    158c:	11 24       	eor	r1, r1
+    158e:	91 1d       	adc	r25, r1
+    1590:	b2 9f       	mul	r27, r18
+    1592:	70 0d       	add	r23, r0
+    1594:	81 1d       	adc	r24, r1
+    1596:	11 24       	eor	r1, r1
+    1598:	91 1d       	adc	r25, r1
+    159a:	08 95       	ret
 
-00001594 <_exit>:
-    1594:	f8 94       	cli
+0000159c <_exit>:
+    159c:	f8 94       	cli
 
-00001596 <__stop_program>:
-    1596:	ff cf       	rjmp	.-2      	; 0x1596 <__stop_program>
+0000159e <__stop_program>:
+    159e:	ff cf       	rjmp	.-2      	; 0x159e <__stop_program>
