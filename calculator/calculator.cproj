@@ -139,12 +139,6 @@
     <Compile Include="calculatorFunc.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="design.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="design.h">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="font.c">
       <SubType>compile</SubType>
     </Compile>

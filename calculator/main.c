@@ -15,7 +15,6 @@
 #include <stdbool.h>
 #include "font.c"		
 #include "calculatorFunc.c"
-#include "design.h"
 
 /*display config*/
 #define LCD_DataLow PORTA	// data pins D0-D7
@@ -447,9 +446,72 @@ void print_str(unsigned int x_pos, unsigned int y_pos, unsigned char font_size, 
 }
 
 
+void draw_calc()
+{
+	//draw top menu for choosing decimal system
+	draw_line(0, 20, MAX_X, 20, WHITE);
+	for (int i = MAX_X / 4; i < MAX_X; i = i + MAX_X / 4)
+	{
+		draw_line(i, 0, i, 20, WHITE);
+	}
+	
+	//draw actual calculator lines
+	for (int j = 100; j < MAX_Y; j = j + (MAX_Y - 100) / 5)
+	{
+		draw_line(0, j, MAX_X, j, WHITE);
+	}
+	
+	for (int i = MAX_X / 4; i < MAX_X; i = i + MAX_X / 4)
+	{
+		draw_line(i, 100, i, MAX_Y - (MAX_Y - 100) / 5, WHITE);
+	}
+	
+	for (int i = MAX_X / 5; i < MAX_X; i = i + MAX_X / 6)
+	{
+		draw_line(i, MAX_Y - (MAX_Y - 100) / 6, i, MAX_Y, WHITE);
+	}
+	
+	//draw characters
+	print_str(200, 5, 2, WHITE, BLACK, "N I B \0");
+	print_str(140, 5, 2, WHITE, BLACK, "T C O \0");
+	print_str(80, 5, 2, WHITE, BLACK, "C E D \0");
+	print_str(20, 5, 2, WHITE, BLACK, "X E H \0");
+	
+	print_str(200, 110, 3, WHITE, BLACK, "7 \0");
+	print_str(140, 110, 3, WHITE, BLACK, "8 \0");
+	print_str(80, 110, 3, WHITE, BLACK, "9 \0");
+	print_str(20, 110, 3, WHITE, BLACK, "/ \0");
+	
+	print_str(200, 154, 3, WHITE, BLACK, "4 \0");
+	print_str(140, 154, 3, WHITE, BLACK, "5 \0");
+	print_str(80, 154, 3, WHITE, BLACK, "6 \0");
+	print_str(20, 154, 3, WHITE, BLACK, "x \0");
+	
+	print_str(200, 198, 3, WHITE, BLACK, "1 \0");
+	print_str(140, 198, 3, WHITE, BLACK, "2 \0");
+	print_str(80, 198, 3, WHITE, BLACK, "3 \0");
+	print_str(20, 198, 3, WHITE, BLACK, "+ \0");
+	
+	print_str(200, 242, 3, WHITE, BLACK, "0 \0");
+	print_str(140, 242, 3, WHITE, BLACK, "R L C \0");
+	print_str(80, 242, 3, WHITE, BLACK, "= \0");
+	print_str(20, 242, 3, WHITE, BLACK, "- \0");
+	
+	print_str(220, 286, 3, WHITE, BLACK, "A \0");
+	print_str(180, 286, 3, WHITE, BLACK, "B \0");
+	print_str(150, 286, 3, WHITE, BLACK, "C \0");
+	print_str(100, 286, 3, WHITE, BLACK, "D \0");
+	print_str(60, 286, 3, WHITE, BLACK, "E \0");
+	print_str(20, 286, 3, WHITE, BLACK, "F \0");
+}
+
 int main(void)
 {
 	init();
+	
+	LCD_screen_color(BLACK);
+	
+	draw_calc();
 	
     while (1) 
     {
