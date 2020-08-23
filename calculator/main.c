@@ -13,8 +13,9 @@
 #include <avr/cpufunc.h>
 #include <string.h>
 #include <stdbool.h>
+#include <stdlib.h>
 #include "font.c"		
-#include "calculatorFunc.c"
+#include "calculatorFunc.h"
 
 /*display config*/
 #define LCD_DataLow PORTA	// data pins D0-D7
@@ -64,6 +65,7 @@ void touch_write(unsigned char num) {
 unsigned int touch_read_char() {						//read data from ADC (touch) 
 	unsigned char count = 0;
 	unsigned int Num = 0;
+	
 	for(count = 0; count < 12; count++){
 		Num <<= 1;
 		PORTD |= _BV(T_CLK);					//high signal to T_CLK
@@ -95,16 +97,6 @@ void touch_read_xy(void)													//touch read x, y coordinate
 	T_X = touch_read_char();
 	
 	PORTD |= _BV(T_CS);														//to end transmission, CS is set to high
-}
-
-void int_to_str(int n, char *str)		//for LCD output
-{
-	str[0] = n / 10000 + 48;
-	str[1] = (n / 1000) - ( (n / 10000) * 10 ) + 48;
-	str[2] = ( n/ 100) - ( (n / 1000) * 10 ) + 48;
-	str[3] = (n / 10) - ( (n / 100) * 10 ) + 48;
-	str[4] = n - ( (n / 10) * 10 ) + 48;
-	str[5] = 0;
 }
 
 
@@ -513,8 +505,226 @@ int main(void)
 	
 	draw_calc();
 	
+	int n = calculator(0, 0, 0, 0);
+	
     while (1) 
     {
+		if (getBit(PIND, T_IRQ) == 0)
+		{
+			touch_read_xy();
+			
+			T_X = (T_X - 80) / 8;
+			T_Y = (T_Y - 80) / 6;
+			
+			
+			//HEX
+			if (T_X <= 60 && T_Y <= 20)
+			{
+				print_str(50, 50, 3, WHITE, BLACK, "X E H \0");
+				OCR1A = 1500;
+				OCR1B = 1500;
+			}
+			
+			//DEC
+			if (T_X >= 60 && T_X < 120 && T_Y <= 20)
+			{
+				print_str(50, 50, 3, WHITE, BLACK, "C E D \0");
+				OCR1A = 1500;
+				OCR1B = 1500;
+			}
+			
+			//OCT
+			if (T_X >= 120 && T_X < 180 && T_Y <= 20)
+			{
+				print_str(50, 50, 3, WHITE, BLACK, "T C O \0");
+				OCR1A = 1500;
+				OCR1B = 1500;
+			}
+			
+			//BIN
+			if (T_X >= 180 && T_Y <= 20)
+			{
+				print_str(50, 50, 3, WHITE, BLACK, "N I B \0");
+				OCR1A = 1500;
+				OCR1B = 1500;
+			}
+			
+			//7
+			if (T_X >= 180 && T_Y >= 100 && T_Y < 144)
+			{
+				print_str(50, 50, 3, WHITE, BLACK, "7 \0");
+				OCR1A = 1500;
+				OCR1B = 1500;
+			}
+			
+			//8
+			if (T_X >= 120 && T_X < 180 && T_Y >= 100 && T_Y < 144)
+			{
+				print_str(50, 50, 3, WHITE, BLACK, "8 \0");
+				OCR1A = 1500;
+				OCR1B = 1500;
+			}
+			
+			//9
+			if (T_X >= 60 && T_X < 120 && T_Y >= 100 && T_Y < 144)
+			{
+				print_str(50, 50, 3, WHITE, BLACK, "9 \0");
+				OCR1A = 1500;
+				OCR1B = 1500;
+			}
+			
+			// /
+			if (T_X < 60 && T_Y >= 100 && T_Y < 144)
+			{
+				print_str(50, 50, 3, WHITE, BLACK, "/ \0");
+				OCR1A = 1500;
+				OCR1B = 1500;
+			}
+			
+			//4
+			if (T_X >= 180 && T_Y >= 144 && T_Y < 188)
+			{
+				print_str(50, 50, 3, WHITE, BLACK, "4 \0");
+				OCR1A = 1500;
+				OCR1B = 1500;
+			}
+			
+			//5
+			if (T_X >= 120 && T_X < 180 && T_Y >= 144 && T_Y < 188)
+			{
+				print_str(50, 50, 3, WHITE, BLACK, "5 \0");
+				OCR1A = 1500;
+				OCR1B = 1500;
+			}
+			
+			//6
+			if (T_X >= 60 && T_X < 120 && T_Y >= 144 && T_Y < 188)
+			{
+				print_str(50, 50, 3, WHITE, BLACK, "6 \0");
+				OCR1A = 1500;
+				OCR1B = 1500;
+			}
+			
+			//x
+			if (T_X < 60 && T_Y >= 144 && T_Y < 188)
+			{
+				print_str(50, 50, 3, WHITE, BLACK, "x \0");
+				OCR1A = 1500;
+				OCR1B = 1500;
+			}
+			
+			//1
+			if (T_X >= 180 && T_Y >= 188 && T_Y < 232)
+			{
+				print_str(50, 50, 3, WHITE, BLACK, "1 \0");
+				OCR1A = 1500;
+				OCR1B = 1500;
+			}
+			
+			//2
+			if (T_X >= 120 && T_X < 180 && T_Y >= 188 && T_Y < 232)
+			{
+				print_str(50, 50, 3, WHITE, BLACK, "2 \0");
+				OCR1A = 1500;
+				OCR1B = 1500;
+			}
+			
+			//3
+			if (T_X >= 60 && T_X < 120 && T_Y >= 188 && T_Y < 232)
+			{
+				print_str(50, 50, 3, WHITE, BLACK, "3 \0");
+				OCR1A = 1500;
+				OCR1B = 1500;
+			}
+			
+			//x
+			if (T_X < 60 && T_Y >= 188 && T_Y < 232)
+			{
+				print_str(50, 50, 3, WHITE, BLACK, "+ \0");
+				OCR1A = 1500;
+				OCR1B = 1500;
+			}
+			
+			//0
+			if (T_X >= 180 && T_Y >= 232 && T_Y < 276)
+			{
+				print_str(50, 50, 3, WHITE, BLACK, "0 \0");
+				OCR1A = 1500;
+				OCR1B = 1500;
+			}
+			
+			//CLR
+			if (T_X >= 120 && T_X < 180 && T_Y >= 232 && T_Y < 276)
+			{
+				print_str(50, 50, 3, WHITE, BLACK, "R L C \0");
+				OCR1A = 1500;
+				OCR1B = 1500;
+			}
+			
+			//=
+			if (T_X >= 60 && T_X < 120 && T_Y >= 232 && T_Y < 276)
+			{
+				print_str(50, 50, 3, WHITE, BLACK, "= \0");
+				OCR1A = 1500;
+				OCR1B = 1500;
+			}
+			
+			//-
+			if (T_X < 60 && T_Y >= 232 && T_Y < 276)
+			{
+				print_str(50, 50, 3, WHITE, BLACK, "- \0");
+				OCR1A = 1500;
+				OCR1B = 1500;
+			}
+			
+			//A
+			if (T_X >= 200 && T_Y >= 276)
+			{
+				print_str(50, 50, 3, WHITE, BLACK, "A \0");
+				OCR1A = 1500;
+				OCR1B = 1500;
+			}
+			
+			//B
+			if (T_X >= 160 && T_X < 200 && T_Y >= 276)
+			{
+				print_str(50, 50, 3, WHITE, BLACK, "B \0");
+				OCR1A = 1500;
+				OCR1B = 1500;
+			}
+			
+			//C
+			if (T_X >= 120 && T_X < 160 && T_Y >= 276)
+			{
+				print_str(50, 50, 3, WHITE, BLACK, "C \0");
+				OCR1A = 1500;
+				OCR1B = 1500;
+			}
+			
+			//D
+			if (T_X >= 80 && T_X < 120 && T_Y >= 276)
+			{
+				print_str(50, 50, 3, WHITE, BLACK, "D \0");
+				OCR1A = 1500;
+				OCR1B = 1500;
+			}
+			
+			//E
+			if (T_X >= 40 && T_X < 80 && T_Y >= 276)
+			{
+				print_str(50, 50, 3, WHITE, BLACK, "E \0");
+				OCR1A = 1500;
+				OCR1B = 1500;
+			}
+			
+			//F
+			if (T_X < 40 && T_Y >= 276)
+			{
+				print_str(50, 50, 3, WHITE, BLACK, "F \0");
+				OCR1A = 1500;
+				OCR1B = 1500;
+			}
+		}
     }
 }
 
