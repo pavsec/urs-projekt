@@ -6,5 +6,7 @@ calculatorFunc.c
 
 design.c
 
+font.c
+
 main.c
 
