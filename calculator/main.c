@@ -7,6 +7,7 @@
 #define MAX_X 240
 #define BLACK 0x0000
 #define WHITE 0xffff
+#define RED 0xD369
 
 #include <avr/io.h>
 #include <util/delay.h>
@@ -473,37 +474,37 @@ void draw_calc()
 	}
 	
 	//draw characters
-	print_str(200, 5, 2, WHITE, BLACK, "NIB\0");
-	print_str(140, 5, 2, WHITE, BLACK, "TCO\0");
-	print_str(80, 5, 2, WHITE, BLACK, "CED\0");
-	print_str(20, 5, 2, WHITE, BLACK, "XEH\0");
+	print_str(200, 5, 2, WHITE, BLACK, "BIN");
+	print_str(140, 5, 2, WHITE, BLACK, "OCT");
+	print_str(80, 5, 2, WHITE, BLACK, "DEC");
+	print_str(20, 5, 2, WHITE, BLACK, "HEX");
 	
 	print_str(200, 110, 3, WHITE, BLACK, "7");
 	print_str(140, 110, 3, WHITE, BLACK, "8");
 	print_str(80, 110, 3, WHITE, BLACK, "9");
 	print_str(20, 110, 3, WHITE, BLACK, "/");
 	
-	print_str(200, 154, 3, WHITE, BLACK, "4\0");
-	print_str(140, 154, 3, WHITE, BLACK, "5\0");
-	print_str(80, 154, 3, WHITE, BLACK, "6\0");
-	print_str(20, 154, 3, WHITE, BLACK, "x\0");
+	print_str(200, 154, 3, WHITE, BLACK, "4");
+	print_str(140, 154, 3, WHITE, BLACK, "5");
+	print_str(80, 154, 3, WHITE, BLACK, "6");
+	print_str(20, 154, 3, WHITE, BLACK, "x");
 	
-	print_str(200, 198, 3, WHITE, BLACK, "1\0");
-	print_str(140, 198, 3, WHITE, BLACK, "2\0");
-	print_str(80, 198, 3, WHITE, BLACK, "3\0");
-	print_str(20, 198, 3, WHITE, BLACK, "+\0");
+	print_str(200, 198, 3, WHITE, BLACK, "1");
+	print_str(140, 198, 3, WHITE, BLACK, "2");
+	print_str(80, 198, 3, WHITE, BLACK, "3");
+	print_str(20, 198, 3, WHITE, BLACK, "+");
 	
-	print_str(200, 242, 3, WHITE, BLACK, "0\0");
-	print_str(140, 242, 3, WHITE, BLACK, "RLC\0");
-	print_str(80, 242, 3, WHITE, BLACK, "=\0");
-	print_str(20, 242, 3, WHITE, BLACK, "-\0");
+	print_str(200, 242, 3, WHITE, BLACK, "0");
+	print_str(140, 242, 3, WHITE, BLACK, "CLR");
+	print_str(80, 242, 3, WHITE, BLACK, "=");
+	print_str(20, 242, 3, WHITE, BLACK, "-");
 	
-	print_str(220, 286, 3, WHITE, BLACK, "A\0");
-	print_str(180, 286, 3, WHITE, BLACK, "B\0");
-	print_str(150, 286, 3, WHITE, BLACK, "C\0");
-	print_str(100, 286, 3, WHITE, BLACK, "D\0");
-	print_str(60, 286, 3, WHITE, BLACK, "E\0");
-	print_str(20, 286, 3, WHITE, BLACK, "F\0");
+	print_str(220, 286, 3, WHITE, BLACK, "A");
+	print_str(180, 286, 3, WHITE, BLACK, "B");
+	print_str(150, 286, 3, WHITE, BLACK, "C");
+	print_str(100, 286, 3, WHITE, BLACK, "D");
+	print_str(60, 286, 3, WHITE, BLACK, "E");
+	print_str(20, 286, 3, WHITE, BLACK, "F");
 }
 
 int convert(int system,  char *number)
@@ -514,7 +515,7 @@ int convert(int system,  char *number)
 	{
 		if (number[i] == '_') continue;
 		
-		n = n + pow(system, j++) * number[i]; 
+		n = n + pow(system, j++) * (number[i] - 48); 
 	}
 	return n;
 }
@@ -530,6 +531,33 @@ int calculate(int a, int b, char sign)
 	return result;
 }
 
+char * save_tmp(char *t, int help)
+{
+	strcpy(t, "_______");
+	int i = 0;
+	do
+	{
+		t[i++] = (help % 10) + 48;
+		help = help / 10;
+	} while (help > 0);
+	strrev(t);
+	return t;
+}
+
+int convert_system(int res, int system)
+{
+	int n = 0, i = 1;
+	
+	while (res != 0)
+	{
+		n += (res % system) * i;
+		res /= system;
+		i *= 10;
+	}
+	
+	return n;
+}
+
 int main(void)
 {
 	init();
@@ -538,15 +566,14 @@ int main(void)
 	
 	draw_calc();
 	
-//	int n = calculator(0, 0, 0, 0);
-	
-	int res = 0, system = 10;
+	int res = 0, system = 8;
 	int cnt = 0;
 	int calc = 0;
-	char num[8] = "_______\0";
-	char tmp[8] = "_______\0";
+	char num[8] = "_______";
+	char tmp[8] = "_______";
 	char sign = '_';
 	char res_print[8];
+	int print_calculated = 0;
 	
 	
     while (1) 
@@ -559,38 +586,31 @@ int main(void)
 			T_X = (T_X - 80) / 8;
 			T_Y = (T_Y - 80) / 6;
 			
-			_delay_ms(1000);
+			_delay_ms(500);
 			
 			//HEX
 			if (T_X <= 60 && T_X > 0 && T_Y <= 20 && T_Y > 0)
 			{
-				print_str(50, 50, 3, WHITE, BLACK, "X E H");
-				OCR1A = 1500;
-				OCR1B = 1500;
+				system = 16;
+				
 			}
 			
 			//DEC
 			if (T_X >= 60 && T_X < 120 && T_Y <= 20 && T_Y > 0)
 			{
-				print_str(50, 50, 3, WHITE, BLACK, "C E D");
-				OCR1A = 1500;
-				OCR1B = 1500;
+				system = 10;
 			}
 			
 			//OCT
 			if (T_X >= 120 && T_X < 180 && T_Y <= 20 && T_Y > 0)
 			{
-				print_str(50, 50, 3, WHITE, BLACK, "T C O");
-				OCR1A = 1500;
-				OCR1B = 1500;
+				system = 8;
 			}
 			
 			//BIN
 			if (T_X >= 180 && T_X < 240 && T_Y <= 20 && T_Y > 0)
 			{
-				print_str(50, 50, 3, WHITE, BLACK, "N I B");
-				OCR1A = 1500;
-				OCR1B = 1500;
+				system = 2;
 			}
 			
 			//7
@@ -598,11 +618,8 @@ int main(void)
 			{
 				if ((system == 10 || system == 8 || system == 16) && cnt < 8)
 				{
-					num[cnt++] = 7;
+					num[cnt++] = '7';
 				}
-				print_str(50, 50, 3, WHITE, BLACK, "7");
-				OCR1A = 1500;
-				OCR1B = 1500;
 			}
 			
 			//8
@@ -610,11 +627,8 @@ int main(void)
 			{
 				if ((system == 10 || system == 16) && cnt < 8)
 				{
-					num[cnt++] = 8;
+					num[cnt++] = '8';
 				}
-				print_str(50, 50, 3, WHITE, BLACK, "8");
-				OCR1A = 1500;
-				OCR1B = 1500;
 			}
 			
 			//9
@@ -622,11 +636,8 @@ int main(void)
 			{
 				if ((system == 10 || system == 16) && cnt < 8)
 				{
-					num[cnt++] = 9;
+					num[cnt++] = '9';
 				}
-				print_str(50, 50, 3, WHITE, BLACK, "9");
-				OCR1A = 1500;
-				OCR1B = 1500;
 			}
 			
 			// /
@@ -634,23 +645,29 @@ int main(void)
 			{
 				if (calc)
 				{
-					int a, b, res;
-					a = convert(system, num);
-					b = convert(system, tmp);
+					int a, b;
+					b = convert(system, num);
+					a = convert(system, tmp);
+					
 					res = calculate(a, b, sign);
-					char ss[8];
-					itoa(res, ss, system);
-					print_str(50, 50, 3, WHITE, BLACK, "ssghj");
-					calc = 0;
+					
+					sign = '_';
+					print_calculated = 1;
+					cnt = 0;
+					
+					strcpy(tmp, save_tmp(tmp, res));
 				}
+				else
+				{
+					calc++;
+					cnt = 0;
+					
+					strcpy(tmp, num);
+					strcpy(num, "_______");
+				}
+				
+				
 				sign = '/';
-				calc++;
-				strcpy(tmp, num);
-				strcpy(num, "_______");
-				
-				
-				OCR1A = 1500;
-				OCR1B = 1500;
 			}
 			
 			//4
@@ -658,11 +675,8 @@ int main(void)
 			{
 				if ((system == 10 || system == 8 || system == 16) && cnt < 8)
 				{
-					num[cnt++] = 4;
+					num[cnt++] = '4';
 				}
-				print_str(50, 50, 3, WHITE, BLACK, "4");
-				OCR1A = 1500;
-				OCR1B = 1500;
 			}
 			
 			//5
@@ -670,11 +684,8 @@ int main(void)
 			{
 				if ((system == 10 || system == 8 || system == 16) && cnt < 8)
 				{
-					num[cnt++] = 5;
+					num[cnt++] = '5';
 				}
-				print_str(50, 50, 3, WHITE, BLACK, "5");
-				OCR1A = 1500;
-				OCR1B = 1500;
 			}
 			
 			//6
@@ -682,19 +693,37 @@ int main(void)
 			{
 				if ((system == 10 || system == 8 || system == 16) && cnt < 8)
 				{
-					num[cnt++] = 6;
+					num[cnt++] = '6';
 				}
-				print_str(50, 50, 3, WHITE, BLACK, "6");
-				OCR1A = 1500;
-				OCR1B = 1500;
 			}
 			
 			//x
 			if (T_X < 60 && T_Y >= 144 && T_Y < 188)
 			{
-				print_str(50, 50, 3, WHITE, BLACK, "x");
-				OCR1A = 1500;
-				OCR1B = 1500;
+				if (calc)
+				{
+					int a, b;
+					a = convert(system, num);
+					b = convert(system, tmp);
+					
+					res = calculate(a, b, sign);
+					
+					sign = '_';
+					print_calculated = 1;
+					cnt = 0;
+					
+					strcpy(tmp, 	save_tmp(tmp, res));
+				}
+				else
+				{
+					calc++;
+					cnt = 0;
+					
+					strcpy(tmp, num);
+					strcpy(num, "_______");
+				}
+				
+				sign = 'x';
 			}
 			
 			//1
@@ -702,11 +731,8 @@ int main(void)
 			{
 				if ((system == 10 || system == 8 || system == 16 || system == 2) && cnt < 8)
 				{
-					num[cnt++] = 1;
+					num[cnt++] = '1';
 				}
-				print_str(50, 50, 3, WHITE, BLACK, "1");
-				OCR1A = 1500;
-				OCR1B = 1500;
 			}
 			
 			//2
@@ -714,11 +740,8 @@ int main(void)
 			{
 				if ((system == 10 || system == 8 || system == 16) && cnt < 8)
 				{
-					num[cnt++] = 2;
+					num[cnt++] = '2';
 				}
-				print_str(50, 50, 3, WHITE, BLACK, "2");
-				OCR1A = 1500;
-				OCR1B = 1500;
 			}
 			
 			//3
@@ -726,11 +749,8 @@ int main(void)
 			{
 				if ((system == 10 || system == 8 || system == 16) && cnt < 8)
 				{
-					num[cnt++] = 3;
+					num[cnt++] = '3';
 				}
-				print_str(50, 50, 3, WHITE, BLACK, "3");
-				OCR1A = 1500;
-				OCR1B = 1500;
 			}
 			
 			//+
@@ -744,21 +764,22 @@ int main(void)
 					
 					res = calculate(a, b, sign);
 					
-					calc = 0;
+					sign = '_';
+					print_calculated = 1;
+					cnt = 0;
+					
+					strcpy(tmp, save_tmp(tmp, res));
 				}
 				else
 				{
-					print_str(50, 50, 3, WHITE, BLACK, "+");
-					sign = '+';
 					calc++;
+					cnt = 0;
+					
 					strcpy(tmp, num);
 					strcpy(num, "_______");
-					cnt = 0;
 				}
 				
-				//print_str(50, 50, 3, WHITE, BLACK, "+");
-				OCR1A = 1500;
-				OCR1B = 1500;
+				sign = '+';
 			}
 			
 			//0
@@ -777,25 +798,65 @@ int main(void)
 			//CLR
 			if (T_X >= 120 && T_X < 180 && T_Y >= 232 && T_Y < 276)
 			{
-				print_str(50, 50, 3, WHITE, BLACK, "R L C");
-				OCR1A = 1500;
-				OCR1B = 1500;
+				print_str(50, 50, 3, WHITE, BLACK, "       ");
+				
+				strcpy(num, "_______");
+				strcpy(tmp, "_______");
+				sign = '_';
+				res = 0;
+				cnt = 0;
+				calc = 0;
+				print_calculated = 0;
 			}
 			
 			//=
 			if (T_X >= 60 && T_X < 120 && T_Y >= 232 && T_Y < 276)
 			{
-				print_str(50, 50, 3, WHITE, BLACK, "=");
-				OCR1A = 1500;
-				OCR1B = 1500;
+				calc = 0;
+				cnt = 0;
+				print_calculated = 1;
+				
+				int a, b;
+				b = convert(system, num);
+				a = convert(system, tmp);
+				
+				
+				
+				res = calculate(a, b, sign);
+		
+				strcpy(tmp, save_tmp(tmp, res));
+				strcpy(num, tmp);
+				
+				sign = '_';
 			}
 			
 			//-
 			if (T_X < 60 && T_Y >= 232 && T_Y < 276)
 			{
-				print_str(50, 50, 3, WHITE, BLACK, "-");
-				OCR1A = 1500;
-				OCR1B = 1500;
+				if (calc)
+				{
+					int a, b;
+					b = convert(system, num);
+					a = convert(system, tmp);
+					
+					res = calculate(a, b, sign);
+					
+					sign = '_';
+					print_calculated = 1;
+					cnt = 0;
+					
+					strcpy(tmp, 	save_tmp(tmp, res));
+				}
+				else
+				{
+					calc++;
+					cnt = 0;
+					
+					strcpy(tmp, num);
+					strcpy(num, "_______");
+				}
+				
+				sign = '-';
 			}
 			
 			//A
@@ -870,7 +931,21 @@ int main(void)
 				OCR1B = 1500;
 			}
 			
-			res = convert(system, num);
+			if (!print_calculated)
+			{
+				res = convert(system, num);
+			}
+			else
+			{	
+				print_calculated = 0;
+				/*if (system != 10)
+				{
+					res = convert_system(res, system);
+				}convert from dec to system*/
+			}
+			
+			
+			
 			sprintf(res_print, "%d", res);
 			print_str(50, 50, 3, WHITE, BLACK, res_print);
 		}
