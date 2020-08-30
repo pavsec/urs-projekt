@@ -38,8 +38,13 @@
 #define T_CLK PD1   //touch controller clock
 #define T_CS PD2	//touch chip select
 /*end touch*/
+#define BLANK "_______"
+#define MAX_CHARS 16
 
-unsigned int T_X, T_Y;	//x and y coordinates
+unsigned int T_X, T_Y;			//x and y coordinates
+char number_1[MAX_CHARS + 1] = BLANK;	//number that is being written
+int number_1_mem = 0;			//written number, save it for later use
+char tmp[MAX_CHARS + 1] = BLANK;		//number in memory
 
 bool getBit(int reg, int offset) {
 	return !!( (reg >> offset) & 1 );
@@ -152,6 +157,81 @@ void address_set(unsigned int x1, unsigned int y1, unsigned int x2, unsigned int
 	LCD_write_cmd(0x0022);
 }
 
+void LCD_screen_color(unsigned int color)
+{
+	int i,j;
+	address_set(0, 0, 239, 319);
+
+	for(i = 0; i < 320; i++)
+	{
+		for (j = 0; j < 240; j++)
+		{
+			LCD_write_data(color);
+		}
+	}
+}
+
+
+void draw_calc()
+{
+	//draw top menu for choosing decimal system
+	draw_line(0, 40, MAX_X, 40, WHITE);
+	for (int i = MAX_X / 4; i < MAX_X; i = i + MAX_X / 4)
+	{
+		draw_line(i, 0, i, 40, WHITE);
+	}
+	
+	//draw actual calculator lines
+	for (int j = 100; j < MAX_Y; j = j + (MAX_Y - 100) / 5)
+	{
+		draw_line(0, j, MAX_X, j, WHITE);
+	}
+	
+	for (int i = MAX_X / 4; i < MAX_X; i = i + MAX_X / 4)
+	{
+		draw_line(i, 100, i, MAX_Y - (MAX_Y - 100) / 5, WHITE);
+	}
+	
+	for (int i = MAX_X / 5; i < MAX_X; i = i + MAX_X / 6)
+	{
+		draw_line(i, MAX_Y - (MAX_Y - 100) / 6, i, MAX_Y, WHITE);
+	}
+	
+	//draw characters
+	print_str(220, 286, 3, WHITE, BLACK, "A");
+	print_str(180, 286, 3, WHITE, BLACK, "B");
+	print_str(140, 286, 3, WHITE, BLACK, "C");
+	print_str(100, 286, 3, WHITE, BLACK, "D");
+	print_str(60, 286, 3, WHITE, BLACK, "E");
+	print_str(20, 286, 3, WHITE, BLACK, "F");
+	
+	print_str(195, 12, 2, WHITE, BLACK, "BIN");
+	print_str(135, 12, 2, WHITE, BLACK, "OCT");
+	print_str(75, 12, 2, WHITE, BLACK, "DEC");
+	print_str(15, 12, 2, WHITE, BLACK, "HEX");
+	
+	print_str(200, 110, 3, WHITE, BLACK, "7");
+	print_str(140, 110, 3, WHITE, BLACK, "8");
+	print_str(80, 110, 3, WHITE, BLACK, "9");
+	print_str(20, 110, 3, WHITE, BLACK, "/");
+	
+	print_str(200, 154, 3, WHITE, BLACK, "4");
+	print_str(140, 154, 3, WHITE, BLACK, "5");
+	print_str(80, 154, 3, WHITE, BLACK, "6");
+	print_str(20, 154, 3, WHITE, BLACK, "x");
+	
+	print_str(200, 198, 3, WHITE, BLACK, "1");
+	print_str(140, 198, 3, WHITE, BLACK, "2");
+	print_str(80, 198, 3, WHITE, BLACK, "3");
+	print_str(20, 198, 3, WHITE, BLACK, "+");
+	
+	print_str(200, 242, 3, WHITE, BLACK, "0");
+	print_str(140, 242, 3, WHITE, BLACK, "CLR");
+	print_str(80, 242, 3, WHITE, BLACK, "=");
+	print_str(20, 242, 3, WHITE, BLACK, "-");
+	
+	
+}
 
 void init(void)
 {
@@ -160,18 +240,8 @@ void init(void)
 	DDRD = 0xff;
 	DDRC = 0xff;
 	
-	DDRD = ~(_BV(T_OUT) | _BV(T_IRQ));						//pinovi kao ulazni za primanje podataka
-	
-	TCCR1A = _BV(COM1A1) | _BV(COM1B1) | _BV(WGM11);		//set on bottom, clear on match
-	TCCR1B =  _BV(WGM12) | _BV(WGM13) | _BV(CS11);			//WG - fast PWM, top on ICR1, prescaler = 8
-	
-	ICR1 = 18431;											// top - 50Hz/20ms
-	
-	OCR1A = 1500;
-	OCR1B = 1500;
-	
-	DDRD |= (1 << PD6) | (1 << PD5);						//pinovi kao izlazni za pwm
-	
+	DDRD = ~(_BV(T_OUT) | _BV(T_IRQ));						//input pins that read data
+		
 	//LCD config setup
 	PORTD |= _BV(LCD_RESET);
 	_delay_ms(5);
@@ -224,37 +294,14 @@ void init(void)
 	LCD_write_cmd_data(0x004f,0);
 	LCD_write_cmd_data(0x004e,0);
 	LCD_write_cmd(0x0022);
-}
-
-
-void LCD_screen_color(unsigned int color)
-{
-	int i,j;
-	address_set(0, 0, 239, 319);
-
-	for(i = 0; i < 320; i++)
-	{
-		for (j = 0; j < 240; j++)
-		{
-			LCD_write_data(color);
-		}
-	}
-}
-
-void swap(signed int *a, signed int *b)
-{
-	return;
-	signed int temp = 0x0000;
-
-	temp = *b;
-	*b = *a;
-	*a = temp;
+	
+	LCD_screen_color(BLACK);
+	
+	draw_calc();
 }
 
 void TFT_set_cursor(signed int x_pos, signed int y_pos)
 {
-	swap(&x_pos, &y_pos);
-	
 	y_pos = (MAX_Y - 1 - y_pos);
 	
 	LCD_write_cmd_data(0x004E, x_pos);
@@ -344,34 +391,6 @@ void draw_line(signed int x1, signed int y1, signed int x2, signed int y2, unsig
 }
 
 
-void draw_line_vertical(signed int x1, signed int y1, signed int y2, unsigned colour)
-{
-	if(y1 > y2)
-	{
-		swap(&y1, &y2);
-	}
-	
-	while(y2 > (y1 - 1))
-	{
-		draw_pixel(x1, y2, colour);
-		y2--;
-	}
-}
-
-void draw_line_horizontal(signed int x1, signed int x2, signed int y1, unsigned colour)
-{
-	if(x1 > x2)
-	{
-		swap(&x1, &x2);
-	}
-
-	while(x2 > (x1 - 1))
-	{
-		draw_pixel(x2, y1, colour);
-		x2--;
-	}
-}
-
 void draw_font_pixel(unsigned int x_pos, unsigned int y_pos, unsigned int colour, unsigned char pixel_size)
 {
 	int i = 0x0000;
@@ -433,7 +452,7 @@ void print_str(unsigned int x_pos, unsigned int y_pos, unsigned char font_size, 
 	int cnt = 0;
 	strrev(ch);
 	
-	do
+	while( (ch[cnt] >= 0x20) && (ch[cnt] <= 0x7F) )
 	{
 		if (ch[cnt] == 0x5f) 
 		{
@@ -444,67 +463,7 @@ void print_str(unsigned int x_pos, unsigned int y_pos, unsigned char font_size, 
 		x_pos += 0x06;
 		print_char(x_pos, y_pos, font_size, colour, back_colour, 0x20);
 		x_pos += 0x06;
-	} while( (ch[cnt] >= 0x20) && (ch[cnt] <= 0x7F) );
-}
-
-
-void draw_calc()
-{
-	//draw top menu for choosing decimal system
-	draw_line(0, 20, MAX_X, 20, WHITE);
-	for (int i = MAX_X / 4; i < MAX_X; i = i + MAX_X / 4)
-	{
-		draw_line(i, 0, i, 20, WHITE);
 	}
-	
-	//draw actual calculator lines
-	for (int j = 100; j < MAX_Y; j = j + (MAX_Y - 100) / 5)
-	{
-		draw_line(0, j, MAX_X, j, WHITE);
-	}
-	
-	for (int i = MAX_X / 4; i < MAX_X; i = i + MAX_X / 4)
-	{
-		draw_line(i, 100, i, MAX_Y - (MAX_Y - 100) / 5, WHITE);
-	}
-	
-	for (int i = MAX_X / 5; i < MAX_X; i = i + MAX_X / 6)
-	{
-		draw_line(i, MAX_Y - (MAX_Y - 100) / 6, i, MAX_Y, WHITE);
-	}
-	
-	//draw characters
-	print_str(200, 5, 2, WHITE, BLACK, "BIN");
-	print_str(140, 5, 2, WHITE, BLACK, "OCT");
-	print_str(80, 5, 2, WHITE, BLACK, "DEC");
-	print_str(20, 5, 2, WHITE, BLACK, "HEX");
-	
-	print_str(200, 110, 3, WHITE, BLACK, "7");
-	print_str(140, 110, 3, WHITE, BLACK, "8");
-	print_str(80, 110, 3, WHITE, BLACK, "9");
-	print_str(20, 110, 3, WHITE, BLACK, "/");
-	
-	print_str(200, 154, 3, WHITE, BLACK, "4");
-	print_str(140, 154, 3, WHITE, BLACK, "5");
-	print_str(80, 154, 3, WHITE, BLACK, "6");
-	print_str(20, 154, 3, WHITE, BLACK, "x");
-	
-	print_str(200, 198, 3, WHITE, BLACK, "1");
-	print_str(140, 198, 3, WHITE, BLACK, "2");
-	print_str(80, 198, 3, WHITE, BLACK, "3");
-	print_str(20, 198, 3, WHITE, BLACK, "+");
-	
-	print_str(200, 242, 3, WHITE, BLACK, "0");
-	print_str(140, 242, 3, WHITE, BLACK, "CLR");
-	print_str(80, 242, 3, WHITE, BLACK, "=");
-	print_str(20, 242, 3, WHITE, BLACK, "-");
-	
-	print_str(220, 286, 3, WHITE, BLACK, "A");
-	print_str(180, 286, 3, WHITE, BLACK, "B");
-	print_str(150, 286, 3, WHITE, BLACK, "C");
-	print_str(100, 286, 3, WHITE, BLACK, "D");
-	print_str(60, 286, 3, WHITE, BLACK, "E");
-	print_str(20, 286, 3, WHITE, BLACK, "F");
 }
 
 char num_to_char(int n)
@@ -526,17 +485,20 @@ int char_to_num(char c)
 int convert(int system,  char *number)
 {
 	int n = 0;
-	for (int i = 0; number[i] != '_'; i++)
+	int negate = -(number[0] == '-');
+	for (int i = -negate; number[i] != '_'; i++)
 	{
 		n = n * system + char_to_num(number[i]);
 	}
 	
-	return n;
+	return n + negate ^ negate;
 }
 
 void convert_system(int res, int system, char *out)
 {
 	int n = 0, i = 0;
+	char negative = res < 0;
+	res = abs(res);
 	do
 	{
 		n = res % system;
@@ -544,51 +506,150 @@ void convert_system(int res, int system, char *out)
 		res /= system;
 	}
 	while (res != 0);
+	if (negative)
+		out[i++] = '-';
 	out[i] = 0;
+	strrev(out);
+	out[i] = '_';
 }
 
 
 int calculate(int a, int b, char sign)
 {
 	int result = 0;
+	
 	if (sign == '+') result = a + b;
-	if (sign == '-') result = a - b;
-	if (sign == '/') result = a / b;
-	if (sign == 'x') result = a * b;
+	else if (sign == '-') result = a - b;
+	else if (sign == '/') result = a / b;
+	else if (sign == 'x') result = a * b;
 	
 	return result;
 }
 
-char * save_tmp(char *t, int help)
+char get_clicked_number(int cnt, int system)
 {
-	strcpy(t, "_______");
-	int i = 0;
-	do
+	if (cnt < MAX_CHARS)
 	{
-		t[i++] = (help % 10) + 48;
-		help = help / 10;
-	} while (help > 0);
-	strrev(t);
-	return t;
+		if (system >= 16)
+		{
+			//A
+			if (T_X >= 200 && T_X < 240 && T_Y >= 276 && T_Y < 320)
+			{
+				return 'A';
+			}
+		
+			//B
+			else if (T_X >= 160 && T_X < 200 && T_Y >= 276 && T_Y < 320)
+			{
+				return 'B';
+			}
+		
+			//C
+			else if (T_X >= 120 && T_X < 160 && T_Y >= 276 && T_Y < 320)
+			{
+				return 'C';
+			}
+		
+			//D
+			else if (T_X >= 80 && T_X < 120 && T_Y >= 276 && T_Y < 320)
+			{
+				return 'D';
+			}
+		
+			//E
+			else if (T_X >= 40 && T_X < 80 && T_Y >= 276 && T_Y < 320)
+			{
+				return 'E';
+			}
+		
+			//F
+			else if (T_X < 40 && T_Y >= 276 && T_Y < 320)
+			{
+				return 'F';
+			}
+		}
+		
+		if (system >= 10)
+		{
+			//8
+			if (T_X >= 120 && T_X < 180 && T_Y >= 100 && T_Y < 144)
+			{
+				return '8';
+			}
+			
+			//9
+			else if (T_X >= 60 && T_X < 120 && T_Y >= 100 && T_Y < 144)
+			{
+				return '9';
+			}
+		}
+		
+		if (system >= 8)
+		{
+			//2
+			if (T_X >= 120 && T_X < 180 && T_Y >= 188 && T_Y < 232)
+			{
+				return '2';
+			}
+		
+			//3
+			else if (T_X >= 60 && T_X < 120 && T_Y >= 188 && T_Y < 232)
+			{
+				return '3';
+			}
+	
+			//4
+			else if (T_X >= 180 && T_Y >= 144 && T_Y < 188)
+			{
+				return '4';
+			}
+		
+			//5
+			else if (T_X >= 120 && T_X < 180 && T_Y >= 144 && T_Y < 188)
+			{
+				return '5';
+			}
+		
+			//6
+			else if (T_X >= 60 && T_X < 120 && T_Y >= 144 && T_Y < 188)
+			{
+				return '6';
+			}
+		
+			//7
+			else if (T_X >= 180 && T_Y >= 100 && T_Y < 144)
+			{
+				return '7';
+			}
+		}
+	
+		
+		//0
+		if (T_X >= 180 && T_Y >= 232 && T_Y < 276)
+		{
+			return '0';
+		}
+	
+		//1
+		else if (T_X >= 180 && T_Y >= 188 && T_Y < 232)
+		{
+			return '1';
+		}
+	}
+	return 0;
 }
 
 int main(void)
 {
 	init();
 	
-	LCD_screen_color(BLACK);
-	
-	draw_calc();
-	
 	int res = 0, system = 10;
 	int cnt = 0;
 	int calc = 0;
-	char num[8] = "_______";
-	char tmp[8] = "_______";
 	char sign = '_';
-	char res_print[8];
+	char res_print[MAX_CHARS];
 	int print_calculated = 0;
-	
+	int remember_ans = 0;
 	
     while (1) 
     {
@@ -603,318 +664,168 @@ int main(void)
 			_delay_ms(500);
 			
 			//HEX
-			if (T_X <= 60 && T_X > 0 && T_Y <= 20 && T_Y > 0)
+			if (T_X <= 60 && T_X > 0 && T_Y <= 40 && T_Y > 0)
 			{
-				int number = convert(system, num);
+				int number = convert(system, number_1);
 				system = 16;
-				convert_system(number, system, num);
+				convert_system(number, system, number_1);
+				
 			}
 			
 			//DEC
-			if (T_X >= 60 && T_X < 120 && T_Y <= 20 && T_Y > 0)
+			if (T_X >= 60 && T_X < 120 && T_Y <= 40 && T_Y > 0)
 			{
-				int number = convert(system, num);
+				int number = convert(system, number_1);
 				system = 10;
-				convert_system(number, system, num);
+				convert_system(number, system, number_1);
 			}
 			
 			//OCT
-			if (T_X >= 120 && T_X < 180 && T_Y <= 20 && T_Y > 0)
+			if (T_X >= 120 && T_X < 180 && T_Y <= 40 && T_Y > 0)
 			{
-				int number = convert(system, num);
+				int number = convert(system, number_1);
 				system = 8;
-				convert_system(number, system, num);
+				convert_system(number, system, number_1);
 			}
 			
 			//BIN
-			if (T_X >= 180 && T_X < 240 && T_Y <= 20 && T_Y > 0)
+			if (T_X >= 180 && T_X < 240 && T_Y <= 40 && T_Y > 0)
 			{
-				int number = convert(system, num);
+				int number = convert(system, number_1);
 				system = 2;
-				convert_system(number, system, num);
+				convert_system(number, system, number_1);
 			}
 			
-			if (cnt < 8)
+			char cur_num = get_clicked_number(cnt, system);
+			if (cur_num)
 			{
-				if (system >= 16)
+				if (remember_ans)
 				{
-					//A
-					if (T_X >= 200 && T_X < 240 && T_Y >= 276 && T_Y < 320)
-					{
-						num[cnt++] = 'A';
-					}
-				
-					//B
-					else if (T_X >= 160 && T_X < 200 && T_Y >= 276 && T_Y < 320)
-					{
-						num[cnt++] = 'B';
-					}
-				
-					//C
-					else if (T_X >= 120 && T_X < 160 && T_Y >= 276 && T_Y < 320)
-					{
-						num[cnt++] = 'C';
-					}
-				
-					//D
-					else if (T_X >= 80 && T_X < 120 && T_Y >= 276 && T_Y < 320)
-					{
-						num[cnt++] = 'D';
-					}
-				
-					//E
-					else if (T_X >= 40 && T_X < 80 && T_Y >= 276 && T_Y < 320)
-					{
-						num[cnt++] = 'E';
-					}
-				
-					//F
-					else if (T_X < 40 && T_Y >= 276 && T_Y < 320)
-					{
-						num[cnt++] = 'F';
-					}
+					strcpy(number_1, BLANK);
+					remember_ans = 0;
 				}
-				
-				if (system >= 10)
-				{
-					//8
-					if (T_X >= 120 && T_X < 180 && T_Y >= 100 && T_Y < 144)
-					{
-						num[cnt++] = '8';
-					}
-					
-					//9
-					else if (T_X >= 60 && T_X < 120 && T_Y >= 100 && T_Y < 144)
-					{
-						num[cnt++] = '9';
-					}
-				}
-				
-				if (system >= 8)
-				{
-					//2
-					if (T_X >= 120 && T_X < 180 && T_Y >= 188 && T_Y < 232)
-					{
-						num[cnt++] = '2';
-					}
-				
-					//3
-					else if (T_X >= 60 && T_X < 120 && T_Y >= 188 && T_Y < 232)
-					{
-						num[cnt++] = '3';
-					}
-			
-					//4
-					else if (T_X >= 180 && T_Y >= 144 && T_Y < 188)
-					{
-						num[cnt++] = '4';
-					}
-				
-					//5
-					else if (T_X >= 120 && T_X < 180 && T_Y >= 144 && T_Y < 188)
-					{
-						num[cnt++] = '5';
-					}
-				
-					//6
-					else if (T_X >= 60 && T_X < 120 && T_Y >= 144 && T_Y < 188)
-					{
-						num[cnt++] = '6';
-					}
-				
-					//7
-					else if (T_X >= 180 && T_Y >= 100 && T_Y < 144)
-					{
-						num[cnt++] = '7';
-					}
-				}
-			
-				
-				//0
-				if (T_X >= 180 && T_Y >= 232 && T_Y < 276)
-				{
-					num[cnt++] = '0';
-				}
-			
-				//1
-				else if (T_X >= 180 && T_Y >= 188 && T_Y < 232)
-				{
-					num[cnt++] = '1';
-				}
+				number_1[cnt++] = cur_num;
 			}
 			
-			// /
-			if (T_X < 60 && T_Y >= 100 && T_Y < 144)
+			
+			//if (1) 
 			{
-				if (calc)
+				if (T_X < 60 && T_Y >= 100 && T_Y < 276)
 				{
-					int a, b;
-					b = convert(system, num);
-					a = convert(system, tmp);
+					char sign_mem = sign;
 					
-					res = calculate(a, b, sign);
+					// /
+					if (T_X < 60 && T_Y >= 100 && T_Y < 144)
+					{
+						sign = '/';
+					}
 					
-					sign = '_';
+					//x
+					else if (T_X < 60 && T_Y >= 144 && T_Y < 188)
+					{
+						sign = 'x';
+					}
+					
+					//+
+					else if (T_X < 60 && T_Y >= 188 && T_Y < 232)
+					{
+						sign = '+';
+					}
+					
+					//-
+					else if (T_X < 60 && T_Y >= 232 && T_Y < 276)
+					{
+						sign = '-';
+					}
+					
+					if (calc)
+					{
+						if (sign_mem == '_') sign_mem = sign;
+						
+						int a;
+						a = convert(system, number_1);
+						
+						res = calculate(number_1_mem, a, sign_mem);
+						number_1_mem = res;
+						convert_system(res, system, number_1);
+					}
+					else 
+					{
+						number_1_mem = convert(system, number_1);
+						calc = 1;
+					}
+					
+					remember_ans = 1;
 					print_calculated = 1;
 					cnt = 0;
-					
-					strcpy(tmp, save_tmp(tmp, res));
+					//strcpy(number_1, BLANK);
 				}
-				else
+				
+				
+				//=
+				else if (T_X >= 60 && T_X < 120 && T_Y >= 232 && T_Y < 276)
 				{
-					calc++;
 					cnt = 0;
+					print_calculated = 1;
 					
-					strcpy(tmp, num);
-					strcpy(num, "_______");
-				}
-				
-				
-				sign = '/';
-			}
-			
-			
-			//x
-			else if (T_X < 60 && T_Y >= 144 && T_Y < 188)
-			{
-				if (calc)
-				{
-					int a, b;
-					a = convert(system, num);
-					b = convert(system, tmp);
+					int a;
+					a = convert(system, number_1);
 					
-					res = calculate(a, b, sign);
+					res = calculate(number_1_mem, a, sign);
+					number_1_mem = res;
+					//strcpy(number_1, BLANK);
+					convert_system(res, system, number_1);
 					
 					sign = '_';
-					print_calculated = 1;
-					cnt = 0;
-					
-					strcpy(tmp, save_tmp(tmp, res));
 				}
-				else
-				{
-					calc++;
-					cnt = 0;
-					
-					strcpy(tmp, num);
-					strcpy(num, "_______");
-				}
-				
-				sign = 'x';
-			}
-			
-			//+
-			if (T_X < 60 && T_Y >= 188 && T_Y < 232)
-			{
-				if (calc)
-				{
-					int a, b;
-					a = convert(system, num);
-					b = convert(system, tmp);
-					
-					res = calculate(a, b, sign);
-					
-					sign = '_';
-					print_calculated = 1;
-					cnt = 0;
-					
-					strcpy(tmp, save_tmp(tmp, res));
-				}
-				else
-				{
-					calc++;
-					cnt = 0;
-					
-					strcpy(tmp, num);
-					strcpy(num, "_______");
-				}
-				
-				sign = '+';
 			}
 						
 			//CLR
 			if (T_X >= 120 && T_X < 180 && T_Y >= 232 && T_Y < 276)
 			{
-				print_str(50, 50, 3, WHITE, BLACK, "       ");
+				print_str(20, 60, 3, WHITE, BLACK, "            ");
 				
-				strcpy(num, "_______");
-				strcpy(tmp, "_______");
+				strcpy(number_1, BLANK);
 				sign = '_';
 				res = 0;
+				number_1_mem = 0;
 				cnt = 0;
 				calc = 0;
 				print_calculated = 0;
+				continue;
 			}
 			
-			//=
-			if (T_X >= 60 && T_X < 120 && T_Y >= 232 && T_Y < 276)
+			if (!print_calculated)
 			{
-				calc = 0;
-				cnt = 0;
-				print_calculated = 1;
-				
-				int a, b;
-				b = convert(system, num);
-				a = convert(system, tmp);
-				
-				res = calculate(a, b, sign);
-		
-				strcpy(tmp, save_tmp(tmp, res));
-				strcpy(num, tmp);
-				
-				sign = '_';
+				print_str(20, 60, 3, WHITE, BLACK, "       ");
+					
+				res = convert(system, number_1);
 			}
-			
-			//-
-			if (T_X < 60 && T_Y >= 232 && T_Y < 276)
+			else
+			{	
+				print_calculated = 0;
+				res = number_1_mem;
+			}
+		
+			/*if (system != 10)
 			{
-				if (calc)
+				res = convert_system(res, system);
+				system = 10;
+			}*/
+			
+//			sprintf(res_print, "%d", res);
+			for (uint8_t i = 0; i < MAX_CHARS; i++)
+			{
+				if (number_1[i] == '_')
 				{
-					int a, b;
-					b = convert(system, num);
-					a = convert(system, tmp);
-					
-					res = calculate(a, b, sign);
-					
-					sign = '_';
-					print_calculated = 1;
-					cnt = 0;
-					
-					strcpy(tmp, 	save_tmp(tmp, res));
+					res_print[i] = 0;
+					break;
 				}
-				else
-				{
-					calc++;
-					cnt = 0;
-					
-					strcpy(tmp, num);
-					strcpy(num, "_______");
-				}
+				res_print[i] = number_1[i];
 				
-				sign = '-';
 			}
-		
-		
-			
-		if (!print_calculated)
-		{
-			//res = convert(system, num);
-			print_str(50, 50, 3, WHITE, BLACK, num);
-			continue;
-		}
-		else
-		{	
-			print_calculated = 0;
-		}
-		
-		/*if (system != 10)
-		{
-			res = convert_system(res, system);
-			system = 10;
-		}*/
-			
-		sprintf(res_print, "%d", res);
-		//print_str(50, 50, 3, WHITE, BLACK, res_print);
+			//strcpy(res_print, number_1);
+			print_str(20, 60, 3, WHITE, BLACK, res_print);
 		
 		}
     }
