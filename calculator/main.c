@@ -708,82 +708,78 @@ int main(void)
 			}
 			
 			
-			//if (1) 
+
+			if (T_X < 60 && T_Y >= 100 && T_Y < 276)
 			{
-				if (T_X < 60 && T_Y >= 100 && T_Y < 276)
+				char sign_mem = sign;
+					
+				// /
+				if (T_X < 60 && T_Y >= 100 && T_Y < 144)
 				{
-					char sign_mem = sign;
-					
-					// /
-					if (T_X < 60 && T_Y >= 100 && T_Y < 144)
-					{
-						sign = '/';
-					}
-					
-					//x
-					else if (T_X < 60 && T_Y >= 144 && T_Y < 188)
-					{
-						sign = 'x';
-					}
-					
-					//+
-					else if (T_X < 60 && T_Y >= 188 && T_Y < 232)
-					{
-						sign = '+';
-					}
-					
-					//-
-					else if (T_X < 60 && T_Y >= 232 && T_Y < 276)
-					{
-						sign = '-';
-					}
-					
-					if (calc)
-					{
-						if (sign_mem == '_') sign_mem = sign;
-						
-						int a;
-						a = convert(system, number_1);
-						
-						res = calculate(number_1_mem, a, sign_mem);
-						number_1_mem = res;
-						convert_system(res, system, number_1);
-					}
-					else 
-					{
-						number_1_mem = convert(system, number_1);
-						calc = 1;
-					}
-					
-					remember_ans = 1;
-					print_calculated = 1;
-					cnt = 0;
-					//strcpy(number_1, BLANK);
+					sign = '/';
 				}
-				
-				
-				//=
-				else if (T_X >= 60 && T_X < 120 && T_Y >= 232 && T_Y < 276)
-				{
-					cnt = 0;
-					print_calculated = 1;
 					
+				//x
+				else if (T_X < 60 && T_Y >= 144 && T_Y < 188)
+				{
+					sign = 'x';
+				}
+					
+				//+
+				else if (T_X < 60 && T_Y >= 188 && T_Y < 232)
+				{
+					sign = '+';
+				}
+					
+				//-
+				else if (T_X < 60 && T_Y >= 232 && T_Y < 276)
+				{
+					sign = '-';
+				}
+					
+				if (calc)
+				{
+					if (sign_mem == '_') sign_mem = sign;
+						
 					int a;
 					a = convert(system, number_1);
-					
-					res = calculate(number_1_mem, a, sign);
+						
+					res = calculate(number_1_mem, a, sign_mem);
 					number_1_mem = res;
-					//strcpy(number_1, BLANK);
 					convert_system(res, system, number_1);
-					
-					sign = '_';
 				}
+				else 
+				{
+					number_1_mem = convert(system, number_1);
+					calc = 1;
+				}
+					
+				remember_ans = 1;
+				print_calculated = 1;
+				cnt = 0;
+				//strcpy(number_1, BLANK);
+			}
+			//=
+			else if (T_X >= 60 && T_X < 120 && T_Y >= 232 && T_Y < 276)
+			{
+				cnt = 0;
+				print_calculated = 1;
+					
+				int a;
+				a = convert(system, number_1);
+					
+				res = calculate(number_1_mem, a, sign);
+				number_1_mem = res;
+				//strcpy(number_1, BLANK);
+				convert_system(res, system, number_1);
+					
+				sign = '_';
 			}
 						
 			//CLR
 			if (T_X >= 120 && T_X < 180 && T_Y >= 232 && T_Y < 276)
 			{
-				print_str(20, 60, 3, WHITE, BLACK, "            ");
+				print_str(20, 60, 3, WHITE, BLACK, "                ");
 				
 				strcpy(number_1, BLANK);
 				sign = '_';
@@ -797,7 +793,7 @@ int main(void)
 			
 			if (!print_calculated)
 			{
-				print_str(20, 60, 3, WHITE, BLACK, "       ");
+				print_str(20, 60, 3, WHITE, BLACK, "                ");
 					
 				res = convert(system, number_1);
 			}
